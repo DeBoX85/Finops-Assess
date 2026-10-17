@@ -2,11 +2,18 @@
 Hard rule 1 (CLAUDE.md): no write calls. GET is allowed. POST is allowed only to endpoints
 that are queries and do not change state, listed in ALLOWED_POST. Add an entry only with a decision record.
 """
+
 from __future__ import annotations
-import json, re, time, urllib.request, urllib.error
+
+import json
+import re
+import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
-from .errors import BlockedRequest, FcatError
+
+from .errors import BlockedRequest
 
 ALLOWED_HOSTS = {"management.azure.com"}  # public cloud only; sovereign clouds out of scope this round
 ALLOWED_POST = [
@@ -15,18 +22,22 @@ ALLOWED_POST = [
 ]
 _ID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
+
 @dataclass
 class Response:
     status: int
     headers: dict
     body: dict | None
 
+
 class UrllibTransport:
     def send(self, method, url, headers, body):
         data = json.dumps(body).encode() if body is not None else None
-        req = urllib.request.Request(url, data=data, method=method, headers=headers)
+        if not url.startswith(("https://", "http://127.0.0.1")):  # 127.0.0.1 only for local tests
+            raise BlockedRequest(f"scheme/host not allowed: {url[:30]}")
+        req = urllib.request.Request(url, data=data, method=method, headers=headers)  # noqa: S310  scheme checked above
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=60) as r:  # noqa: S310  scheme checked above
                 raw = r.read()
                 return Response(r.status, {k.lower(): v for k, v in r.headers.items()}, json.loads(raw) if raw else None)
         except urllib.error.HTTPError as e:
@@ -37,6 +48,7 @@ class UrllibTransport:
                 b = {"raw": raw[:500].decode("utf-8", "replace")}
             return Response(e.code, {k.lower(): v for k, v in e.headers.items()}, b)
 
+
 @dataclass
 class CallRecord:
     method: str
@@ -45,8 +57,10 @@ class CallRecord:
     retries: int
     rows: int | None = None
 
+
 def redact(path: str) -> str:
     return _ID.sub("{id}", path)
+
 
 @dataclass
 class Client:
@@ -85,15 +99,17 @@ class Client:
             retries += 1
             self.sleep(wait)
 
+
 def _retry_after(h):
     try:
         return max(1.0, float(h.get("retry-after", "")))
     except ValueError:
         return 2.0
 
+
 def _hms(v):
     try:
         h, m, s = v.split(":")
         return int(h) * 3600 + int(m) * 60 + float(s)
-    except Exception:
+    except (ValueError, AttributeError):
         return None

@@ -2,11 +2,15 @@
 Paging rules from Learn (read 2026-10-17): max 1000 rows per page; follow $skipToken; no skipToken if the query
 uses limit/take/sample, or all output columns are dynamic/null; keep `id` in the output; each page costs quota.
 """
+
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from .errors import IncompleteResult, FcatError
+
+from .errors import FcatError, IncompleteResult
 
 URL = "https://management.azure.com/providers/Microsoft.ResourceGraph/resources?api-version=2022-10-01"
+
 
 @dataclass
 class QueryResult:
@@ -15,7 +19,10 @@ class QueryResult:
     pages: int
     warnings: list = field(default_factory=list)
 
-def query(client, kql: str, subscriptions: list[str] | None = None, management_groups: list[str] | None = None, page_size: int = 1000) -> QueryResult:
+
+def query(
+    client, kql: str, subscriptions: list[str] | None = None, management_groups: list[str] | None = None, page_size: int = 1000
+) -> QueryResult:
     if subscriptions and management_groups:
         raise FcatError("subscriptions and managementGroups cannot be combined")
     warnings = []
@@ -43,7 +50,9 @@ def query(client, kql: str, subscriptions: list[str] | None = None, management_g
         skip = b.get("$skipToken")
         if not skip:
             if b.get("resultTruncated") in (True, "true") or (total is not None and len(rows) < total):
-                raise IncompleteResult(f"ARG result truncated without a skip token ({len(rows)} of {total} rows); "
-                                       "check for limit/take/sample or all-dynamic columns, and keep 'id' in the output")
+                raise IncompleteResult(
+                    f"ARG result truncated without a skip token ({len(rows)} of {total} rows); "
+                    "check for limit/take/sample or all-dynamic columns, and keep 'id' in the output"
+                )
             break
     return QueryResult(rows, total, pages, warnings)

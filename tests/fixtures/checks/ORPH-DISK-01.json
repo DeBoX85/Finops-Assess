@@ -1,0 +1,5 @@
+{"cases": [
+ {"name": "unattached disk is reported", "snapshot": {"unattached_disks": {"rows": [{"id": "/disks/a", "sizeGB": 128, "skuName": "Premium_LRS", "location": "westeurope"}]}}, "expect_resource_ids": ["/disks/a"]},
+ {"name": "no rows gives no findings", "snapshot": {"unattached_disks": {"rows": []}}, "expect_resource_ids": []},
+ {"name": "two disks give two findings", "snapshot": {"unattached_disks": {"rows": [{"id": "/disks/a"}, {"id": "/disks/b"}]}}, "expect_resource_ids": ["/disks/a", "/disks/b"]}
+]}

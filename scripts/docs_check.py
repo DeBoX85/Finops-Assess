@@ -1,10 +1,26 @@
 #!/usr/bin/env python3
 """Documentation consistency check. Prints warnings; exit 1 only on missing required files/sections."""
-import pathlib, re, sys
+
+import pathlib
+import re
+import sys
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-REQUIRED = ["CLAUDE.md", "README.md", "NOTICE.md", "docs/HANDOVER.md", "docs/PLAN.md", "docs/DEV-PRINCIPLES.md",
-            "docs/MISTAKES.md", "docs/REVERT.md", "docs/RESUME_PROMPT.md", "docs/CHECKPOINTS.md"]
+REQUIRED = [
+    "CLAUDE.md",
+    "README.md",
+    "NOTICE.md",
+    "docs/HANDOVER.md",
+    "docs/PLAN.md",
+    "docs/DEV-PRINCIPLES.md",
+    "docs/MISTAKES.md",
+    "docs/REVERT.md",
+    "docs/RESUME_PROMPT.md",
+    "docs/CHECKPOINTS.md",
+    "docs/QUALITY.md",
+]
 SECTIONS = ["## State", "## Done", "## In progress", "## Next step", "## Open questions", "## Blockers"]
+
 
 def check():
     errs, warns = [], []
@@ -28,9 +44,12 @@ def check():
                 warns.append(f"{p.relative_to(ROOT)}: broken relative link {m.group(1)}")
     return errs, warns
 
+
 if __name__ == "__main__":
     e, w = check()
-    for x in e: print("ERROR:", x)
-    for x in w: print("WARN:", x)
+    for x in e:
+        print("ERROR:", x)
+    for x in w:
+        print("WARN:", x)
     print("docs check:", "FAIL" if e else "ok", f"({len(w)} warnings)")
     sys.exit(1 if e else 0)

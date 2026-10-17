@@ -7,7 +7,7 @@ dependencies = []
 [project.optional-dependencies]
 azure = ["azure-identity"]
 excel = ["openpyxl"]
-dev = ["pytest", "openpyxl"]
+dev = ["pytest", "pytest-cov", "openpyxl", "jsonschema", "ruff"]
 [project.scripts]
 fcat = "fcat.cli:main"
 [build-system]
@@ -17,3 +17,20 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+markers = ["live: needs a real Azure test tenant and az login (read-only); skipped by default"]
+addopts = "-m \"not live\""
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "BLE"]
+ignore = ["E501", "S101"]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S", "B011"]
+"scripts/*" = ["S603", "S607", "S101"]
+"src/fcat/checks_builtin.py" = []
+[tool.coverage.run]
+source = ["src/fcat"]
+[tool.coverage.report]
+fail_under = 85
