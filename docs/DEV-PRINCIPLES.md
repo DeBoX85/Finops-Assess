@@ -48,3 +48,6 @@ Do when code exists: tests, CHANGELOG and semver tags, run manifest, structured 
 Defer until there are collaborators or a public repo: CI pipelines, branch protection (UNVERIFIED whether available on a private repo on a free plan), PR templates, contributor agreement, signed releases, SBOM.
 Real risks of over-doing it: documentation drift (two places saying different things), session logs that nobody reads, ceremony that slows small changes. Mitigations: one home per kind of information, short templates, handover overwritten not appended, and the rule that a stale doc is a bug.
 Limit I cannot remove: if a chat ends abruptly mid-step, the last few minutes of work and reasoning can be lost. R1 and R2 shrink that window to one work unit; they do not eliminate it.
+
+## R10 Right-sizing and idle checks use peaks, not averages (owner tip, 2026-10-18)
+Before any check recommends a smaller size or shutdown, it must look at historical peaks (for example max and a high percentile over the window), not only the average. Findings state the metric window, the statistic used, and the data coverage (missing samples). A short or sparse window caps confidence at low. Guest-OS metrics only if the customer already collects them. UNVERIFIED: which window length is adequate; to be decided with Learn/Advisor documentation and tenant testing.

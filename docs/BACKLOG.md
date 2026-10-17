@@ -26,3 +26,4 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 21. Maturity questionnaire draft for owner review BEFORE implementation (owner request 2026-10-18).
 - 22. Extra accuracy tests (owner request 2026-10-18): runtime invariants and completeness counters; property-based tests per check; metamorphic tests; cross-source reconciliation (Advisor/azqr/cost totals); schema-drift detection on collector output; recorded-response contract tests (after tenant). Add to AUDIT.md.
 - 23. ADR 0005 export write mode: finish design after owner decision; implement only after levels 1 and 1.5.
+- 24. Right-sizing/idle checks (R10): peak-aware logic design, fixtures with spiky workloads (low average, high peak must NOT be flagged). Research how Advisor and AOE choose windows and statistics.

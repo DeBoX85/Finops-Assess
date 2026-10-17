@@ -11,7 +11,7 @@ Read-only, agentless Azure FinOps assessment tool run from a laptop. Outputs: HT
 - If intent or goals are unclear, ask before building.
 
 ## Hard rules
-1. Tool is read-only toward Azure. No write calls to customer environments.
+1. Tool is read-only toward Azure by default. Writes only in the opt-in export mode (ADR 0005), on a scope the customer approved, never in the default code path. No other write calls to customer environments.
 2. Never commit customer data, tenant/subscription IDs, tokens. Outputs go to the ignored output/ folder.
 3. Follow docs/CHECKPOINTS.md: after every work unit and before any long/risky step, update the HANDOVER narrative and run scripts/checkpoint.py. Answer a heartbeat message per that file. Never claim work is saved unless the push succeeded.
 4. Log mistakes in docs/MISTAKES.md; check it before starting similar work.
