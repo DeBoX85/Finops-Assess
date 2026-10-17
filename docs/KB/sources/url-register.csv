@@ -1,0 +1,91 @@
+index,url,status,reliability,note,checked
+1,https://azure.microsoft.com/en-us/solutions/finops,OPENED,high,Lists Microsoft FinOps products; undated,2026-10-17
+2,https://learn.microsoft.com/en-us/cloud-computing/finops/framework/finops-framework,OPENED,high,Framework per Learn; ms.date 2025-04-25; older capability names than finops.org,2026-10-17
+3,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/finops-toolkit-overview,OPENED,high,"Toolkit overview ms.date 2025-04-02; ""monthly releases"" claim not borne out by tags",2026-10-17
+4,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/hubs/finops-hubs-overview,OPENED,high,Hubs overview ms.date 2026-04-01; cost from $120/mo; MOSA unsupported in hubs 0.2+,2026-10-17
+5,https://techcommunity.microsoft.com/blog/finopsblog/a-practitioners-guide-to-accelerating-finops-with-github-copilot-and-finops-hubs/4420302,PARTIAL (metadata only),medium,Body not retrievable; modified 2025-06-08,2026-10-17
+6,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/hubs/deploy,OPENED,high,Hubs deploy ms.date 2026-05-12; permissions per scope,2026-10-17
+7,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/hubs/data-model,OPENED,high,Data model; v1_2 schema since hubs 12,2026-10-17
+8,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/hubs/template,OPENED,high,Template parameters; enableRecommendations default false (verified in source),2026-10-17
+9,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/hubs/configure-remote-hubs,OPENED,high,Remote hubs use storage keys; ms.date 2024-11-01,2026-10-17
+10,https://learn.microsoft.com/en-us/cloud-computing/finops/implementing-finops-guide,OPENED,high,Guide; no maturity model defined,2026-10-17
+11,https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/cost-mgt-best-practices,OPENED,medium,"ms.date 2025-07-09; stale items (legacy API link, Batch low priority)",2026-10-17
+12,https://learn.microsoft.com/en-us/azure/virtual-machines/cost-optimization-best-practices,OPENED,medium,ms.date 2024-02-21; dev/test and policy ideas,2026-10-17
+13,https://learn.microsoft.com/en-us/training/modules/get-started-with-finops/,OPENED,high,"Training module, 9 units",2026-10-17
+14,https://learn.microsoft.com/en-us/training/modules/adopt-finops-on-azure/,OPENED,high,"Training module, 8 units",2026-10-17
+15,https://techcommunity.microsoft.com/blog/fasttrackforazureblog/the-azure-finops-guide/3704132,PARTIAL (metadata only),unknown,Body not retrievable; modified 2025-09-16,2026-10-17
+16,https://learn.microsoft.com/en-us/cloud-computing/finops/,OPENED,high,Docs hub ms.date 2025-05-07,2026-10-17
+17,https://microsoft.github.io/finops-toolkit/,OPENED,high,Site shows v14 April 2026 as latest,2026-10-17
+18,https://learn.microsoft.com/en-us/cloud-computing/finops/toolkit/changelog,OPENED,high,Live changelog top entry v14; no v15 (contradicts file),2026-10-17
+19,https://techcommunity.microsoft.com/blog/azureinfrastructureblog/finops-ready-azure-landing-zone---part-2/4555727,PARTIAL (metadata only),unknown,Body not retrievable; modified 2026-09-11,2026-10-17
+20,https://techcommunity.microsoft.com/blog/finopsblog/creating-custom-analyses-and-reports-with-finops-hubs/4408601,PARTIAL (metadata only),unknown,Body not retrievable; modified 2025-05-16,2026-10-17
+21,https://azure.microsoft.com/en-us/blog/how-microsoft-cloud-is-embracing-finops-practitioners/,OPENED,stale,Published 2023-06-27,2026-10-17
+22,https://learn.microsoft.com/en-us/samples/azure/azure-quickstart-templates/finops-hub/,OPENED,medium,Quickstart sample ms.date 2025-05-08; likely older than hub v13/v14,2026-10-17
+23,https://learn.microsoft.com/en-us/cloud-computing/finops/focus/what-is-focus,OPENED,high,What is FOCUS; no version named; ms.date 2025-06-16,2026-10-17
+24,https://learn.microsoft.com/en-us/azure/cost-management-billing/dataset-schema/cost-usage-details-focus,OPENED,high,Azure FOCUS schema 1.2-preview 105 cols; ms.date 2025-06-26,2026-10-17
+25,https://azure.microsoft.com/en-us/blog/focus-a-new-specification-for-cloud-cost-transparency/,OPENED,stale,Published 2023-10-26,2026-10-17
+26,https://azure.microsoft.com/en-us/blog/democratizing-finops-transform-your-practice-with-focus-and-microsoft-fabric/,OPENED,stale,Published 2023-11-28,2026-10-17
+27,https://focus.finops.org/,OPENED,high,Promotes FOCUS 1.4,2026-10-17
+28,https://focus.finops.org/focus-specification/,OPENED,high,1.4 latest; 4 datasets 123 columns,2026-10-17
+29,https://focus.finops.org/focus-specification/v1-2/,OPENED,high,v1.2 spec page; 57 columns,2026-10-17
+30,https://focus.finops.org/focus-specification/v1-1/,OPENED,high,v1.1 spec page; 50 columns,2026-10-17
+31,https://focus.finops.org/focus-specification/v1-0/,OPENED,high,v1.0 spec page; 43 columns,2026-10-17
+32,https://focus.finops.org/what-is-focus/,OPENED,high,Release history with ratification dates incl 1.4 on 2026-06-04,2026-10-17
+33,https://github.com/FinOps-Open-Cost-and-Usage-Spec,OPENED,high,10 repos; no validator/converter here,2026-10-17
+34,https://github.com/FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec,OPENED,high,"323 stars, 720 commits",2026-10-17
+35,https://www.finops.org/wg/adopting-focus-the-finops-open-cost-and-usage-specification/,OPENED,high,Adoption paper updated 2025-12-10,2026-10-17
+36,https://www.finops.org/insights/focus-1-0-available/,OPENED,high,FOCUS 1.0 GA 2024-06-20,2026-10-17
+37,https://www.finops.org/insights/introducing-focus-1-3/,OPENED,high,"FOCUS 1.3 published 2025-12-11, ratified 2025-12-05",2026-10-17
+38,https://www.linuxfoundation.org/press/finops-foundation-launches-focus-1.3-to-deepen-cloud-and-saas-billing-transparency-announces-expanded-vendor-support-for-focus-1.2,OPENED,high,Press release 2025-12-11,2026-10-17
+39,https://www.finops.org/topic/focus/,OPENED,medium,Lags: says latest 1.3,2026-10-17
+40,https://focus.finops.org/docs/implementation/data-generators/microsoft-azure/,OPENED,high,Azure generator page: v1.2; conformance links,2026-10-17
+41,https://www.finops.org/,OPENED,high,Newest items Sep/Oct 2026 (AI/tokenomics focus),2026-10-17
+42,https://learn.finops.org/,OPENED,high,Training/certification site,2026-10-17
+43,https://github.com/finopsfoundation,OPENED,high,"focus_converters, focus_validator, framework",2026-10-17
+44,https://www.finops.org/members/microsoft/,OPENED,high,Microsoft member page; FOCUS 1.2 in Cost Management 2025-07-02,2026-10-17
+45,https://github.com/microsoft/finops-toolkit,OPENED,high,"Toolkit repo: MIT; see notes 02,03",2026-10-17
+46,https://github.com/microsoft/finops-toolkit/releases,OPENED,high,Releases: v14 2026-04-29 latest; no v15,2026-10-17
+47,https://github.com/Azure-Samples/azure-finops-agent,OPENED,medium,352 commits not 542; Azure-Samples; writes (not read-only),2026-10-17
+48,https://github.com/ms-sambell/azure-finops-workbook,OPENED,medium,92 stars; 10 commits; no licence shown,2026-10-17
+49,https://github.com/dolevshor/azure-finops-guide,OPENED,medium,215 stars; MIT; curated links,2026-10-17
+50,https://github.com/finoops/Azure-FinOps-Top-Resources,OPENED,low,12 stars; README only,2026-10-17
+51,https://github.com/julianobarbosa/azure-finops-mcp-server,OPENED,low,2 stars; MIT; Python MCP,2026-10-17
+52,https://github.com/pigottk4/finops-cost-management-azure,OPENED,low,SECURITY FLAG: external Windows installer mentioned; no licence; do not run,2026-10-17
+53,https://github.com/9t29zhmwdh-coder/azure-cost-forecasting-engine,OPENED,low,0 stars; MIT; Python; looks genuine but new,2026-10-17
+54,https://github.com/andy-diericks/azure-pricing-radar,OPENED,low,1 star; MIT; Retail Prices poller; agent-developed,2026-10-17
+55,https://github.com/CloudHiro/azure-finops,OPENED,low,1 star; no licence; ARM runbooks,2026-10-17
+56,https://github.com/finoops/FinOps-Cheatsheet,OPENED,low,Exam glossary,2026-10-17
+57,https://github.com/devopsabcs-engineering/finops-scan-workshop,OPENED,low,Workshop: PSRule+Checkov+Custodian+Infracost,2026-10-17
+58,https://github.com/NakitaMei/azure-focus-pipeline,OPENED,low,2 commits; FOCUS validator idea; claims Azure declares 1.0r2 (unverified),2026-10-17
+59,https://github.com/hystax/optscale,OPENED,medium,OptScale ~2.2k stars Apache-2.0; platform deployment,2026-10-17
+60,https://github.com/opencost/opencost,OPENED,medium,OpenCost 6.7k Apache-2.0; Kubernetes-centred,2026-10-17
+61,https://github.com/kubecost/kubecost,OPENED,medium,Exists; not archived; Apache-2.0 on repo,2026-10-17
+62,https://github.com/cloud-custodian/cloud-custodian,OPENED,high,Cloud Custodian 6.1k Apache-2.0; YAML policies,2026-10-17
+63,https://github.com/kubeshop/komiser,OPENED,medium,Komiser: kubeshop URL errored; mlabouardy URL opened; ELv2 licence,2026-10-17
+64,https://github.com/steampipe/steampipe,ERROR,medium,"steampipe/steampipe errored; turbot/steampipe opened: AGPL-3.0, Azure plugin",2026-10-17
+65,https://github.com/infracost/infracost,OPENED,medium,Infracost 12.5k Apache-2.0; IaC estimator,2026-10-17
+66,https://github.com/project-koku/koku,OPENED,medium,Koku; heavy platform; Azure not claimed,2026-10-17
+67,https://github.com/JGrubb/open-finops-stack,OPENED,low,13 stars MIT; AWS only so far,2026-10-17
+68,https://github.com/turbot/powerpipe,OPENED,medium,Powerpipe AGPL-3.0,2026-10-17
+69,https://github.com/ManageIQ/manageiq,OPENED,medium,ManageIQ Apache-2.0; general platform,2026-10-17
+70,https://github.com/cleancloud-io/cleancloud,OPENED,medium,CleanCloud MIT read-only 50 rules; closest peer,2026-10-17
+71,https://github.com/mnshahab/finops-operating-system,OPENED,low,1 star; docs repo; mixed completeness,2026-10-17
+72,https://github.com/finopsfoundation/focus_converter_azure,OPENED,low,1 commit; empty shell,2026-10-17
+73,https://github.com/finopsfoundation/focus_converters,OPENED,medium,focus_converters MIT 139 stars,2026-10-17
+74,https://github.com/pach-boop/tokencur,OPENED,low,AI token to FOCUS; not Azure,2026-10-17
+75,https://github.com/gregoire-costory/awesome-agentic-finops,OPENED,medium,CC0 list by vendor Costory; new Azure leads,2026-10-17
+76,https://github.com/topics/azure-finops,OPENED,medium,"Topic listing; leads: azure-costs-analyzer, CloudMonitorFinOps/reporting",2026-10-17
+77,https://github.com/topics/finops,OPENED,medium,Topic listing; azure-cost-cli 1.1k stars,2026-10-17
+78,https://github.com/topics/finops-foundation,OPENED,low,Topic listing; 2 repos,2026-10-17
+79,https://github.com/PacktPublishing/FinOps-Handbook-for-Microsoft-Azure,OPENED,low,Book code; no licence shown,2026-10-17
+80,https://amnic.com/blogs/finops-open-cost-and-usage-specification-guide-2026,OPENED,low,Vendor; says 1.3 current; dated 2026-06-04,2026-10-17
+81,https://medium.com/@cocamatias/what-is-focus-the-finops-standard-that-makes-multi-cloud-cost-data-actually-usable-83b17874b011,OPENED,low,Says 1.2 has 65 columns (contradicted),2026-10-17
+82,https://www.nops.io/blog/finops-focus/,OPENED,stale,Vendor; 2024,2026-10-17
+83,https://varcio.com/blog/focus-finops-open-cost-usage-specification-guide,OPENED,low,Vendor; lists to 1.3,2026-10-17
+84,https://holori.com/what-is-finops-focus-the-key-to-standardizing-cloud-billing-data/,OPENED,stale,Vendor; 2025,2026-10-17
+85,https://yobitel.com/knowledge-base/focus-spec,OPENED,unreliable,Says Azure 1.0 GA/1.1 preview; contradicted,2026-10-17
+86,https://hkaanturgut.medium.com/operationalizing-azure-cost-management-with-the-azure-finops-toolkit-94b3e96d6a83,OPENED,low,Conceptual; no versions,2026-10-17
+87,https://www.prosperops.com/blog/azure-finops/,OPENED,low,Vendor; outdated stats,2026-10-17
+88,https://www.nops.io/blog/azure-finops/,OPENED,low,Vendor; dates conflict,2026-10-17
+89,https://osamaoracle.com/2026/10/12/azure-finops-part-1-cost-visibility-allocation-and-the-tagging-contract,OPENED,low,Opinion; useful tagging ideas,2026-10-17
+90,https://github.com/mlabouardy/komiser,OPENED,medium,CSV-only URL; ELv2 licence,2026-10-17

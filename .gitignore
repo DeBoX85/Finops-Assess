@@ -1,0 +1,7 @@
+output/
+snapshots/
+*.xlsx
+*.pdf
+.env
+__pycache__/
+.venv/
