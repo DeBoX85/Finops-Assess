@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17 22:55 UTC
+Last updated: 2026-10-17 23:01 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-17 22:55
-Base commit: 2ab8621
+Last checkpoint (UTC): 2026-10-17 23:01
+Base commit: 9a602a0
 Gates: pass
-Files changed in this checkpoint: 2
-narrative_hash: 1444eb6bc034
+Files changed in this checkpoint: 3
+narrative_hash: 43caef124850
 stale_count: 0
 <!-- auto:end -->
 
@@ -26,6 +26,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - Audit sampling and confidence labels: clarified in chat that these are validation-phase measures, not per-tenant requirements. Awaiting confirmation.
 - 2026-10-18 later: owner wants export write mode as a toggleable opt-in; ADR 0005 drafted (proposed). Asked owner to approve rule 1 wording and how far to go (design only vs implement). Owner also asked for more built-in output-accuracy tests; suggestions given in chat, to be added to docs/AUDIT.md and BACKLOG.
 - 2026-10-18: owner said start work. Maturity questionnaire DRAFT v0.1 written (docs/maturity/QUESTIONNAIRE-DRAFT.md), awaiting owner review. Workbook queries are already in docs/KB/sources/workbook-queries-raw.json (extracted from the toolkit repo); owner offered to upload workbook JSON if needed (not needed unless a newer version is wanted).
+- 2026-10-18 later: owner asked for a shorter, plainer questionnaire split by "visible in portal/CLI" (owner, Part 1) vs customer (Part 2). Done as v0.2 in docs/maturity/ (13 questions, 3 plain-language answers). Numeric cut-offs dropped (no official source). Owner confirmed: unanswered capabilities show as pending/needs input. Awaiting owner review of v0.2.
 ## In progress
 Nothing half-done.
 ## Next step
