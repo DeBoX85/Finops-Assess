@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17 06:57 UTC
+Last updated: 2026-10-17 22:42 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-17 06:57
-Base commit: a92ef75
+Last checkpoint (UTC): 2026-10-17 22:42
+Base commit: af671c1
 Gates: pass
-Files changed in this checkpoint: 1
-narrative_hash: 11c8b6cc72ad
+Files changed in this checkpoint: 2
+narrative_hash: 811dc89ea949
 stale_count: 0
 <!-- auto:end -->
 
@@ -18,6 +18,12 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - Test tenants: one CSP, one MCA (Azure for Startups type). MFA on both, so az login style auth. AzureCliCredential has no claims-challenge support: test conditional access/MFA step-up early (UNVERIFIED). Canary resource creation: decide later.
 - Maturity: owner answers the organisational questions, may forward discovery questions. Granularity: subscription and management group; tenant roll-up optional and skewed for 1-2 subscription customers, so report scope levels separately.
 - Tailoring: flexible logo/branding (own company or ad-hoc external collaborators); which modules run, and module weight/ranking, set by owner per report; this changes report length and style.
+## Owner answers 2026-10-18
+- PLAN v0.1 approved. Canary resources stay deferred until there is something to test on.
+- Maturity questionnaire: owner wants to review the draft before anything is built on it.
+- Dashboard: Claude has creative freedom, will make a few mock-ups; branding, scoping and parts of the layout must be adjustable/editable.
+- Cost data: owner asked whether a time-limited permission could let the tool trigger a Cost Management export and import the result. Researched; options and recommendation given in chat (read existing exports and import a customer-provided file; Cost Details/Query read APIs; opt-in write mode only by ADR, off by default). Awaiting owner decision on the write-mode question. Rule 1 stays absolute until then.
+- Audit sampling and confidence labels: clarified in chat that these are validation-phase measures, not per-tenant requirements. Awaiting confirmation.
 ## In progress
 Nothing half-done.
 ## Next step
