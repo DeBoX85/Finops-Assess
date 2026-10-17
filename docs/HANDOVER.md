@@ -1,13 +1,13 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17  By: first session  Last pushed commit: 6a47b72
+Last updated: 2026-10-17  By: first session  Last pushed commit: see git log
 ## State
-Repo was empty. Knowledge base (docs/KB, notes 01-09), PLAN and DEV-PRINCIPLES imported and pushed to GitHub. Phase 0 in progress. No code yet.
+Phase 1 skeleton started: src/fcat (http allowlist, ARG paging client, auth via az CLI, snapshot, config toggles, check registry, one check ORPH-DISK-01, JSON report with run manifest). 15 offline tests pass (fake transport). NOTHING has run against real Azure yet.
 ## Done
-KB notes 01-09, plan draft v0.1, continuity files.
+KB notes 01-09, plan v0.1, continuity files, ADR 0001-0003, Phase 1 code skeleton, NOTICE with finops-toolkit MIT text.
 ## In progress
 Push access now works (verified 2026-10-17). Remote moved to https://github.com/DeBoX85/Finops-Assess.git.
 ## Next step
-Start Phase 1 (docs/PLAN.md section 5) once the user approves the plan.
+Phase 1 remainder: scope discovery output in manifest, management group scope, Excel and HTML renderers (Phase 4 ordering may change), run-manifest identity capture, README usage. Then first live test when the test tenant is available: run `fcat run --config config/example.toml` and record results in docs/log.
 ## Open questions for the user
 Approve PLAN v0.1; test tenant timing (user: may be available later); Python agreed; maturity approach agreed; azqr architecture reuse question (answered in chat 17 Oct).
 ## Blockers

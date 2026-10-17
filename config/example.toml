@@ -1,0 +1,7 @@
+[run]
+profile = "standard"          # quick | standard | deep
+# subscriptions = ["<id>"]    # leave empty to use everything the identity can read
+[domains]
+orphaned = true
+[checks]
+"ORPH-DISK-01" = true
