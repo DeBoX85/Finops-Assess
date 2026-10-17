@@ -2,21 +2,21 @@
 Last updated: 2026-10-17 04:33 UTC
 <!-- auto:start -->
 Last checkpoint (UTC): 2026-10-17 04:33
-Base commit: 23489f2
+Base commit: 94c4caa
 Tests: pass
-Files changed in this checkpoint: 12
-narrative_hash: df57d884c39e
+Files changed in this checkpoint: 1
+narrative_hash: d47189e253f2
 stale_count: 0
 <!-- auto:end -->
 
 ## State
-Phase 1 skeleton started: src/fcat (http allowlist, ARG paging client, auth via az CLI, snapshot, config toggles, check registry, one check ORPH-DISK-01, JSON report with run manifest). 15 offline tests pass (fake transport). NOTHING has run against real Azure yet.
+Phase 1 skeleton plus checkpoint tooling. src/fcat: read-only http client, ARG paging, az CLI auth, snapshot, config toggles, check registry (ORPH-DISK-01), collectors (subscriptions, management groups, unattached disks), JSON/HTML/Excel renderers from one document. 18 offline tests pass. NOTHING has run against real Azure.
 ## Done
-KB notes 01-09, plan v0.1, continuity files, ADR 0001-0003, Phase 1 code skeleton, NOTICE with finops-toolkit MIT text.
+KB notes 01-09, plan v0.1, ADR 0001-0003, NOTICE (MIT text), Phase 1 code, scripts/checkpoint.py + docs_check.py + install_hooks.sh, docs/CHECKPOINTS.md, heartbeat procedure.
 ## In progress
-Push access now works (verified 2026-10-17). Remote moved to https://github.com/DeBoX85/Finops-Assess.git.
+Nothing half-done.
 ## Next step
-Phase 1 remainder: scope discovery output in manifest, management group scope, Excel and HTML renderers (Phase 4 ordering may change), run-manifest identity capture, README usage. Then first live test when the test tenant is available: run `fcat run --config config/example.toml` and record results in docs/log.
+Offline-doable: cost-data collectors written against documented schemas (Cost Management query/exports, FOCUS handling, list-price join) with fixtures; more ARG checks from the parity list; maturity rubric draft (needs user review). Needs tenant: first live run (`fcat run --config config/example.toml`), Reader-only workspace query test, verifying every UNVERIFIED item in ADRs.
 ## Open questions for the user
 Approve PLAN v0.1; test tenant timing (user: may be available later); Python agreed; maturity approach agreed; azqr architecture reuse question (answered in chat 17 Oct).
 ## Blockers
