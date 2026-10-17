@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17 04:59 UTC
+Last updated: 2026-10-17 05:02 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-17 04:59
-Base commit: ddfe622
+Last checkpoint (UTC): 2026-10-17 05:02
+Base commit: 53bd6cd
 Gates: pass
-Files changed in this checkpoint: 32
-narrative_hash: 71ff582d8caf
+Files changed in this checkpoint: 4
+narrative_hash: b88bc5f41360
 stale_count: 0
 <!-- auto:end -->
 
@@ -16,9 +16,9 @@ KB notes 01-09, plan v0.1, ADR 0001-0003, NOTICE, Phase 1 code, checkpoint tooli
 ## In progress
 Nothing half-done.
 ## Next step
-Offline-doable: cost-data collectors against documented schemas with fixtures; savings-math golden tests first; more ARG checks with fixtures; maturity rubric draft (user review). Needs tenant: G2 live gate (docs/QUALITY.md section 3), canary resources created by the owner.
+See docs/BACKLOG.md (no-tenant work, ordered). Waiting on owner for ADR 0004 (where check logic lives). Then output audit Layer A (docs/AUDIT.md), synthetic estate, cost collectors.
 ## Open questions for the user
-Approve PLAN v0.1; test tenant timing (user: may be available later); Python agreed; maturity approach agreed; azqr architecture reuse question (answered in chat 17 Oct).
+ADR 0004 decision; AUDIT.md sampling/precision thresholds; Approve PLAN v0.1; test tenant timing (user: may be available later); Python agreed; maturity approach agreed; azqr architecture reuse question (answered in chat 17 Oct).
 ## Blockers
 Test tenant not guaranteed early, so initial checks are fixture-based and untested.
 ## Resume: read CLAUDE.md, this file, docs/PLAN.md, newest docs/log entry, docs/MISTAKES.md
