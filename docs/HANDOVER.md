@@ -1,7 +1,7 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17  By: first session  Last pushed commit: NONE (push refused, see below)
+Last updated: 2026-10-17  By: first session  Last pushed commit: 6a47b72
 ## State
-Repo was empty. Knowledge base (docs/KB, notes 01-09), PLAN and DEV-PRINCIPLES imported and committed locally. Phase 0 in progress. No code yet.
+Repo was empty. Knowledge base (docs/KB, notes 01-09), PLAN and DEV-PRINCIPLES imported and pushed to GitHub. Phase 0 in progress. No code yet.
 ## Done
 KB notes 01-09, plan draft v0.1, continuity files.
 ## In progress
