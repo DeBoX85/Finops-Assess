@@ -116,7 +116,7 @@ def main():
     if a.no_push:
         return 0
     # Always push to wip/auto (full state incl. handover). Push to main only when every gate passed (main must always work).
-    p = sh("git", "push", "--force-with-lease", "origin", "HEAD:wip/auto")
+    p = sh("git", "push", "origin", "HEAD:wip/auto")
     if p.returncode == 0 and tests == "pass":
         p = sh("git", "push", "origin", "HEAD:main")
         print("pushed to wip/auto and main")
