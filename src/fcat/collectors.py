@@ -21,10 +21,8 @@ KQL_MANAGEMENT_GROUPS = (
 # state not ActiveSAS, excluding ASR replica/seed disks.
 KQL_UNATTACHED_DISKS = (
     "resources | where type =~ 'microsoft.compute/disks' and isempty(managedBy) "
-    "| extend diskState = tostring(properties.diskState) "
-    "| where diskState != 'ActiveSAS' and tags !contains 'ASR-ReplicaDisk' and tags !contains 'asrseeddisk' "
     "| project id, name, subscriptionId, resourceGroup, location, skuName=tostring(sku.name), sizeGB=toint(properties.diskSizeGB), "
-    "diskState, timeCreated=tostring(properties.timeCreated) | order by id asc"
+    "diskState=tostring(properties.diskState), timeCreated=tostring(properties.timeCreated), tags | order by id asc"
 )
 
 COLLECTORS = {

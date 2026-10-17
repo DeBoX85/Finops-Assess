@@ -1,5 +1,131 @@
-{"cases": [
- {"name": "unattached disk is reported", "snapshot": {"unattached_disks": {"rows": [{"id": "/disks/a", "sizeGB": 128, "skuName": "Premium_LRS", "location": "westeurope"}]}}, "expect_resource_ids": ["/disks/a"]},
- {"name": "no rows gives no findings", "snapshot": {"unattached_disks": {"rows": []}}, "expect_resource_ids": []},
- {"name": "two disks give two findings", "snapshot": {"unattached_disks": {"rows": [{"id": "/disks/a"}, {"id": "/disks/b"}]}}, "expect_resource_ids": ["/disks/a", "/disks/b"]}
-]}
+{
+ "cases": [
+  {
+   "name": "unattached disk is reported",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/a",
+       "sizeGB": 128,
+       "skuName": "Premium_LRS",
+       "location": "westeurope"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/disks/a"
+   ]
+  },
+  {
+   "name": "no rows gives no findings",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": []
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "two disks give two findings",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/a"
+      },
+      {
+       "id": "/disks/b"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/disks/a",
+    "/disks/b"
+   ]
+  },
+  {
+   "name": "ActiveSAS disk is excluded",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/s",
+       "diskState": "ActiveSAS"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "ASR replica tag excluded (case-insensitive)",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/r",
+       "diskState": "Unattached",
+       "tags": {
+        "ASR-ReplicaDisk": "x"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "ASR seed tag excluded",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/e",
+       "tags": {
+        "asrseeddisk": "1"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "unrelated tags do not exclude",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/t",
+       "tags": {
+        "env": "dev"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/disks/t"
+   ]
+  },
+  {
+   "name": "null tags handled",
+   "snapshot": {
+    "unattached_disks": {
+     "rows": [
+      {
+       "id": "/disks/n",
+       "tags": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/disks/n"
+   ]
+  }
+ ]
+}

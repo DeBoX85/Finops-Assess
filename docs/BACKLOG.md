@@ -16,3 +16,8 @@ Order is my proposal. [needs you] marks items where a decision from the owner ch
 14. THIRD_PARTY/NOTICE audit of everything reused.
 15. Remaining research: FOCUS 1.4 changelog, conformance full report, Cost Management api-version status, Copilot in Cost Management status, Reddit sentiment (blocked).
 Needs the tenant: G2 live gate, canary resources, Reader-only workspace query test, precision sampling, oracle parity runs, contract recordings.
+
+## Added 2026-10-17 (owner requirements)
+- 16. Report tailoring config: branding (logo, colours, name, per-run override for external collaborators), module on/off, module weight and ranking. Owner-set only. Affects HTML/Excel/JSON length and style; JSON keeps full data.
+- 17. Auth risk test: AzureCliCredential and MFA/conditional access on CSP and MCA test tenants (claims challenge unsupported). Needs tenant.
+- 18. Billing-type specifics for CSP and MCA (Azure for Startups type): which Cost Management APIs and scopes work. Research first, verify on Learn.
