@@ -6,7 +6,8 @@ requires-python = ">=3.11"
 dependencies = []
 [project.optional-dependencies]
 azure = ["azure-identity"]
-dev = ["pytest"]
+excel = ["openpyxl"]
+dev = ["pytest", "openpyxl"]
 [project.scripts]
 fcat = "fcat.cli:main"
 [build-system]

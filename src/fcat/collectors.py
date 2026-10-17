@@ -3,7 +3,13 @@ from __future__ import annotations
 from . import arg
 
 KQL_SUBSCRIPTIONS = ("resourcecontainers | where type == 'microsoft.resources/subscriptions' "
-                     "| project id, name, subscriptionId, tenantId, state=tostring(properties.state) | order by id asc")
+                     "| project id, name, subscriptionId, tenantId, state=tostring(properties.state), "
+                     "mgAncestors=properties.managementGroupAncestorsChain | order by id asc")
+
+# Types and ancestor properties per Learn ARG sample queries (read 2026-10-17). Visibility depends on the identity's rights.
+KQL_MANAGEMENT_GROUPS = ("resourcecontainers | where type =~ 'microsoft.management/managementgroups' "
+                         "| project id, name, displayName=tostring(properties.displayName), "
+                         "ancestors=properties.details.managementGroupAncestorsChain | order by id asc")
 
 # Logic mirrors the unattached-disk rule in microsoft/finops-toolkit (MIT, see NOTICE.md): no managedBy,
 # state not ActiveSAS, excluding ASR replica/seed disks.
@@ -16,6 +22,7 @@ KQL_UNATTACHED_DISKS = (
 
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
+    "management_groups": KQL_MANAGEMENT_GROUPS,
     "unattached_disks": KQL_UNATTACHED_DISKS,
 }
 

@@ -13,7 +13,7 @@ Read-only, agentless Azure FinOps assessment tool run from a laptop. Outputs: HT
 ## Hard rules
 1. Tool is read-only toward Azure. No write calls to customer environments.
 2. Never commit customer data, tenant/subscription IDs, tokens. Outputs go to the ignored output/ folder.
-3. Push after every work unit. Update docs/HANDOVER.md before and after each unit.
+3. Follow docs/CHECKPOINTS.md: after every work unit and before any long/risky step, update the HANDOVER narrative and run scripts/checkpoint.py. Answer a heartbeat message per that file. Never claim work is saved unless the push succeeded.
 4. Log mistakes in docs/MISTAKES.md; check it before starting similar work.
 5. Record decisions in docs/decisions/. Tag claims VERIFIED/UNVERIFIED with source and date.
 6. A skipped or failed check must be reported as "not assessed, because X".

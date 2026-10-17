@@ -1,5 +1,14 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17  By: first session  Last pushed commit: see git log
+Last updated: 2026-10-17 04:33 UTC
+<!-- auto:start -->
+Last checkpoint (UTC): 2026-10-17 04:33
+Base commit: 23489f2
+Tests: pass
+Files changed in this checkpoint: 12
+narrative_hash: df57d884c39e
+stale_count: 0
+<!-- auto:end -->
+
 ## State
 Phase 1 skeleton started: src/fcat (http allowlist, ARG paging client, auth via az CLI, snapshot, config toggles, check registry, one check ORPH-DISK-01, JSON report with run manifest). 15 offline tests pass (fake transport). NOTHING has run against real Azure yet.
 ## Done

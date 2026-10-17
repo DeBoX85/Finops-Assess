@@ -1,6 +1,6 @@
 from __future__ import annotations
 import argparse, pathlib, sys
-from . import config as cfgmod, checks, checks_builtin, collectors, manifest, render_json
+from . import config as cfgmod, checks, checks_builtin, collectors, manifest, render_json, render_html, render_xlsx
 from .snapshot import Snapshot
 from .http import Client
 from .auth import AzCliTokenProvider
@@ -8,8 +8,13 @@ from .errors import FcatError
 
 def _finish(cfg, snap, out, identity, calls, cerrors, started):
     findings, status = checks.run_all(cfg, snap)
-    m = manifest.build(cfg, identity, calls, status, cerrors, started, manifest.now())
-    render_json.render(pathlib.Path(out) / "report.json", m, findings)
+    m = manifest.build(cfg, identity, calls, status, cerrors, started, manifest.now(), manifest.scope_summary(snap))
+    doc = render_json.render(pathlib.Path(out) / "report.json", m, findings)
+    render_html.render(pathlib.Path(out) / "report.html", doc)
+    try:
+        render_xlsx.render(pathlib.Path(out) / "report.xlsx", doc)
+    except ImportError:
+        print("note: openpyxl not installed, Excel report skipped (pip install 'fcat[excel]')")
     print(f"{len(findings)} findings; checks: " + ", ".join(f"{s['id']}={s['status']}" for s in status))
 
 def main(argv=None):
