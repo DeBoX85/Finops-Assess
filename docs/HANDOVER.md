@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17 22:42 UTC
+Last updated: 2026-10-17 22:47 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-17 22:42
-Base commit: af671c1
+Last checkpoint (UTC): 2026-10-17 22:47
+Base commit: c7bbf66
 Gates: pass
-Files changed in this checkpoint: 2
-narrative_hash: 811dc89ea949
+Files changed in this checkpoint: 3
+narrative_hash: baaa4acf011c
 stale_count: 0
 <!-- auto:end -->
 
@@ -24,6 +24,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - Dashboard: Claude has creative freedom, will make a few mock-ups; branding, scoping and parts of the layout must be adjustable/editable.
 - Cost data: owner asked whether a time-limited permission could let the tool trigger a Cost Management export and import the result. Researched; options and recommendation given in chat (read existing exports and import a customer-provided file; Cost Details/Query read APIs; opt-in write mode only by ADR, off by default). Awaiting owner decision on the write-mode question. Rule 1 stays absolute until then.
 - Audit sampling and confidence labels: clarified in chat that these are validation-phase measures, not per-tenant requirements. Awaiting confirmation.
+- 2026-10-18 later: owner wants export write mode as a toggleable opt-in; ADR 0005 drafted (proposed). Asked owner to approve rule 1 wording and how far to go (design only vs implement). Owner also asked for more built-in output-accuracy tests; suggestions given in chat, to be added to docs/AUDIT.md and BACKLOG.
 ## In progress
 Nothing half-done.
 ## Next step

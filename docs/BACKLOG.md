@@ -24,3 +24,5 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 19. FOCUS file import: `fcat import-focus <folder|file>` reads a customer-provided cost export offline (no Azure permissions). Fits the no-write rule. Design first.
 - 20. Dashboard mock-ups (2 to 3 variants) with editable branding/scope/layout config. Owner agreed, taste review after.
 - 21. Maturity questionnaire draft for owner review BEFORE implementation (owner request 2026-10-18).
+- 22. Extra accuracy tests (owner request 2026-10-18): runtime invariants and completeness counters; property-based tests per check; metamorphic tests; cross-source reconciliation (Advisor/azqr/cost totals); schema-drift detection on collector output; recorded-response contract tests (after tenant). Add to AUDIT.md.
+- 23. ADR 0005 export write mode: finish design after owner decision; implement only after levels 1 and 1.5.
