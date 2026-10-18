@@ -30,6 +30,8 @@ _ALIASES = {"payasyougo_2014-09-01": "pay-as-you-go_2014-09-01"}
 
 
 def classify(quota_id) -> dict:
+    if not isinstance(quota_id, str):
+        quota_id = None  # anything that is not text is treated as missing, never guessed
     key = (quota_id or "").strip().lower()
     key = _ALIASES.get(key, key)
     if key in _TABLE:

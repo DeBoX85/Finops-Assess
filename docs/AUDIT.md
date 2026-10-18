@@ -14,6 +14,8 @@ Planned as `fcat audit` and an "Audit" section/sheet; BUILT items marked.
 - Data-quality flags: cost data period and completeness, known FOCUS gaps hit (ListCost = 0 for reservation usage and Marketplace per Microsoft's conformance summary), missing tags, billing type not supported by a check, data latency notes.
 - Language lint on recommendation text: banned certainty words BUILT (INV-08). Required elements (estimated basis, risk, how to verify before acting, source link) PLANNED.
 
+- Generic accuracy tests over every registered check, BUILT 2026-10-18 (tests/test_accuracy.py, backlog 22): seeded fuzzing of row types (found and fixed 5 crashes on malformed rows: ORPH-DISK-01, ORPH-AGW-01, MON-LAWCAP-01, IDLE-VMDISK-01, BILL-OFFER-01), row-order and extra-column invariance, locality (removing a row never changes findings of other rows), and a fixture/synthetic-column versus KQL-projection contract that would have caught the earlier nicCount/nicRefs drift. New checks are covered automatically. Still PLANNED from backlog 22: cross-source reconciliation (needs Advisor/cost data) and recorded-response contract tests (needs a tenant).
+
 ## 3. Layer B: independent oracles (not truth, but disagreements must be explained)
 On the test tenant and, if permitted, in customer runs: Azure Advisor recommendations, Cost Management totals, azqr results, FinOps toolkit/hubs query results, Learn's Workload optimization guidance. Output: a parity table with every difference explained (our check stricter, different threshold, different data, our bug, their bug). Stored in docs/validation/ (no customer data). Oracles can be wrong too; a disagreement triggers investigation, never an automatic fix.
 

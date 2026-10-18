@@ -7,8 +7,13 @@ EXCLUDED_STATES = {"ActiveSAS"}
 EXCLUDED_TAG_KEYS = {"asr-replicadisk", "asrseeddisk"}
 
 
+def _text(v) -> str:
+    """Scalar text or empty. Lists, dicts and None become '' so a malformed row is 'unknown', never a crash."""
+    return v if isinstance(v, str) else (str(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else "")
+
+
 def _excluded(d) -> str | None:
-    if d.get("diskState") in EXCLUDED_STATES:
+    if _text(d.get("diskState")) in EXCLUDED_STATES:
         return f"diskState {d.get('diskState')}"
     tags = d.get("tags") or {}
     if isinstance(tags, dict) and EXCLUDED_TAG_KEYS & {str(k).lower() for k in tags}:
@@ -194,12 +199,12 @@ def backendless_load_balancers(snap):
 def backendless_app_gateways(snap):
     """Sum of backend IP configurations and backend addresses over all pools is zero (hub query logic). FQDN-only pools are counted via backendAddresses (UNVERIFIED)."""
     for r in _rows(snap, "app_gateways"):
-        pools = r.get("backendPools") or []
-        targets = sum(
-            len((p.get("properties") or {}).get("backendIPConfigurations") or [])
-            + len((p.get("properties") or {}).get("backendAddresses") or [])
-            for p in pools
-        )
+        pools = r.get("backendPools") if isinstance(r.get("backendPools"), list) else []
+        targets = 0
+        for p in pools:
+            props = p.get("properties") if isinstance(p, dict) and isinstance(p.get("properties"), dict) else {}
+            for k in ("backendIPConfigurations", "backendAddresses"):
+                targets += len(props[k]) if isinstance(props.get(k), list) else 0
         if targets == 0:
             yield Finding(
                 "ORPH-AGW-01", r["id"], "medium", f"Application gateway ({r.get('skuName')}) has no backend targets in {len(pools)} pool(s)",
@@ -305,6 +310,8 @@ def workspaces_without_daily_cap(snap):
         if str(r.get("skuName") or "").lower() == "free":
             continue
         q = r.get("dailyQuotaGb")
+        if q is not None and (isinstance(q, bool) or not isinstance(q, (int, float))):
+            continue  # not a number: unknown, not 'no cap'
         if q is None or q < 0:
             yield Finding(
                 "MON-LAWCAP-01",
@@ -438,7 +445,10 @@ def premium_disks_on_stopped_vms(snap):
     for v in _rows(snap, "vms"):
         if str(v.get("powerState") or "").lower() not in ("powerstate/stopped", "powerstate/deallocated"):
             continue
-        ids = [v.get("osDiskId")] + [((d or {}).get("managedDisk") or {}).get("id") for d in (v.get("dataDisks") or [])]
+        dd = v.get("dataDisks") if isinstance(v.get("dataDisks"), list) else []
+        ids = [v.get("osDiskId")] + [
+            (d.get("managedDisk") or {}).get("id") if isinstance(d, dict) and isinstance(d.get("managedDisk"), dict) else None for d in dd
+        ]
         hit = sorted({str(i).lower() for i in ids if i and str(i).lower() in prem})
         if hit:
             yield Finding(
