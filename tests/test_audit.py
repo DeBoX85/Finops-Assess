@@ -106,3 +106,17 @@ def test_cli_exits_3_and_warns_when_audit_fails(tmp_path, monkeypatch, capsys):
     cfgp.write_text('[run]\nprofile="standard"\n')
     assert cli.main(["analyze", "--config", str(cfgp), "--out", str(out)]) == 3
     assert "self-audit FAILED" in capsys.readouterr().err
+
+
+def test_excel_formula_injection_is_neutralised(tmp_path):
+    """A resource named like a formula must be written as literal text, not a formula (threat model T-04)."""
+    openpyxl = pytest.importorskip("openpyxl")
+    from fcat import render_xlsx
+
+    d = _doc(tmp_path)
+    d["findings"][0]["message"] = '=HYPERLINK("http://evil.example","x")'
+    d["findings"][0]["resource_id"] = "@SUM(1+1)"
+    render_xlsx.render(tmp_path / "r.xlsx", d)
+    ws = openpyxl.load_workbook(tmp_path / "r.xlsx")["Findings"]
+    assert ws["C2"].data_type == "s" and ws["D2"].data_type == "s"
+    assert ws["C2"].value.startswith("=HYPERLINK")

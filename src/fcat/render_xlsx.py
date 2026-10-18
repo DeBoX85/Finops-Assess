@@ -11,6 +11,11 @@ def _sheet(wb, title, header, rows):
         c.font = Font(bold=True)
     for r in rows:
         ws.append([("" if v is None else v) for v in r])
+        for c in ws[ws.max_row]:
+            # Resource names and tags are controlled by whoever can create resources in the tenant. A value starting with = + - @ would
+            # otherwise be stored as a formula (spreadsheet formula injection, OWASP CSV injection). Force literal text.
+            if isinstance(c.value, str) and c.value[:1] in ("=", "+", "-", "@", "\t", "\r"):
+                c.data_type = "s"
     ws.freeze_panes = "A2"
     for i, h in enumerate(header, 1):
         ws.column_dimensions[chr(64 + i)].width = max(14, min(60, len(h) + 10))
