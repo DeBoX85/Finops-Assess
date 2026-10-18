@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 14:32 UTC
+Last updated: 2026-10-18 14:35 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 14:32
-Base commit: ec11461
-Gates: pass
-Files changed in this checkpoint: 6
-narrative_hash: 2c1ce7d19469
+Last checkpoint (UTC): 2026-10-18 14:35
+Base commit: 21111a6
+Gates: FAIL
+Files changed in this checkpoint: 14
+narrative_hash: 47bf99c64eee
 stale_count: 0
 <!-- auto:end -->
 
@@ -34,6 +34,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: Backlog 18 research done (KB note 10). Added src/fcat/billing.py, check BILL-OFFER-01, quotaId in subscriptions collector, golden updated (diff reviewed: only BILL additions). Key finding: CSP customers see RETAIL cost only and zero for reservation usage; Sponsorship and classic CSP have no Cost Management data. Open questions for owner in note 10 (not blocking).
 - 2026-10-18: OWNER AWAY for the next few steps. Work unattended. All pending owner items are parked in docs/DECISIONS-PENDING.md with defaults; follow its rules (do not ask, use defaults marked provisional, no customer use, do not widen the allowlist).
 - 2026-10-18: backlog 19 built: `fcat import-focus <file|folder>` aggregates a FOCUS CSV(.gz) into snapshot cost_focus.json. Refuses mixed currencies and non-FOCUS files, reports missing cost columns. Column names from Learn FOCUS schema page (read 2026-10-18). UNVERIFIED against a real export. Next unattended: item 7 (more orphan/idle checks), then 8 (parity matrix).
+- 2026-10-18: backlog 7 first batch: ORPH-PIP-01, ORPH-NIC-01, ORPH-NSG-01, ORPH-ASP-01 (hybrid: KQL projects raw fields, rules in Python). Property paths from my knowledge of ARM schemas, NOT re-read from the hub query files (clone gone after reset): UNVERIFIED, offline-only. Golden updated (73 findings, diff reviewed by counts). No cost estimates yet. Next: re-fetch hub query files from GitHub to verify predicates, then stopped VMs, backendless LBs/App Gateways, empty elastic pools, idle VNet/NAT gateways; then item 8 parity matrix.
 ## In progress
 Nothing half-done.
 ## Next step

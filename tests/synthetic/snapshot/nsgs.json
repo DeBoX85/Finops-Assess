@@ -1,0 +1,22 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-orphan",
+   "nicCount": 0,
+   "subnetCount": 0
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-subnet",
+   "nicCount": 0,
+   "subnetCount": 2
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-unknown",
+   "nicCount": null,
+   "subnetCount": null
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

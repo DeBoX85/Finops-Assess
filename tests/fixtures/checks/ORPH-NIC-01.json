@@ -1,0 +1,38 @@
+{
+ "cases": [
+  {
+   "name": "orphan reported",
+   "snapshot": {
+    "nics": {
+     "rows": [
+      {
+       "id": "/n/1",
+       "vmId": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/n/1"
+   ]
+  },
+  {
+   "name": "in use not reported",
+   "snapshot": {
+    "nics": {
+     "rows": [
+      {
+       "id": "/n/2",
+       "vmId": "/vm/1"
+      },
+      {
+       "id": "/n/3",
+       "privateEndpointId": "/pe/1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

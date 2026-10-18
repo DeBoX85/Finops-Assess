@@ -1,0 +1,25 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-empty",
+   "numberOfSites": 0,
+   "skuName": "P1v3",
+   "skuTier": "PremiumV3"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-free",
+   "numberOfSites": 0,
+   "skuName": "F1",
+   "skuTier": "Free"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-used",
+   "numberOfSites": 3,
+   "skuName": "B1",
+   "skuTier": "Basic"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

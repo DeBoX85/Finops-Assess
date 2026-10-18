@@ -26,10 +26,38 @@ KQL_UNATTACHED_DISKS = (
     "diskState=tostring(properties.diskState), timeCreated=tostring(properties.timeCreated), tags | order by id asc"
 )
 
+# Orphan/idle inventory (backlog 7). Property paths follow the ARM schemas as I know them and the finops-toolkit hub
+# queries (MIT, see NOTICE.md); UNVERIFIED against a live tenant (offline-only until gate G2). Rules live in Python (ADR 0004).
+KQL_PUBLIC_IPS = (
+    "resources | where type =~ 'microsoft.network/publicipaddresses' "
+    "| project id, name, subscriptionId, resourceGroup, location, skuName=tostring(sku.name), skuTier=tostring(sku.tier), "
+    "allocation=tostring(properties.publicIPAllocationMethod), ipConfigId=tostring(properties.ipConfiguration.id), "
+    "natGatewayId=tostring(properties.natGateway.id), linkedPublicIpId=tostring(properties.linkedPublicIPAddress.id), tags | order by id asc"
+)
+KQL_NICS = (
+    "resources | where type =~ 'microsoft.network/networkinterfaces' "
+    "| project id, name, subscriptionId, resourceGroup, location, vmId=tostring(properties.virtualMachine.id), "
+    "privateEndpointId=tostring(properties.privateEndpoint.id), tags | order by id asc"
+)
+KQL_NSGS = (
+    "resources | where type =~ 'microsoft.network/networksecuritygroups' "
+    "| project id, name, subscriptionId, resourceGroup, location, nicCount=array_length(properties.networkInterfaces), "
+    "subnetCount=array_length(properties.subnets), tags | order by id asc"
+)
+KQL_APP_SERVICE_PLANS = (
+    "resources | where type =~ 'microsoft.web/serverfarms' "
+    "| project id, name, subscriptionId, resourceGroup, location, skuName=tostring(sku.name), skuTier=tostring(sku.tier), "
+    "numberOfSites=toint(properties.numberOfSites), tags | order by id asc"
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
     "unattached_disks": KQL_UNATTACHED_DISKS,
+    "public_ips": KQL_PUBLIC_IPS,
+    "nics": KQL_NICS,
+    "nsgs": KQL_NSGS,
+    "app_service_plans": KQL_APP_SERVICE_PLANS,
 }
 
 

@@ -72,3 +72,71 @@ def offer_cost_data(snap):
             msg,
             {"quotaId": c["quota_id"], "offer_note": c["note"], "cost_management": c["cost_management"]},
         )
+
+
+def _meta(id_, title, collector, conf="medium"):
+    return CheckMeta(
+        id=id_, domain="orphaned", title=title, collectors=(collector,), permissions=("Reader",),
+        savings_basis="none", confidence=conf, framework="Usage Optimization",
+    )  # fmt: skip
+
+
+def _blank(v) -> bool:
+    return v is None or v == ""
+
+
+@check(_meta("ORPH-PIP-01", "Public IP addresses not attached to anything", "public_ips"))
+def unattached_public_ips(snap):
+    """Not attached to an IP configuration, NAT gateway or linked public IP. A reserved (Static) address still bills while unattached;
+    cost by SKU/allocation is UNVERIFIED and not estimated here."""
+    for r in snap.load("public_ips")["rows"]:
+        if all(_blank(r.get(k)) for k in ("ipConfigId", "natGatewayId", "linkedPublicIpId")):
+            yield Finding(
+                "ORPH-PIP-01", r["id"], "medium", f"Public IP ({r.get('skuName')}, {r.get('allocation')}) is not attached to any resource",
+                {k: r.get(k) for k in ("location", "skuName", "allocation")},
+            )  # fmt: skip
+
+
+@check(_meta("ORPH-NIC-01", "Network interfaces not attached to a VM or private endpoint", "nics", "medium"))
+def unattached_nics(snap):
+    """A NIC itself has no hourly charge (UNVERIFIED); the finding is hygiene and often points to a leftover public IP or NSG association."""
+    for r in snap.load("nics")["rows"]:
+        if _blank(r.get("vmId")) and _blank(r.get("privateEndpointId")):
+            yield Finding(
+                "ORPH-NIC-01",
+                r["id"],
+                "low",
+                "Network interface is not attached to a virtual machine or private endpoint",
+                {"location": r.get("location")},
+            )
+
+
+@check(_meta("ORPH-NSG-01", "Network security groups with no subnet or NIC", "nsgs", "medium"))
+def unused_nsgs(snap):
+    """No direct cost (UNVERIFIED); reported as clean-up. Missing counts (null) are treated as unknown, not as zero."""
+    for r in snap.load("nsgs")["rows"]:
+        nic, sub = r.get("nicCount"), r.get("subnetCount")
+        if nic is None and sub is None:
+            continue  # data absent: cannot tell, so no finding
+        if (nic or 0) == 0 and (sub or 0) == 0:
+            yield Finding(
+                "ORPH-NSG-01",
+                r["id"],
+                "low",
+                "Network security group is associated with no subnet or network interface",
+                {"location": r.get("location")},
+            )
+
+
+@check(_meta("ORPH-ASP-01", "App Service plans hosting no apps", "app_service_plans", "high"))
+def empty_app_service_plans(snap):
+    """Free-tier plans cost nothing and are skipped. Paid plans bill whether or not apps run on them (Learn App Service pricing, UNVERIFIED read)."""
+    for r in snap.load("app_service_plans")["rows"]:
+        if r.get("numberOfSites") != 0:
+            continue
+        if str(r.get("skuTier") or "").lower() == "free":
+            continue
+        yield Finding(
+            "ORPH-ASP-01", r["id"], "medium", f"App Service plan ({r.get('skuName')}) hosts no apps",
+            {k: r.get(k) for k in ("location", "skuName", "skuTier")},
+        )  # fmt: skip

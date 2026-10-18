@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "2c01e2e17c6976ba",
+  "report_hash": "f17e555dbfa3d6bb",
   "status": "pass",
   "version": "0.1"
  },
@@ -121,6 +121,82 @@
    "run_cost": "low",
    "savings_basis": "none",
    "title": "Cost Management data availability by subscription offer",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "public_ips"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-PIP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Public IP addresses not attached to anything",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "nics"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-NIC-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Network interfaces not attached to a VM or private endpoint",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "nsgs"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-NSG-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Network security groups with no subnet or NIC",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "app_service_plans"
+   ],
+   "confidence": "high",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-ASP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "App Service plans hosting no apps",
    "validation": "offline-only"
   }
  ],
@@ -166,6 +242,27 @@
    "message": "Cost Management holds no cost data for this subscription offer; cost-based checks cannot be assessed for it",
    "resource_id": "/subscriptions/sub-synth-3",
    "severity": "info"
+  },
+  {
+   "check_id": "ORPH-ASP-01",
+   "details": {
+    "location": null,
+    "skuName": "P1v3",
+    "skuTier": "PremiumV3"
+   },
+   "evidence": {
+    "collectors": [
+     "app_service_plans"
+    ],
+    "logic_hash": "d399f91df117",
+    "snapshot_digests": {
+     "app_service_plans": "420386ed59f3"
+    }
+   },
+   "fingerprint": "911983994617f507",
+   "message": "App Service plan (P1v3) hosts no apps",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-empty",
+   "severity": "medium"
   },
   {
    "check_id": "ORPH-DISK-01",
@@ -1684,6 +1781,86 @@
    "message": "Unattached disk (128 GB, Standard_LRS) incurs storage cost",
    "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-059",
    "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-NIC-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "nics"
+    ],
+    "logic_hash": "31759d0f5fd0",
+    "snapshot_digests": {
+     "nics": "b57df9e94ec9"
+    }
+   },
+   "fingerprint": "6882888335bc1b51",
+   "message": "Network interface is not attached to a virtual machine or private endpoint",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-orphan",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-NSG-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "nsgs"
+    ],
+    "logic_hash": "e22a9d2b1ff9",
+    "snapshot_digests": {
+     "nsgs": "90444beb24b1"
+    }
+   },
+   "fingerprint": "d7b0a6dc500501cb",
+   "message": "Network security group is associated with no subnet or network interface",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-orphan",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-PIP-01",
+   "details": {
+    "allocation": "Static",
+    "location": "westeurope",
+    "skuName": "Standard"
+   },
+   "evidence": {
+    "collectors": [
+     "public_ips"
+    ],
+    "logic_hash": "2cd49dc18d71",
+    "snapshot_digests": {
+     "public_ips": "f6592c16ad1b"
+    }
+   },
+   "fingerprint": "f2d80c132e973098",
+   "message": "Public IP (Standard, Static) is not attached to any resource",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-1",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-PIP-01",
+   "details": {
+    "allocation": "Dynamic",
+    "location": null,
+    "skuName": "Basic"
+   },
+   "evidence": {
+    "collectors": [
+     "public_ips"
+    ],
+    "logic_hash": "2cd49dc18d71",
+    "snapshot_digests": {
+     "public_ips": "f6592c16ad1b"
+    }
+   },
+   "fingerprint": "88a2fe0f7e43c0be",
+   "message": "Public IP (Basic, Dynamic) is not attached to any resource",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-2",
+   "severity": "medium"
   }
  ],
  "manifest": {
@@ -1697,6 +1874,26 @@
    {
     "findings": 2,
     "id": "BILL-OFFER-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "ORPH-PIP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-NIC-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-NSG-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-ASP-01",
     "status": "ran"
    }
   ],

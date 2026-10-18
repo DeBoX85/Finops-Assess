@@ -1,0 +1,29 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "allocation": "Static",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-1",
+   "location": "westeurope",
+   "skuName": "Standard"
+  },
+  {
+   "allocation": "Dynamic",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-2",
+   "ipConfigId": "",
+   "skuName": "Basic"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-vm",
+   "ipConfigId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-vm/ipConfigurations/ip1",
+   "skuName": "Standard"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-nat",
+   "natGatewayId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/natGateways/nat-1",
+   "skuName": "Standard"
+  }
+ ],
+ "total_records": 4,
+ "warnings": []
+}

@@ -1,0 +1,41 @@
+{
+ "cases": [
+  {
+   "name": "orphan reported",
+   "snapshot": {
+    "nsgs": {
+     "rows": [
+      {
+       "id": "/g/1",
+       "nicCount": 0,
+       "subnetCount": 0
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/g/1"
+   ]
+  },
+  {
+   "name": "in use not reported",
+   "snapshot": {
+    "nsgs": {
+     "rows": [
+      {
+       "id": "/g/2",
+       "nicCount": 1,
+       "subnetCount": 0
+      },
+      {
+       "id": "/g/3",
+       "nicCount": null,
+       "subnetCount": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

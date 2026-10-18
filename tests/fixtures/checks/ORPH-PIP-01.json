@@ -1,0 +1,44 @@
+{
+ "cases": [
+  {
+   "name": "orphan reported",
+   "snapshot": {
+    "public_ips": {
+     "rows": [
+      {
+       "id": "/p/1",
+       "ipConfigId": "",
+       "natGatewayId": null,
+       "linkedPublicIpId": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/p/1"
+   ]
+  },
+  {
+   "name": "in use not reported",
+   "snapshot": {
+    "public_ips": {
+     "rows": [
+      {
+       "id": "/p/2",
+       "ipConfigId": "/x/ipconfig"
+      },
+      {
+       "id": "/p/3",
+       "natGatewayId": "/nat/1"
+      },
+      {
+       "id": "/p/4",
+       "linkedPublicIpId": "/l/1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

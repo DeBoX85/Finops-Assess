@@ -1,0 +1,20 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-orphan",
+   "privateEndpointId": null,
+   "vmId": null
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-vm",
+   "vmId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-pe",
+   "privateEndpointId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateEndpoints/pe-1"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

@@ -1,0 +1,46 @@
+{
+ "cases": [
+  {
+   "name": "orphan reported",
+   "snapshot": {
+    "app_service_plans": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "numberOfSites": 0,
+       "skuTier": "Basic",
+       "skuName": "B1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1"
+   ]
+  },
+  {
+   "name": "in use not reported",
+   "snapshot": {
+    "app_service_plans": {
+     "rows": [
+      {
+       "id": "/a/2",
+       "numberOfSites": 2,
+       "skuTier": "Basic"
+      },
+      {
+       "id": "/a/3",
+       "numberOfSites": 0,
+       "skuTier": "Free"
+      },
+      {
+       "id": "/a/4",
+       "numberOfSites": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

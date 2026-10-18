@@ -66,7 +66,41 @@ def estate():
         disk(108, name="disk-ünïcode-日本", location=None),  # reported: unicode name, missing location
         disk(109, tags={}),  # reported: empty tags
     ]
-    return {"subscriptions": subs, "management_groups": mgs, "unattached_disks": disks}
+    base = "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft."
+    pips = [
+        {"id": base + "Network/publicIPAddresses/pip-orphan-1", "skuName": "Standard", "allocation": "Static", "location": "westeurope"},
+        {"id": base + "Network/publicIPAddresses/pip-orphan-2", "skuName": "Basic", "allocation": "Dynamic", "ipConfigId": ""},
+        {
+            "id": base + "Network/publicIPAddresses/pip-vm",
+            "skuName": "Standard",
+            "ipConfigId": base + "Network/networkInterfaces/nic-vm/ipConfigurations/ip1",
+        },
+        {"id": base + "Network/publicIPAddresses/pip-nat", "skuName": "Standard", "natGatewayId": base + "Network/natGateways/nat-1"},
+    ]
+    nics = [
+        {"id": base + "Network/networkInterfaces/nic-orphan", "vmId": None, "privateEndpointId": None},
+        {"id": base + "Network/networkInterfaces/nic-vm", "vmId": base + "Compute/virtualMachines/vm-1"},
+        {"id": base + "Network/networkInterfaces/nic-pe", "privateEndpointId": base + "Network/privateEndpoints/pe-1"},
+    ]
+    nsgs = [
+        {"id": base + "Network/networkSecurityGroups/nsg-orphan", "nicCount": 0, "subnetCount": 0},
+        {"id": base + "Network/networkSecurityGroups/nsg-subnet", "nicCount": 0, "subnetCount": 2},
+        {"id": base + "Network/networkSecurityGroups/nsg-unknown", "nicCount": None, "subnetCount": None},
+    ]
+    asps = [
+        {"id": base + "Web/serverFarms/asp-empty", "skuName": "P1v3", "skuTier": "PremiumV3", "numberOfSites": 0},
+        {"id": base + "Web/serverFarms/asp-free", "skuName": "F1", "skuTier": "Free", "numberOfSites": 0},
+        {"id": base + "Web/serverFarms/asp-used", "skuName": "B1", "skuTier": "Basic", "numberOfSites": 3},
+    ]
+    return {
+        "subscriptions": subs,
+        "management_groups": mgs,
+        "unattached_disks": disks,
+        "public_ips": pips,
+        "nics": nics,
+        "nsgs": nsgs,
+        "app_service_plans": asps,
+    }
 
 
 def write_snapshot():
