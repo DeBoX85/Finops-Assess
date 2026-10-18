@@ -29,6 +29,9 @@ Scope: the F-CAT tool as it exists in the repo, run from a laptop with `az login
 | T-10 | Supply chain: malicious or compromised Python package | Dependencies not pinned or hash-checked | PARTIAL: hash-pinned requirements/runtime.txt (pip-compile, 2026-10-18) with a test that it matches pyproject; manifest records Python and package versions. Dev tools not pinned | Install with `pip install --require-hashes -r requirements/runtime.txt` for customer runs; pin dev tools later |
 | T-11 | The git repo or cloud session credentials leak | Private repo; push access granted per session | OUT OF SCOPE here | Owner's account hygiene |
 
+## Added 2026-10-18: tailoring inputs
+Branding text, accent and logo come from the owner's own config, not from the tenant, but are still validated: text is escaped, accent must be #RRGGBB, logo is content-checked, size-limited and shown only through `<img>` (tests/test_tailoring.py). A per-run branding file cannot change checks, scope or write anything.
+
 ## Privacy notes
 - Resource names and tags may contain personal data (a person's name in a VM name, an email in a tag). The tool does not classify them. The customer should be told the report can contain such strings.
 - Cost data (later) is commercially sensitive; treat the output folder as confidential and say so in the report footer (UNDECIDED wording).

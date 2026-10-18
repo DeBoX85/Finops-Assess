@@ -19,10 +19,11 @@ def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False):
         findings, identity = redact.findings(findings, salt), redact.identity(identity, salt)
     m = manifest.build(cfg, identity, calls, status, cerrors, started, manifest.now(), manifest.scope_summary(snap))
     m["redacted"] = redacted
+    m["report_options"] = cfg.report.manifest_view()
     doc = render_json.render(pathlib.Path(out) / "report.json", m, findings)
-    render_html.render(pathlib.Path(out) / "report.html", doc)
+    render_html.render(pathlib.Path(out) / "report.html", doc, cfg.report)
     try:
-        render_xlsx.render(pathlib.Path(out) / "report.xlsx", doc)
+        render_xlsx.render(pathlib.Path(out) / "report.xlsx", doc, cfg.report)
     except ImportError:
         print("note: openpyxl not installed, Excel report skipped (pip install 'fcat[excel]')")
     print(f"{len(findings)} findings; checks: " + ", ".join(f"{s['id']}={s['status']}" for s in status))
@@ -68,6 +69,9 @@ def main(argv=None):
     f.add_argument("--out", default="output")
     for sp in (r, a):
         sp.add_argument(
+            "--branding", help="TOML file with only a [report] table; replaces the [report] settings of the main config for this run"
+        )
+        sp.add_argument(
             "--redact",
             action="store_true",
             help="pseudonymise tenant, subscription, resource group and resource names in the reports (snapshot is not redacted)",
@@ -96,6 +100,12 @@ def main(argv=None):
         print(f"imported {data['rows']} rows, {data['currency']}, {data['period']['first_day']} to {data['period']['last_day']}")
         return 0
     cfg = cfgmod.load(args.config)
+    if getattr(args, "branding", None):
+        try:
+            cfg.report = cfgmod.load_report_options(args.branding)
+        except (cfgmod.ReportOptionsError, OSError) as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 2
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     snap = Snapshot(out / "snapshot")

@@ -2768,6 +2768,14 @@
   },
   "identity": {},
   "redacted": false,
+  "report_options": {
+   "accent": null,
+   "hidden_sections": [],
+   "logo_sha256": null,
+   "prepared_by": false,
+   "prepared_for": false,
+   "title": "F-CAT assessment report"
+  },
   "schema_version": "0.1",
   "scope": {
    "management_groups": 2,

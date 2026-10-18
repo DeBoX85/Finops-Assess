@@ -21,7 +21,7 @@ def _sheet(wb, title, header, rows):
         ws.column_dimensions[chr(64 + i)].width = max(14, min(60, len(h) + 10))
 
 
-def render(path, doc):
+def render(path, doc, opts=None):
     m = doc["manifest"]
     wb = Workbook()
     wb.remove(wb.active)
@@ -30,6 +30,9 @@ def render(path, doc):
         "Summary",
         ["Item", "Value"],
         [
+            *([("Report title", opts.title)] if opts and opts.title else []),
+            *([("Prepared for", opts.prepared_for)] if opts and opts.prepared_for else []),
+            *([("Prepared by", opts.prepared_by)] if opts and opts.prepared_by else []),
             ("Tool version", m["tool_version"]),
             ("Git commit", m.get("git_commit")),
             ("Schema", doc["schema_version"]),

@@ -5,3 +5,13 @@ profile = "standard"          # quick | standard | deep
 orphaned = true
 [checks]
 "ORPH-DISK-01" = true
+
+[report]                      # presentation only; see docs/TAILORING.md
+# title = "Cloud cost review"
+# subtitle = "Q4 assessment"
+# prepared_by = "Your company"
+# prepared_for = "Customer name"
+# footer = "Confidential"
+# accent = "#0057b8"          # exactly #RRGGBB
+# logo = "logo.png"           # PNG, JPEG or SVG, at most 256 KiB, path relative to this file
+# hide = ["coverage", "collector_errors", "audit_detail"]   # findings and the audit result cannot be hidden

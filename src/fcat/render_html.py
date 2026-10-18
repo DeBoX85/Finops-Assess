@@ -17,7 +17,14 @@ def e(x):
     return html.escape("" if x is None else str(x))
 
 
-def render(path, doc):
+def _accent_css(o):
+    return f":root{{--accent:{o.accent}}}" if o and o.accent else ":root{--accent:var(--fg)}"
+
+
+def render(path, doc, opts=None):
+    from .config import ReportOptions  # noqa: PLC0415
+
+    o = opts or ReportOptions()
     m = doc["manifest"]
     val = {c["id"]: c.get("validation", "") for c in doc["check_catalogue"]}
     rows_c = "".join(
@@ -40,22 +47,41 @@ def render(path, doc):
         f"<td>{e(i['description'])}{(' (' + e(i['violation_count']) + ' violations)') if not i['passed'] else ''}</td></tr>"
         for i in au.get("invariants", [])
     )
+    hide_detail = "audit_detail" in o.hide and au.get("status") == "pass"  # a failed audit is never tucked away
     audit_html = (
         f"<h2>Self-audit: {e(au.get('status', 'not run')).upper()}</h2>"
         f"<p class='note'>Report fingerprint {e(au.get('report_hash'))}. {e(au.get('limits', ''))}</p>"
-        f"<table><tr><th>Check</th><th>Result</th><th>What it verifies</th></tr>{rows_a}</table>"
+        + ("" if hide_detail else f"<table><tr><th>Check</th><th>Result</th><th>What it verifies</th></tr>{rows_a}</table>")
         if au
         else ""
     )
+    logo = f'<img alt="" src="{o.logo_data_uri}" style="max-height:56px;float:right">' if o.logo_data_uri else ""
+    meta = " | ".join(
+        x
+        for x in (f"Prepared for {o.prepared_for}" if o.prepared_for else "", f"Prepared by {o.prepared_by}" if o.prepared_by else "")
+        if x
+    )
+    head_extra = (f"<p>{e(o.subtitle)}</p>" if o.subtitle else "") + (f"<p class='note'>{e(meta)}</p>" if meta else "")
+    foot = f"<hr><p class='note'>{e(o.footer)}</p>" if o.footer else ""
+    counts = {}
+    for c in m["checks"]:
+        counts[c["status"]] = counts.get(c["status"], 0) + 1
+    summary = f"{len(m['checks'])} checks: " + ", ".join(f"{n} {k.replace('_', ' ')}" for k, n in sorted(counts.items())) + "."
+    coverage_html = (
+        f"<h2>Check coverage</h2><p class='note'>{e(summary)} Checks that did not run were not evaluated; the full table is in the Excel and JSON files.</p>"
+        if "coverage" in o.hide
+        else f"<h2>Check coverage</h2><table><tr><th>Check</th><th>Status</th><th>Detail</th><th>Validation</th></tr>{rows_c}</table>"
+    )
     errs = "".join(f"<li>{e(x['collector'])}: {e(x['error'])}</li>" for x in m.get("collector_errors", []))
     out = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>F-CAT assessment report</title><style>{CSS}</style></head><body>
-<h1>F-CAT assessment report</h1>
+<title>{e(o.title)}</title><style>{CSS}{_accent_css(o)}h1,h2{{border-left:4px solid var(--accent);padding-left:8px}}</style></head><body>
+{logo}<h1>{e(o.title)}</h1>{head_extra}
 <p class="note">Tool {e(m["tool_version"])} (commit {e(m.get("git_commit"))}), schema {e(doc["schema_version"])}. Run {e(m["started"])} to {e(m["ended"])}. Scope: {scope}.</p>
 <p class="note">Read-only assessment. Checks marked skipped or not assessed were NOT evaluated; their absence from the findings is not a pass.</p>
-<h2>Check coverage</h2><table><tr><th>Check</th><th>Status</th><th>Detail</th><th>Validation</th></tr>{rows_c}</table>
-{("<h2>Collector errors</h2><ul>" + errs + "</ul>") if errs else ""}
+{coverage_html}
+{("<h2>Collector errors</h2><ul>" + errs + "</ul>") if errs and "collector_errors" not in o.hide else ""}
 <h2>Findings ({len(doc["findings"])})</h2><table><tr><th>Check</th><th>Severity</th><th>Finding</th><th>Resource</th></tr>{rows_f}</table>
 {audit_html}
+{foot}
 </body></html>"""
     pathlib.Path(path).write_text(out, encoding="utf-8")
