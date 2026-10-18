@@ -38,7 +38,15 @@ def main(argv=None):
     f = sub.add_parser("import-focus", help="aggregate a customer-provided FOCUS cost file into the snapshot (offline)")
     f.add_argument("paths", nargs="+")
     f.add_argument("--out", default="output")
+    for sp in (r, a, f):
+        sp.add_argument(
+            "--allow-unignored-out", action="store_true", help="write into a git work tree even if git would not ignore the folder"
+        )
     args = p.parse_args(argv)
+    problem = None if args.allow_unignored_out else manifest.out_dir_problem(args.out)
+    if problem:
+        print(f"error: {problem}. Use a different --out, or add it to .gitignore, or pass --allow-unignored-out.", file=sys.stderr)
+        return 2
     if args.cmd == "import-focus":
         try:
             data = focus_import.import_files(args.paths)

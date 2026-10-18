@@ -183,7 +183,7 @@ def normalised_report(workdir):
     rc = cli.main(["analyze", "--config", str(cfg), "--out", str(out)])
     doc = json.loads((out / "report.json").read_text())
     m = doc["manifest"]
-    for k in ("started", "ended", "git_commit", "tool_version"):
+    for k in ("started", "ended", "git_commit", "tool_version", "runtime"):
         m.pop(k, None)
     return rc, doc
 

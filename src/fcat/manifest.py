@@ -14,6 +14,28 @@ def git_commit():
         return None
 
 
+def out_dir_problem(out) -> str | None:
+    """Threat T-01: refuse to write customer data into a git work tree where git would not ignore it.
+    Returns a message, or None when the folder is outside any repo, or inside one that ignores it. git missing means no repo to protect."""
+    import pathlib  # noqa: PLC0415
+
+    p = pathlib.Path(out).resolve()
+    probe = p
+    while not probe.exists() and probe != probe.parent:
+        probe = probe.parent
+    try:
+        top = subprocess.run(["git", "-C", str(probe), "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=5)  # noqa: S603, S607  fixed args
+        if top.returncode != 0:
+            return None
+        for name in ("report.json", "snapshot/x.json"):
+            r = subprocess.run(["git", "-C", top.stdout.strip(), "check-ignore", "-q", str(p / name)], capture_output=True, timeout=5)  # noqa: S603, S607  fixed args
+            if r.returncode != 0:
+                return f"output folder {p} is inside git work tree {top.stdout.strip()} and is not ignored; customer data could be committed (hard rule 2)"
+    except Exception:  # noqa: BLE001  if git cannot be asked, do not block the run
+        return None
+    return None
+
+
 def scope_summary(snapshot):
     """Counts only (no names or IDs) so the manifest stays safe to show; details stay in the snapshot."""
     out = {}
@@ -23,11 +45,27 @@ def scope_summary(snapshot):
     return out
 
 
+def runtime_info() -> dict:
+    """Interpreter and installed versions of the optional runtime dependencies (a minimal bill of materials, threat T-10).
+    Versions only; no paths, no user names. 'absent' means not installed."""
+    import importlib.metadata as md  # noqa: PLC0415
+    import platform  # noqa: PLC0415
+
+    pk = {}
+    for n in ("azure-identity", "azure-core", "msal", "openpyxl"):
+        try:
+            pk[n] = md.version(n)
+        except md.PackageNotFoundError:
+            pk[n] = "absent"
+    return {"python": platform.python_version(), "packages": pk}
+
+
 def build(config, identity, calls, check_status, collector_errors, started, ended, scope=None):
     return {
         "schema_version": SCHEMA_VERSION,
         "tool_version": __version__,
         "git_commit": git_commit(),
+        "runtime": runtime_info(),
         "started": started.isoformat(),
         "ended": ended.isoformat(),
         "config": config.as_dict(),

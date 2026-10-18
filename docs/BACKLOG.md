@@ -29,9 +29,9 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 24. Right-sizing/idle checks (R10): peak-aware logic design, fixtures with spiky workloads (low average, high peak must NOT be flagged). Research how Advisor and AOE choose windows and statistics.
 - 25. Live-testing setup decision (before G2): where the tool runs (owner laptop), whether Claude Code runs locally for live sessions, and what customer output may enter a Claude session (confidentiality / NDA check by owner). Write docs/LIVE-TESTING.md after the decision.
 - 26. Cost collectors (item 4) implementation waits for ADR 0006 sign-off. Meanwhile: design collector outputs and FOCUS import (item 19) which need no allowlist change.
-- 27. Refuse or warn when `--out` is inside a git work tree and not ignored (threat T-01).
-- 28. Test that no token string reaches any output file (T-02).
-- 29. Hostile-string test for the HTML dashboard (T-05).
+- 27. (DONE 2026-10-18) Refuse or warn when `--out` is inside a git work tree and not ignored (threat T-01).
+- 28. (DONE 2026-10-18) Test that no token string reaches any output file (T-02).
+- 29. (DONE 2026-10-18) Hostile-string test for the HTML dashboard (T-05).
 - 30. Redacted export mode and an output purge command (T-07).
-- 31. Dependency pinning and SBOM in the manifest (T-10).
+- 31. (DONE 2026-10-18) Dependency pinning and SBOM in the manifest (T-10).
 - 12/13 status: DESIGN DRAFTED 2026-10-18 (docs/DOCTOR.md, docs/THREAT-MODEL.md); nothing built except the xlsx formula-injection fix (T-04).

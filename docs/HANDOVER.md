@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 14:49 UTC
+Last updated: 2026-10-18 14:57 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 14:49
-Base commit: c947bfd
+Last checkpoint (UTC): 2026-10-18 14:57
+Base commit: 95285db
 Gates: pass
 Files changed in this checkpoint: 9
-narrative_hash: 36b66a358b71
+narrative_hash: 239cc4efc859
 stale_count: 0
 <!-- auto:end -->
 
@@ -38,6 +38,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: item 7 second batch. Predicates for PIP, NIC, NSG, ASP re-checked against hub queries at finops-toolkit commit f12c29e (read 2026-10-18); NSG null semantics and PIP-via-orphan-NIC corrected (M-007). Added IDLE-VMSTOP-01 (stopped, not deallocated; predicate from hub query). Golden is 76 findings. All offline-only; whether ARG omits empty arrays and returns instanceView is UNVERIFIED live. Next: backendless LBs/App Gateways, empty elastic pools, idle VNet/NAT gateways (read those query files first), then item 8 parity matrix.
 - 2026-10-18: item 7 batch 3: ORPH-LB-01, AGW-01, EPOOL-01, VGW-01 (skips P2S gateways, deliberate deviation from hub query, confidence low), NAT-01, DDOS-01, ERC-01 (skips ExpressRoute Direct and unknown state, low). Predicates read from hub queries f12c29e first (M-007 applied). Golden 83. All UNVERIFIED live. Next: item 8 parity matrix, then 12/13 docs.
 - 2026-10-18: parity matrix (docs/PARITY.md + tests/test_parity.py), threat model and doctor design drafted. Review found real bug: Excel formula injection (T-04), fixed with test. New backlog 27-31 (small, no tenant needed): do 27, 28, 29 next, then 30/31. Then item 9 (monitoring/security modules design) and 22 (extra accuracy tests).
+- 2026-10-18: backlog 27, 28, 29, 31 done (tests/test_hardening.py, requirements/runtime.in+txt hash-pinned, manifest.runtime). Behaviour change: CLI now refuses an unignored --out inside a git work tree (override flag). Next: 30 purge+redact, then 9 monitoring/security module design, then 22.
 ## In progress
 Nothing half-done.
 ## Next step
