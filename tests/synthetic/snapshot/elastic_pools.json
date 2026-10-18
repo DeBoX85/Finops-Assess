@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Sql/servers/sql1/elasticPools/pool-empty",
+   "skuName": "GP_Gen5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Sql/servers/sql1/elasticPools/pool-used",
+   "skuName": "GP_Gen5"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

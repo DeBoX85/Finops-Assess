@@ -1,0 +1,22 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "backendPoolCount": 0,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/loadBalancers/lb-nopool",
+   "skuName": "Standard"
+  },
+  {
+   "backendPoolCount": 2,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/loadBalancers/lb-ok",
+   "skuName": "Standard"
+  },
+  {
+   "backendPoolCount": 0,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/loadBalancers/lb-basic",
+   "skuName": "Basic"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

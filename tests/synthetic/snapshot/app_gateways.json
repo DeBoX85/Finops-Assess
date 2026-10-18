@@ -1,0 +1,33 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "backendPools": [
+    {
+     "properties": {
+      "backendAddresses": [],
+      "backendIPConfigurations": []
+     }
+    }
+   ],
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-empty",
+   "skuName": "WAF_v2"
+  },
+  {
+   "backendPools": [
+    {
+     "properties": {
+      "backendAddresses": [
+       {}
+      ],
+      "backendIPConfigurations": []
+     }
+    }
+   ],
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-ok",
+   "skuName": "Standard_v2"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

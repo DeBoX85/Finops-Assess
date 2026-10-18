@@ -1,0 +1,38 @@
+{
+ "cases": [
+  {
+   "name": "no subnets",
+   "snapshot": {
+    "nat_gateways": {
+     "rows": [
+      {
+       "id": "/n/1",
+       "subnetCount": 0
+      },
+      {
+       "id": "/n/2"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/n/1",
+    "/n/2"
+   ]
+  },
+  {
+   "name": "associated",
+   "snapshot": {
+    "nat_gateways": {
+     "rows": [
+      {
+       "id": "/n/3",
+       "subnetCount": 2
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

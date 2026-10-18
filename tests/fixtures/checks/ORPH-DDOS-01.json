@@ -1,0 +1,38 @@
+{
+ "cases": [
+  {
+   "name": "no vnets",
+   "snapshot": {
+    "ddos_plans": {
+     "rows": [
+      {
+       "id": "/d/1",
+       "vnetCount": 0
+      },
+      {
+       "id": "/d/2"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/d/1",
+    "/d/2"
+   ]
+  },
+  {
+   "name": "associated",
+   "snapshot": {
+    "ddos_plans": {
+     "rows": [
+      {
+       "id": "/d/3",
+       "vnetCount": 1
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

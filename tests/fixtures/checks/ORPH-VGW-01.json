@@ -1,0 +1,66 @@
+{
+ "cases": [
+  {
+   "name": "no connection",
+   "snapshot": {
+    "vnet_gateways": {
+     "rows": [
+      {
+       "id": "/G/1",
+       "gatewayType": "Vpn",
+       "p2sConfigured": false
+      },
+      {
+       "id": "/g/2",
+       "gatewayType": "ExpressRoute"
+      }
+     ]
+    },
+    "vnet_connections": {
+     "rows": [
+      {
+       "id": "c1",
+       "gateway1": "/g/3",
+       "gateway2": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/G/1",
+    "/g/2"
+   ]
+  },
+  {
+   "name": "connected, p2s, other type not reported",
+   "snapshot": {
+    "vnet_gateways": {
+     "rows": [
+      {
+       "id": "/g/3",
+       "gatewayType": "Vpn"
+      },
+      {
+       "id": "/g/4",
+       "gatewayType": "Vpn",
+       "p2sConfigured": true
+      },
+      {
+       "id": "/g/5",
+       "gatewayType": "LocalGateway"
+      }
+     ]
+    },
+    "vnet_connections": {
+     "rows": [
+      {
+       "id": "c1",
+       "gateway1": "/G/3"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

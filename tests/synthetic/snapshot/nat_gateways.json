@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/natGateways/nat-orphan",
+   "subnetCount": 0
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/natGateways/nat-used",
+   "subnetCount": 1
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

@@ -1,0 +1,12 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "gateway1": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/GW-CONN",
+   "gateway2": "",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/connections/c1"
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

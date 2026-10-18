@@ -166,3 +166,127 @@ def stopped_not_deallocated(snap):
                 "IDLE-VMSTOP-01", r["id"], "medium", f"VM ({r.get('vmSize')}) is stopped but not deallocated, so compute is likely still billed",
                 {"location": r.get("location"), "vmSize": r.get("vmSize"), "powerState": r.get("powerDisplay")},
             )  # fmt: skip
+
+
+def _m(id_, title, *collectors, conf="medium"):
+    return CheckMeta(
+        id=id_, domain="orphaned", title=title, collectors=collectors, permissions=("Reader",),
+        savings_basis="none", confidence=conf, framework="Usage Optimization",
+    )  # fmt: skip
+
+
+def _rows(snap, name):
+    return (snap.load(name) or {}).get("rows", [])
+
+
+@check(_m("ORPH-LB-01", "Standard load balancers with no backend pool", "load_balancers"))
+def backendless_load_balancers(snap):
+    """Zero backend pools on a non-Basic SKU (Basic is retired and covered elsewhere). Like the hub query, a pool that exists but is empty
+    is NOT detected here; an unknown pool count (null) is not reported."""
+    for r in _rows(snap, "load_balancers"):
+        if r.get("backendPoolCount") == 0 and str(r.get("skuName") or "").lower() != "basic":
+            yield Finding(
+                "ORPH-LB-01", r["id"], "medium", f"Load balancer ({r.get('skuName')}) has no backend pool", {"location": r.get("location")}
+            )
+
+
+@check(_m("ORPH-AGW-01", "Application gateways whose backend pools hold no targets", "app_gateways"))
+def backendless_app_gateways(snap):
+    """Sum of backend IP configurations and backend addresses over all pools is zero (hub query logic). FQDN-only pools are counted via backendAddresses (UNVERIFIED)."""
+    for r in _rows(snap, "app_gateways"):
+        pools = r.get("backendPools") or []
+        targets = sum(
+            len((p.get("properties") or {}).get("backendIPConfigurations") or [])
+            + len((p.get("properties") or {}).get("backendAddresses") or [])
+            for p in pools
+        )
+        if targets == 0:
+            yield Finding(
+                "ORPH-AGW-01", r["id"], "medium", f"Application gateway ({r.get('skuName')}) has no backend targets in {len(pools)} pool(s)",
+                {"location": r.get("location"), "skuName": r.get("skuName"), "skuCapacity": r.get("skuCapacity"), "pools": len(pools)},
+            )  # fmt: skip
+
+
+@check(_m("ORPH-EPOOL-01", "SQL elastic pools with no databases", "elastic_pools", "sql_databases"))
+def empty_elastic_pools(snap):
+    """Joined in Python on the lower-cased pool id. If the database list is missing the check yields nothing rather than calling every pool empty."""
+    if not snap.has("sql_databases"):
+        return
+    used = {str(d.get("elasticPoolId") or "").lower() for d in _rows(snap, "sql_databases")}
+    for r in _rows(snap, "elastic_pools"):
+        if str(r["id"]).lower() not in used:
+            yield Finding(
+                "ORPH-EPOOL-01",
+                r["id"],
+                "medium",
+                f"SQL elastic pool ({r.get('skuName')}) contains no databases",
+                {"location": r.get("location"), "skuName": r.get("skuName")},
+            )
+
+
+@check(_m("ORPH-VGW-01", "VPN/ExpressRoute gateways with no connection", "vnet_gateways", "vnet_connections", conf="low"))
+def idle_vnet_gateways(snap):
+    """Differs from the hub query on purpose: a VPN gateway with point-to-site configured is skipped, because P2S clients do not use a connection resource.
+    Confidence low until verified live (UNVERIFIED how connection resources appear for every gateway type)."""
+    if not snap.has("vnet_connections"):
+        return
+    used = set()
+    for c in _rows(snap, "vnet_connections"):
+        used |= {str(c.get(k) or "").lower() for k in ("gateway1", "gateway2")}
+    for r in _rows(snap, "vnet_gateways"):
+        if r.get("gatewayType") not in ("Vpn", "ExpressRoute") or r.get("p2sConfigured"):
+            continue
+        if str(r["id"]).lower() not in used:
+            yield Finding(
+                "ORPH-VGW-01",
+                r["id"],
+                "medium",
+                f"{r.get('gatewayType')} gateway ({r.get('skuName')}) has no connection",
+                {"location": r.get("location"), "skuName": r.get("skuName")},
+            )
+
+
+@check(_m("ORPH-NAT-01", "NAT gateways not associated with a subnet", "nat_gateways"))
+def orphan_nat_gateways(snap):
+    """Absent or empty subnet list means orphaned (hub query semantics, UNVERIFIED live)."""
+    for r in _rows(snap, "nat_gateways"):
+        if not r.get("subnetCount"):
+            yield Finding(
+                "ORPH-NAT-01",
+                r["id"],
+                "medium",
+                "NAT gateway is not associated with any subnet",
+                {"location": r.get("location"), "skuName": r.get("skuName")},
+            )
+
+
+@check(_m("ORPH-DDOS-01", "DDoS protection plans with no virtual network", "ddos_plans"))
+def unassociated_ddos_plans(snap):
+    """A DDoS plan is a high fixed monthly cost (Learn pricing page, not re-read today: UNVERIFIED), so an unused one matters. Absent or empty list means unassociated."""
+    for r in _rows(snap, "ddos_plans"):
+        if not r.get("vnetCount"):
+            yield Finding(
+                "ORPH-DDOS-01",
+                r["id"],
+                "medium",
+                "DDoS protection plan is not associated with any virtual network",
+                {"location": r.get("location")},
+            )
+
+
+@check(_m("ORPH-ERC-01", "ExpressRoute circuits not provisioned by the provider", "er_circuits", conf="low"))
+def unprovisioned_er_circuits(snap):
+    """Provider state other than Provisioned. ExpressRoute Direct circuits (port-based) and unknown state are skipped. Billing starts at circuit creation
+    per Learn (UNVERIFIED, not re-read today), hence low confidence on the cost angle."""
+    for r in _rows(snap, "er_circuits"):
+        state = r.get("providerState")
+        if not state or r.get("portId"):
+            continue
+        if state != "Provisioned":
+            yield Finding(
+                "ORPH-ERC-01",
+                r["id"],
+                "medium",
+                f"ExpressRoute circuit provider state is {state}",
+                {"location": r.get("location"), "providerState": state, "circuitState": r.get("circuitState")},
+            )

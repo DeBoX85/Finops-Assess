@@ -1,0 +1,64 @@
+{
+ "cases": [
+  {
+   "name": "pool without databases",
+   "snapshot": {
+    "elastic_pools": {
+     "rows": [
+      {
+       "id": "/S/s/elasticPools/P1"
+      },
+      {
+       "id": "/S/s/elasticPools/P2"
+      }
+     ]
+    },
+    "sql_databases": {
+     "rows": [
+      {
+       "id": "d1",
+       "elasticPoolId": "/S/s/ELASTICPOOLS/p2"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/S/s/elasticPools/P1"
+   ]
+  },
+  {
+   "name": "all used",
+   "snapshot": {
+    "elastic_pools": {
+     "rows": [
+      {
+       "id": "/e/1"
+      }
+     ]
+    },
+    "sql_databases": {
+     "rows": [
+      {
+       "id": "d",
+       "elasticPoolId": "/E/1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "databases collector missing yields nothing",
+   "snapshot": {
+    "elastic_pools": {
+     "rows": [
+      {
+       "id": "/e/9"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

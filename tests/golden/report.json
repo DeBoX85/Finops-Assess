@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "741256b28be3478a",
+  "report_hash": "5e61e2c40971a905",
   "status": "pass",
   "version": "0.1"
  },
@@ -217,6 +217,141 @@
    "savings_basis": "none",
    "title": "VMs stopped but not deallocated",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "load_balancers"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-LB-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Standard load balancers with no backend pool",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "app_gateways"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-AGW-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Application gateways whose backend pools hold no targets",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "elastic_pools",
+    "sql_databases"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-EPOOL-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "SQL elastic pools with no databases",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vnet_gateways",
+    "vnet_connections"
+   ],
+   "confidence": "low",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-VGW-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "VPN/ExpressRoute gateways with no connection",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "nat_gateways"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-NAT-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "NAT gateways not associated with a subnet",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "ddos_plans"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-DDOS-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "DDoS protection plans with no virtual network",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "er_circuits"
+   ],
+   "confidence": "low",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-ERC-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "ExpressRoute circuits not provisioned by the provider",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -284,6 +419,28 @@
    "severity": "medium"
   },
   {
+   "check_id": "ORPH-AGW-01",
+   "details": {
+    "location": null,
+    "pools": 1,
+    "skuCapacity": null,
+    "skuName": "WAF_v2"
+   },
+   "evidence": {
+    "collectors": [
+     "app_gateways"
+    ],
+    "logic_hash": "034c9854b6c2",
+    "snapshot_digests": {
+     "app_gateways": "44461629e3c4"
+    }
+   },
+   "fingerprint": "6a3c0e1bd3287d5e",
+   "message": "Application gateway (WAF_v2) has no backend targets in 1 pool(s)",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-empty",
+   "severity": "medium"
+  },
+  {
    "check_id": "ORPH-ASP-01",
    "details": {
     "location": null,
@@ -303,6 +460,25 @@
    "fingerprint": "20ba8f04d94f3c70",
    "message": "App Service plan (P1v3) hosts no apps",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-empty",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DDOS-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "ddos_plans"
+    ],
+    "logic_hash": "bfde8b54d52d",
+    "snapshot_digests": {
+     "ddos_plans": "82bd3b274df4"
+    }
+   },
+   "fingerprint": "49699d962d753b91",
+   "message": "DDoS protection plan is not associated with any virtual network",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/ddosProtectionPlans/ddos-unused",
    "severity": "medium"
   },
   {
@@ -1824,6 +2000,88 @@
    "severity": "medium"
   },
   {
+   "check_id": "ORPH-EPOOL-01",
+   "details": {
+    "location": null,
+    "skuName": "GP_Gen5"
+   },
+   "evidence": {
+    "collectors": [
+     "elastic_pools",
+     "sql_databases"
+    ],
+    "logic_hash": "4e50b5563ec2",
+    "snapshot_digests": {
+     "elastic_pools": "bd8bd75e1b74",
+     "sql_databases": "3f0f6a328131"
+    }
+   },
+   "fingerprint": "491d45402604d99a",
+   "message": "SQL elastic pool (GP_Gen5) contains no databases",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Sql/servers/sql1/elasticPools/pool-empty",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-ERC-01",
+   "details": {
+    "circuitState": null,
+    "location": null,
+    "providerState": "NotProvisioned"
+   },
+   "evidence": {
+    "collectors": [
+     "er_circuits"
+    ],
+    "logic_hash": "6ed72d2495db",
+    "snapshot_digests": {
+     "er_circuits": "b2633041beec"
+    }
+   },
+   "fingerprint": "773afbc5380b35fb",
+   "message": "ExpressRoute circuit provider state is NotProvisioned",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/expressRouteCircuits/erc-pending",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-LB-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "load_balancers"
+    ],
+    "logic_hash": "b87f50f01a29",
+    "snapshot_digests": {
+     "load_balancers": "f54f24e18a1f"
+    }
+   },
+   "fingerprint": "789010d4e6612a48",
+   "message": "Load balancer (Standard) has no backend pool",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/loadBalancers/lb-nopool",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-NAT-01",
+   "details": {
+    "location": null,
+    "skuName": null
+   },
+   "evidence": {
+    "collectors": [
+     "nat_gateways"
+    ],
+    "logic_hash": "40847c26fef5",
+    "snapshot_digests": {
+     "nat_gateways": "85e1b7cbfc01"
+    }
+   },
+   "fingerprint": "93908f68e0caab58",
+   "message": "NAT gateway is not associated with any subnet",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/natGateways/nat-orphan",
+   "severity": "medium"
+  },
+  {
    "check_id": "ORPH-NIC-01",
    "details": {
     "location": null
@@ -1945,6 +2203,28 @@
    "message": "Public IP (Standard, None) is attached only to a network interface that is itself unattached",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-via-orphan-nic",
    "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-VGW-01",
+   "details": {
+    "location": null,
+    "skuName": "VpnGw1"
+   },
+   "evidence": {
+    "collectors": [
+     "vnet_gateways",
+     "vnet_connections"
+    ],
+    "logic_hash": "cb558f4c62da",
+    "snapshot_digests": {
+     "vnet_connections": "acac8346d2bd",
+     "vnet_gateways": "32d146c3214d"
+    }
+   },
+   "fingerprint": "3124b1820f808872",
+   "message": "Vpn gateway (VpnGw1) has no connection",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/gw-idle",
+   "severity": "medium"
   }
  ],
  "manifest": {
@@ -1983,6 +2263,41 @@
    {
     "findings": 1,
     "id": "IDLE-VMSTOP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-LB-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-AGW-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-EPOOL-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-VGW-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-NAT-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-DDOS-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-ERC-01",
     "status": "ran"
    }
   ],

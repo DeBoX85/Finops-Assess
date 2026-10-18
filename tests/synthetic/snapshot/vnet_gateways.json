@@ -1,0 +1,21 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "gatewayType": "Vpn",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/gw-idle",
+   "skuName": "VpnGw1"
+  },
+  {
+   "gatewayType": "Vpn",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/gw-p2s",
+   "p2sConfigured": true
+  },
+  {
+   "gatewayType": "ExpressRoute",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/gw-conn"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

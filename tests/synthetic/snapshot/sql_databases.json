@@ -1,0 +1,11 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "elasticPoolId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Sql/servers/sql1/elasticPools/POOL-USED",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Sql/servers/sql1/databases/db1"
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

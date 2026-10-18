@@ -1,0 +1,48 @@
+{
+ "cases": [
+  {
+   "name": "not provisioned",
+   "snapshot": {
+    "er_circuits": {
+     "rows": [
+      {
+       "id": "/c/1",
+       "providerState": "NotProvisioned"
+      },
+      {
+       "id": "/c/2",
+       "providerState": "Provisioning"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/c/1",
+    "/c/2"
+   ]
+  },
+  {
+   "name": "provisioned, direct port, unknown not reported",
+   "snapshot": {
+    "er_circuits": {
+     "rows": [
+      {
+       "id": "/c/3",
+       "providerState": "Provisioned"
+      },
+      {
+       "id": "/c/4",
+       "providerState": "NotProvisioned",
+       "portId": "/port/1"
+      },
+      {
+       "id": "/c/5",
+       "providerState": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

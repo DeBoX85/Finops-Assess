@@ -112,7 +112,46 @@ def estate():
         {"id": base + "Compute/virtualMachines/vm-dealloc", "vmSize": "Standard_D4s_v5", "powerState": "PowerState/deallocated"},
         {"id": base + "Compute/virtualMachines/vm-run", "vmSize": "Standard_B2s", "powerState": "PowerState/running"},
     ]
+    P = lambda ips=0, adr=0: {"properties": {"backendIPConfigurations": [{}] * ips, "backendAddresses": [{}] * adr}}  # noqa: E731
+    net = base + "Network/"
+    batch3 = {
+        "load_balancers": [
+            {"id": net + "loadBalancers/lb-nopool", "skuName": "Standard", "backendPoolCount": 0},
+            {"id": net + "loadBalancers/lb-ok", "skuName": "Standard", "backendPoolCount": 2},
+            {"id": net + "loadBalancers/lb-basic", "skuName": "Basic", "backendPoolCount": 0},
+        ],
+        "app_gateways": [
+            {"id": net + "applicationGateways/agw-empty", "skuName": "WAF_v2", "backendPools": [P()]},
+            {"id": net + "applicationGateways/agw-ok", "skuName": "Standard_v2", "backendPools": [P(adr=1)]},
+        ],
+        "elastic_pools": [
+            {"id": base + "Sql/servers/sql1/elasticPools/pool-empty", "skuName": "GP_Gen5"},
+            {"id": base + "Sql/servers/sql1/elasticPools/pool-used", "skuName": "GP_Gen5"},
+        ],
+        "sql_databases": [
+            {"id": base + "Sql/servers/sql1/databases/db1", "elasticPoolId": base + "Sql/servers/sql1/elasticPools/POOL-USED"}
+        ],
+        "vnet_gateways": [
+            {"id": net + "virtualNetworkGateways/gw-idle", "gatewayType": "Vpn", "skuName": "VpnGw1"},
+            {"id": net + "virtualNetworkGateways/gw-p2s", "gatewayType": "Vpn", "p2sConfigured": True},
+            {"id": net + "virtualNetworkGateways/gw-conn", "gatewayType": "ExpressRoute"},
+        ],
+        "vnet_connections": [{"id": net + "connections/c1", "gateway1": net + "virtualNetworkGateways/GW-CONN", "gateway2": ""}],
+        "nat_gateways": [
+            {"id": net + "natGateways/nat-orphan", "subnetCount": 0},
+            {"id": net + "natGateways/nat-used", "subnetCount": 1},
+        ],
+        "ddos_plans": [
+            {"id": net + "ddosProtectionPlans/ddos-unused", "vnetCount": 0},
+            {"id": net + "ddosProtectionPlans/ddos-used", "vnetCount": 3},
+        ],
+        "er_circuits": [
+            {"id": net + "expressRouteCircuits/erc-pending", "providerState": "NotProvisioned"},
+            {"id": net + "expressRouteCircuits/erc-ok", "providerState": "Provisioned"},
+        ],
+    }
     return {
+        **batch3,
         "vms": vms,
         "subscriptions": subs,
         "management_groups": mgs,

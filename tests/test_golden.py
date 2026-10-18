@@ -44,5 +44,12 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["ORPH-NIC-01"] == {"nic-orphan"}
     assert by["ORPH-NSG-01"] == {"nsg-orphan", "nsg-absent"}
     assert by["IDLE-VMSTOP-01"] == {"vm-stopped"}
+    assert by["ORPH-LB-01"] == {"lb-nopool"}
+    assert by["ORPH-AGW-01"] == {"agw-empty"}
+    assert by["ORPH-EPOOL-01"] == {"pool-empty"}
+    assert by["ORPH-VGW-01"] == {"gw-idle"}  # p2s and connected (case-insensitive id match) gateways excluded
+    assert by["ORPH-NAT-01"] == {"nat-orphan"}
+    assert by["ORPH-DDOS-01"] == {"ddos-unused"}
+    assert by["ORPH-ERC-01"] == {"erc-pending"}
     assert by["ORPH-ASP-01"] == {"asp-empty"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7

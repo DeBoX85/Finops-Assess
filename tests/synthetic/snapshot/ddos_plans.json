@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/ddosProtectionPlans/ddos-unused",
+   "vnetCount": 0
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/ddosProtectionPlans/ddos-used",
+   "vnetCount": 3
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

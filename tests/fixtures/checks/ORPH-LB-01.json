@@ -1,0 +1,46 @@
+{
+ "cases": [
+  {
+   "name": "zero pools reported",
+   "snapshot": {
+    "load_balancers": {
+     "rows": [
+      {
+       "id": "/l/1",
+       "skuName": "Standard",
+       "backendPoolCount": 0
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/l/1"
+   ]
+  },
+  {
+   "name": "pools, basic, unknown not reported",
+   "snapshot": {
+    "load_balancers": {
+     "rows": [
+      {
+       "id": "/l/2",
+       "skuName": "Standard",
+       "backendPoolCount": 1
+      },
+      {
+       "id": "/l/3",
+       "skuName": "Basic",
+       "backendPoolCount": 0
+      },
+      {
+       "id": "/l/4",
+       "skuName": "Standard",
+       "backendPoolCount": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

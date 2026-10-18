@@ -59,6 +59,37 @@ KQL_VMS = (
     "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), tags | order by id asc"
 )
 
+# Batch 3 (backlog 7). Predicates re-read from the hub queries at finops-toolkit f12c29e on 2026-10-18; UNVERIFIED live.
+_NET = "resources | where type =~ '{t}' | project id, name, subscriptionId, resourceGroup, location, {f}tags | order by id asc"
+KQL_LOAD_BALANCERS = _NET.format(
+    t="microsoft.network/loadbalancers", f="skuName=tostring(sku.name), backendPoolCount=array_length(properties.backendAddressPools), "
+)
+KQL_APP_GATEWAYS = _NET.format(
+    t="microsoft.network/applicationgateways",
+    f="skuName=tostring(properties.sku.name), skuTier=tostring(properties.sku.tier), skuCapacity=toint(properties.sku.capacity), "
+    "backendPools=properties.backendAddressPools, ",
+)
+KQL_ELASTIC_POOLS = _NET.format(t="microsoft.sql/servers/elasticpools", f="skuName=tostring(sku.name), skuTier=tostring(sku.tier), ")
+KQL_SQL_DATABASES = _NET.format(t="microsoft.sql/servers/databases", f="elasticPoolId=tostring(properties.elasticPoolId), ")
+KQL_VNET_GATEWAYS = _NET.format(
+    t="microsoft.network/virtualnetworkgateways",
+    f="gatewayType=tostring(properties.gatewayType), skuName=tostring(properties.sku.name), "
+    "p2sConfigured=isnotnull(properties.vpnClientConfiguration), ",
+)
+KQL_VNET_CONNECTIONS = _NET.format(
+    t="microsoft.network/connections",
+    f="gateway1=tostring(properties.virtualNetworkGateway1.id), gateway2=tostring(properties.virtualNetworkGateway2.id), ",
+)
+KQL_NAT_GATEWAYS = _NET.format(
+    t="microsoft.network/natgateways", f="skuName=tostring(sku.name), subnetCount=array_length(properties.subnets), "
+)
+KQL_DDOS_PLANS = _NET.format(t="microsoft.network/ddosprotectionplans", f="vnetCount=array_length(properties.virtualNetworks), ")
+KQL_ER_CIRCUITS = _NET.format(
+    t="microsoft.network/expressroutecircuits",
+    f="providerState=tostring(properties.serviceProviderProvisioningState), circuitState=tostring(properties.circuitProvisioningState), "
+    "skuTier=tostring(sku.tier), portId=tostring(properties.expressRoutePort.id), ",
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
@@ -68,6 +99,15 @@ COLLECTORS = {
     "nsgs": KQL_NSGS,
     "app_service_plans": KQL_APP_SERVICE_PLANS,
     "vms": KQL_VMS,
+    "load_balancers": KQL_LOAD_BALANCERS,
+    "app_gateways": KQL_APP_GATEWAYS,
+    "elastic_pools": KQL_ELASTIC_POOLS,
+    "sql_databases": KQL_SQL_DATABASES,
+    "vnet_gateways": KQL_VNET_GATEWAYS,
+    "vnet_connections": KQL_VNET_CONNECTIONS,
+    "nat_gateways": KQL_NAT_GATEWAYS,
+    "ddos_plans": KQL_DDOS_PLANS,
+    "er_circuits": KQL_ER_CIRCUITS,
 }
 
 

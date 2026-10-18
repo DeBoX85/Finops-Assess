@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/expressRouteCircuits/erc-pending",
+   "providerState": "NotProvisioned"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/expressRouteCircuits/erc-ok",
+   "providerState": "Provisioned"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

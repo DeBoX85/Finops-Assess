@@ -1,0 +1,81 @@
+{
+ "cases": [
+  {
+   "name": "empty pools and no pools",
+   "snapshot": {
+    "app_gateways": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "backendPools": [
+        {
+         "properties": {
+          "backendIPConfigurations": [],
+          "backendAddresses": []
+         }
+        },
+        {
+         "properties": {
+          "backendIPConfigurations": [],
+          "backendAddresses": []
+         }
+        }
+       ]
+      },
+      {
+       "id": "/a/2",
+       "backendPools": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1",
+    "/a/2"
+   ]
+  },
+  {
+   "name": "targets present",
+   "snapshot": {
+    "app_gateways": {
+     "rows": [
+      {
+       "id": "/a/3",
+       "backendPools": [
+        {
+         "properties": {
+          "backendIPConfigurations": [
+           {}
+          ],
+          "backendAddresses": []
+         }
+        }
+       ]
+      },
+      {
+       "id": "/a/4",
+       "backendPools": [
+        {
+         "properties": {
+          "backendIPConfigurations": [],
+          "backendAddresses": []
+         }
+        },
+        {
+         "properties": {
+          "backendIPConfigurations": [],
+          "backendAddresses": [
+           {},
+           {}
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}
