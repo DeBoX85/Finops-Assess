@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 14:59 UTC
+Last updated: 2026-10-18 15:01 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 14:59
-Base commit: 529caa8
+Last checkpoint (UTC): 2026-10-18 15:01
+Base commit: f625499
 Gates: pass
-Files changed in this checkpoint: 8
-narrative_hash: 6872f865ab62
+Files changed in this checkpoint: 19
+narrative_hash: 4115ef29e8bf
 stale_count: 0
 <!-- auto:end -->
 
@@ -40,6 +40,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: parity matrix (docs/PARITY.md + tests/test_parity.py), threat model and doctor design drafted. Review found real bug: Excel formula injection (T-04), fixed with test. New backlog 27-31 (small, no tenant needed): do 27, 28, 29 next, then 30/31. Then item 9 (monitoring/security modules design) and 22 (extra accuracy tests).
 - 2026-10-18: backlog 27, 28, 29, 31 done (tests/test_hardening.py, requirements/runtime.in+txt hash-pinned, manifest.runtime). Behaviour change: CLI now refuses an unignored --out inside a git work tree (override flag). Next: 30 purge+redact, then 9 monitoring/security module design, then 22.
 - 2026-10-18: backlog 30 done: `fcat run|analyze --redact` (src/fcat/redact.py) and `fcat purge --out DIR [--yes]`. Manifest gained "redacted" (golden updated, diff reviewed: only that key). Next: item 9 design for monitoring/security cost module, then 22 extra accuracy tests.
+- 2026-10-18: backlog 9 design written (docs/MODULE-MONITORING-SECURITY.md) with Learn-verified findings: Log Analytics queries use a different host (ADR 0007 draft, parked as pending #10). Tier A built offline: MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (info, low confidence, property names UNVERIFIED live). Golden 86. Next: backlog 22 extra accuracy tests, then 16 tailoring config design, 20 dashboard mock-ups.
 ## In progress
 Nothing half-done.
 ## Next step

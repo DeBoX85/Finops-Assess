@@ -1,0 +1,45 @@
+{
+ "cases": [
+  {
+   "name": "no cap reported",
+   "snapshot": {
+    "la_workspaces": {
+     "rows": [
+      {
+       "id": "/w/1",
+       "skuName": "PerGB2018"
+      },
+      {
+       "id": "/w/2",
+       "skuName": "PerGB2018",
+       "dailyQuotaGb": -1
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/w/1",
+    "/w/2"
+   ]
+  },
+  {
+   "name": "capped and free not reported",
+   "snapshot": {
+    "la_workspaces": {
+     "rows": [
+      {
+       "id": "/w/3",
+       "skuName": "PerGB2018",
+       "dailyQuotaGb": 5.0
+      },
+      {
+       "id": "/w/4",
+       "skuName": "Free"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

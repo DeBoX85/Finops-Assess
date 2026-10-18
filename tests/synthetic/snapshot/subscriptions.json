@@ -24,8 +24,16 @@
    ],
    "name": "Synthetic Sub 3",
    "quotaId": "Sponsored_2016-01-01"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4",
+   "mgAncestors": [
+    "mg-synth-root"
+   ],
+   "name": "Synthetic Dev",
+   "quotaId": "MSDNDevTest_2014-09-01"
   }
  ],
- "total_records": 3,
+ "total_records": 4,
  "warnings": []
 }

@@ -150,8 +150,45 @@ def estate():
             {"id": net + "expressRouteCircuits/erc-ok", "providerState": "Provisioned"},
         ],
     }
+    mon = base + "OperationalInsights/workspaces/"
+    tier_a = {
+        "la_workspaces": [
+            {"id": mon + "law-nocap", "skuName": "PerGB2018", "dailyQuotaGb": -1},
+            {"id": mon + "law-capped", "skuName": "PerGB2018", "dailyQuotaGb": 10.0},
+            {"id": mon + "law-free", "skuName": "Free"},
+        ],
+        "app_insights": [
+            {"id": base + "Insights/components/ai-old", "workspaceResourceId": ""},
+            {"id": base + "Insights/components/ai-new", "workspaceResourceId": mon + "law-capped"},
+        ],
+        "defender_pricings": [
+            {
+                "id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/VirtualMachines",
+                "name": "VirtualMachines",
+                "subscriptionId": "sub-synth-4",
+                "pricingTier": "Standard",
+                "subPlan": "P2",
+            },
+            {
+                "id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/Arm",
+                "name": "Arm",
+                "subscriptionId": "sub-synth-4",
+                "pricingTier": "Free",
+            },
+            {
+                "id": "/subscriptions/sub-synth-1/providers/Microsoft.Security/pricings/VirtualMachines",
+                "name": "VirtualMachines",
+                "subscriptionId": "sub-synth-1",
+                "pricingTier": "Standard",
+            },
+        ],
+    }
+    subs.append(
+        {"id": "/subscriptions/sub-synth-4", "name": "Synthetic Dev", "quotaId": "MSDNDevTest_2014-09-01", "mgAncestors": ["mg-synth-root"]}
+    )
     return {
         **batch3,
+        **tier_a,
         "vms": vms,
         "subscriptions": subs,
         "management_groups": mgs,

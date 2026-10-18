@@ -1,0 +1,26 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/VirtualMachines",
+   "name": "VirtualMachines",
+   "pricingTier": "Standard",
+   "subPlan": "P2",
+   "subscriptionId": "sub-synth-4"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/Arm",
+   "name": "Arm",
+   "pricingTier": "Free",
+   "subscriptionId": "sub-synth-4"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.Security/pricings/VirtualMachines",
+   "name": "VirtualMachines",
+   "pricingTier": "Standard",
+   "subscriptionId": "sub-synth-1"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

@@ -61,7 +61,7 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Empty network security groups | DONE-OFFLINE | ORPH-NSG-01 | Severity low, hygiene |
 
 ## Beyond the workbooks (F-CAT only, today)
-Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
+Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
 
 ## Honest summary
 Of the Optimization items listed here, the orphan and idle group is largely implemented offline. The big-value groups are not: Hybrid Benefit, commitments, tagging and cost allocation, monitoring cost. None of the implemented checks has run on a real tenant, so "parity" is a claim about coverage of predicates, not about proven results.

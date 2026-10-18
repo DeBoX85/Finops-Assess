@@ -1,0 +1,38 @@
+{
+ "cases": [
+  {
+   "name": "no workspace",
+   "snapshot": {
+    "app_insights": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "workspaceResourceId": ""
+      },
+      {
+       "id": "/a/2"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1",
+    "/a/2"
+   ]
+  },
+  {
+   "name": "linked",
+   "snapshot": {
+    "app_insights": {
+     "rows": [
+      {
+       "id": "/a/3",
+       "workspaceResourceId": "/w/1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

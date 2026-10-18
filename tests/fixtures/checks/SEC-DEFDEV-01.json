@@ -1,0 +1,71 @@
+{
+ "cases": [
+  {
+   "name": "paid plan on devtest",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/AAA",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "defender_pricings": {
+     "rows": [
+      {
+       "id": "/p/1",
+       "name": "VirtualMachines",
+       "subscriptionId": "aaa",
+       "pricingTier": "Standard",
+       "subPlan": "P2"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/p/1"
+   ]
+  },
+  {
+   "name": "free, non-devtest, unknown sub not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/aaa",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/bbb",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "defender_pricings": {
+     "rows": [
+      {
+       "id": "/p/2",
+       "name": "Arm",
+       "subscriptionId": "aaa",
+       "pricingTier": "Free"
+      },
+      {
+       "id": "/p/3",
+       "name": "Arm",
+       "subscriptionId": "bbb",
+       "pricingTier": "Standard"
+      },
+      {
+       "id": "/p/4",
+       "name": "Arm",
+       "subscriptionId": "ccc",
+       "pricingTier": "Standard"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

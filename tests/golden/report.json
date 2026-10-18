@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "5e61e2c40971a905",
+  "report_hash": "649845dae74237c4",
   "status": "pass",
   "version": "0.1"
  },
@@ -352,6 +352,64 @@
    "savings_basis": "none",
    "title": "ExpressRoute circuits not provisioned by the provider",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "la_workspaces"
+   ],
+   "confidence": "low",
+   "domain": "monitoring",
+   "framework": "Planning and Estimating",
+   "id": "MON-LAWCAP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Log Analytics workspaces without a daily cap",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "app_insights"
+   ],
+   "confidence": "low",
+   "domain": "monitoring",
+   "framework": "Data Ingestion",
+   "id": "MON-AICLS-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Application Insights resources not linked to a workspace",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "defender_pricings",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "security",
+   "framework": "Usage Optimization",
+   "id": "SEC-DEFDEV-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Defender for Cloud paid plans on Dev/Test-looking subscriptions",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -368,7 +426,7 @@
     ],
     "logic_hash": "3d6cdde93e63",
     "snapshot_digests": {
-     "subscriptions": "8373cc35647d"
+     "subscriptions": "6d3c3a547749"
     }
    },
    "fingerprint": "3bb217cf48950872",
@@ -389,7 +447,7 @@
     ],
     "logic_hash": "3d6cdde93e63",
     "snapshot_digests": {
-     "subscriptions": "8373cc35647d"
+     "subscriptions": "6d3c3a547749"
     }
    },
    "fingerprint": "62e889567f53951a",
@@ -417,6 +475,46 @@
    "message": "VM (Standard_D4s_v5) is stopped but not deallocated, so compute is likely still billed",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
    "severity": "medium"
+  },
+  {
+   "check_id": "MON-AICLS-01",
+   "details": {
+    "ingestionMode": null,
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "app_insights"
+    ],
+    "logic_hash": "2972493b45d0",
+    "snapshot_digests": {
+     "app_insights": "23ac33d351c6"
+    }
+   },
+   "fingerprint": "3fde6b368054dd5e",
+   "message": "Application Insights resource has no linked Log Analytics workspace (older resource type)",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Insights/components/ai-old",
+   "severity": "info"
+  },
+  {
+   "check_id": "MON-LAWCAP-01",
+   "details": {
+    "location": null,
+    "skuName": "PerGB2018"
+   },
+   "evidence": {
+    "collectors": [
+     "la_workspaces"
+    ],
+    "logic_hash": "db12631a4aad",
+    "snapshot_digests": {
+     "la_workspaces": "ecfd73fb2e99"
+    }
+   },
+   "fingerprint": "3e638eee06c97ad6",
+   "message": "Log Analytics workspace has no daily ingestion cap",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.OperationalInsights/workspaces/law-nocap",
+   "severity": "info"
   },
   {
    "check_id": "ORPH-AGW-01",
@@ -2225,6 +2323,29 @@
    "message": "Vpn gateway (VpnGw1) has no connection",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/virtualNetworkGateways/gw-idle",
    "severity": "medium"
+  },
+  {
+   "check_id": "SEC-DEFDEV-01",
+   "details": {
+    "plan": "VirtualMachines",
+    "subPlan": "P2",
+    "subscription": "/subscriptions/sub-synth-4"
+   },
+   "evidence": {
+    "collectors": [
+     "defender_pricings",
+     "subscriptions"
+    ],
+    "logic_hash": "dd15ce1c99e3",
+    "snapshot_digests": {
+     "defender_pricings": "88284d40b49a",
+     "subscriptions": "6d3c3a547749"
+    }
+   },
+   "fingerprint": "8d64095f14ad97b3",
+   "message": "Defender plan VirtualMachines is on a paid tier in a subscription that looks like Dev/Test: review whether it is needed",
+   "resource_id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/VirtualMachines",
+   "severity": "info"
   }
  ],
  "manifest": {
@@ -2299,6 +2420,21 @@
     "findings": 1,
     "id": "ORPH-ERC-01",
     "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MON-LAWCAP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MON-AICLS-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "SEC-DEFDEV-01",
+    "status": "ran"
    }
   ],
   "collector_errors": [],
@@ -2314,7 +2450,7 @@
   "schema_version": "0.1",
   "scope": {
    "management_groups": 2,
-   "subscriptions": 3
+   "subscriptions": 4
   }
  },
  "schema_version": "0.1"

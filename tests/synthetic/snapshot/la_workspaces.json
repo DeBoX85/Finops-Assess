@@ -1,0 +1,21 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "dailyQuotaGb": -1,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.OperationalInsights/workspaces/law-nocap",
+   "skuName": "PerGB2018"
+  },
+  {
+   "dailyQuotaGb": 10.0,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.OperationalInsights/workspaces/law-capped",
+   "skuName": "PerGB2018"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.OperationalInsights/workspaces/law-free",
+   "skuName": "Free"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

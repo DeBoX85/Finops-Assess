@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Insights/components/ai-old",
+   "workspaceResourceId": ""
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Insights/components/ai-new",
+   "workspaceResourceId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.OperationalInsights/workspaces/law-capped"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

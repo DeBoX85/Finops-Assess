@@ -90,6 +90,23 @@ KQL_ER_CIRCUITS = _NET.format(
     "skuTier=tostring(sku.tier), portId=tostring(properties.expressRoutePort.id), ",
 )
 
+# Monitoring and security, tier A (docs/MODULE-MONITORING-SECURITY.md). Property names UNVERIFIED live; two casings read where Learn is unclear.
+KQL_LA_WORKSPACES = _NET.format(
+    t="microsoft.operationalinsights/workspaces",
+    f="skuName=tostring(properties.sku.name), capacityLevel=toint(properties.sku.capacityReservationLevel), "
+    "retentionInDays=toint(properties.retentionInDays), dailyQuotaGb=todouble(properties.workspaceCapping.dailyQuotaGb), ",
+)
+KQL_APP_INSIGHTS = _NET.format(
+    t="microsoft.insights/components",
+    f="workspaceResourceId=tostring(coalesce(properties.WorkspaceResourceId, properties.workspaceResourceId)), "
+    "ingestionMode=tostring(coalesce(properties.IngestionMode, properties.ingestionMode)), ",
+)
+# Source: Learn, Defender for Cloud Resource Graph samples (read 2026-10-18)
+KQL_DEFENDER_PRICINGS = (
+    "securityresources | where type == 'microsoft.security/pricings' "
+    "| project id, name, subscriptionId, pricingTier=tostring(properties.pricingTier), subPlan=tostring(properties.subPlan) | order by id asc"
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
@@ -108,6 +125,9 @@ COLLECTORS = {
     "nat_gateways": KQL_NAT_GATEWAYS,
     "ddos_plans": KQL_DDOS_PLANS,
     "er_circuits": KQL_ER_CIRCUITS,
+    "la_workspaces": KQL_LA_WORKSPACES,
+    "app_insights": KQL_APP_INSIGHTS,
+    "defender_pricings": KQL_DEFENDER_PRICINGS,
 }
 
 

@@ -290,3 +290,69 @@ def unprovisioned_er_circuits(snap):
                 f"ExpressRoute circuit provider state is {state}",
                 {"location": r.get("location"), "providerState": state, "circuitState": r.get("circuitState")},
             )
+
+
+@check(
+    CheckMeta(
+        id="MON-LAWCAP-01", domain="monitoring", title="Log Analytics workspaces without a daily cap", collectors=("la_workspaces",),
+        permissions=("Reader",), savings_basis="none", confidence="low", framework="Planning and Estimating",
+    )
+)  # fmt: skip
+def workspaces_without_daily_cap(snap):
+    """Informational. Learn calls the daily cap a preventative control, not a cost-reduction method, so absence is a governance observation.
+    Free-tier workspaces are skipped. UNVERIFIED how ARG reports 'no cap' (null or negative), both are treated as no cap."""
+    for r in _rows(snap, "la_workspaces"):
+        if str(r.get("skuName") or "").lower() == "free":
+            continue
+        q = r.get("dailyQuotaGb")
+        if q is None or q < 0:
+            yield Finding(
+                "MON-LAWCAP-01",
+                r["id"],
+                "info",
+                "Log Analytics workspace has no daily ingestion cap",
+                {"location": r.get("location"), "skuName": r.get("skuName")},
+            )
+
+
+@check(
+    CheckMeta(
+        id="MON-AICLS-01", domain="monitoring", title="Application Insights resources not linked to a workspace",
+        collectors=("app_insights",), permissions=("Reader",), savings_basis="none", confidence="low", framework="Data Ingestion",
+    )
+)  # fmt: skip
+def appinsights_without_workspace(snap):
+    """Learn: workspaceResourceId is required when creating a component with the current API version; older components lack it.
+    Absence therefore means an older resource, reported as informational (migration candidate), not as a defect."""
+    for r in _rows(snap, "app_insights"):
+        if _blank(r.get("workspaceResourceId")):
+            yield Finding(
+                "MON-AICLS-01",
+                r["id"],
+                "info",
+                "Application Insights resource has no linked Log Analytics workspace (older resource type)",
+                {"location": r.get("location"), "ingestionMode": r.get("ingestionMode")},
+            )
+
+
+@check(
+    CheckMeta(
+        id="SEC-DEFDEV-01", domain="security", title="Defender for Cloud paid plans on Dev/Test-looking subscriptions",
+        collectors=("defender_pricings", "subscriptions"), permissions=("Reader",), savings_basis="none", confidence="low",
+        framework="Usage Optimization",
+    )
+)  # fmt: skip
+def defender_plans_on_devtest(snap):
+    """Heuristic: quota ID contains 'devtest' (e.g. MSDNDevTest, CSPDevTest) AND a plan is at pricing tier Standard. Whether the plan is wanted is a business
+    decision; wording is 'review'. Subscriptions are matched on subscription id, case-insensitive."""
+    dev = {}
+    for s in _rows(snap, "subscriptions"):
+        if "devtest" in str(s.get("quotaId") or "").lower():
+            dev[str(s["id"]).split("/")[-1].lower()] = s["id"]
+    for r in _rows(snap, "defender_pricings"):
+        sub = str(r.get("subscriptionId") or "").lower()
+        if sub in dev and str(r.get("pricingTier") or "").lower() == "standard":
+            yield Finding(
+                "SEC-DEFDEV-01", r["id"], "info", f"Defender plan {r.get('name')} is on a paid tier in a subscription that looks like Dev/Test: review whether it is needed",
+                {"plan": r.get("name"), "subPlan": r.get("subPlan"), "subscription": dev[sub]},
+            )  # fmt: skip
