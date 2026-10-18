@@ -36,4 +36,12 @@ def test_golden_is_correct_by_independent_derivation():
     assert bill == {"sub-synth-2": "depends", "sub-synth-3": "unsupported"}  # sub 1 is Enterprise Agreement: supported, no finding
     expected = {f"disk-{n:03d}" for n in list(range(1, 61)) + [104, 105, 106, 107, 108, 109]}
     assert got == expected and not (got & EXCLUDED)
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68
+    by = {}
+    for f in golden["findings"]:
+        by.setdefault(f["check_id"], set()).add(f["resource_id"].rsplit("/", 1)[-1])
+    # hand-derived from scripts/make_synthetic.py: attached/used/free-tier/unknown-count rows must NOT appear
+    assert by["ORPH-PIP-01"] == {"pip-orphan-1", "pip-orphan-2"}
+    assert by["ORPH-NIC-01"] == {"nic-orphan"}
+    assert by["ORPH-NSG-01"] == {"nsg-orphan"}
+    assert by["ORPH-ASP-01"] == {"asp-empty"}
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5
