@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 13:43 UTC
+Last updated: 2026-10-18 14:30 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 13:43
-Base commit: c1ffca9
+Last checkpoint (UTC): 2026-10-18 14:30
+Base commit: 08b46d0
 Gates: pass
-Files changed in this checkpoint: 3
-narrative_hash: d37a4241ba1f
+Files changed in this checkpoint: 2
+narrative_hash: 412dda62c17f
 stale_count: 0
 <!-- auto:end -->
 
@@ -32,6 +32,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: Synthetic estate + golden report BUILT (scripts/make_synthetic.py, tests/test_golden.py). Formatting-only edits to a check change its logic hash and therefore the golden; re-approve with --approve and review the diff.
 - (Earlier checkpoint of this unit pushed to wip/auto only because one test needed a quotaId in its fixture; fixed in the next commit.)
 - 2026-10-18: Backlog 18 research done (KB note 10). Added src/fcat/billing.py, check BILL-OFFER-01, quotaId in subscriptions collector, golden updated (diff reviewed: only BILL additions). Key finding: CSP customers see RETAIL cost only and zero for reservation usage; Sponsorship and classic CSP have no Cost Management data. Open questions for owner in note 10 (not blocking).
+- 2026-10-18: OWNER AWAY for the next few steps. Work unattended. All pending owner items are parked in docs/DECISIONS-PENDING.md with defaults; follow its rules (do not ask, use defaults marked provisional, no customer use, do not widen the allowlist).
 ## In progress
 Nothing half-done.
 ## Next step
