@@ -1,0 +1,890 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-001",
+   "location": "northeurope",
+   "name": "disk-001",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-002",
+   "location": "swedencentral",
+   "name": "disk-002",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-003",
+   "location": "westeurope",
+   "name": "disk-003",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-004",
+   "location": "northeurope",
+   "name": "disk-004",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-005",
+   "location": "swedencentral",
+   "name": "disk-005",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-006",
+   "location": "westeurope",
+   "name": "disk-006",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-007",
+   "location": "northeurope",
+   "name": "disk-007",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-008",
+   "location": "swedencentral",
+   "name": "disk-008",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-009",
+   "location": "westeurope",
+   "name": "disk-009",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-010",
+   "location": "northeurope",
+   "name": "disk-010",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-011",
+   "location": "swedencentral",
+   "name": "disk-011",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-012",
+   "location": "westeurope",
+   "name": "disk-012",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-013",
+   "location": "northeurope",
+   "name": "disk-013",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-014",
+   "location": "swedencentral",
+   "name": "disk-014",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-015",
+   "location": "westeurope",
+   "name": "disk-015",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-016",
+   "location": "northeurope",
+   "name": "disk-016",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-017",
+   "location": "swedencentral",
+   "name": "disk-017",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-018",
+   "location": "westeurope",
+   "name": "disk-018",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-019",
+   "location": "northeurope",
+   "name": "disk-019",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-020",
+   "location": "swedencentral",
+   "name": "disk-020",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-021",
+   "location": "westeurope",
+   "name": "disk-021",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-022",
+   "location": "northeurope",
+   "name": "disk-022",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-023",
+   "location": "swedencentral",
+   "name": "disk-023",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-024",
+   "location": "westeurope",
+   "name": "disk-024",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-025",
+   "location": "northeurope",
+   "name": "disk-025",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-026",
+   "location": "swedencentral",
+   "name": "disk-026",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-027",
+   "location": "westeurope",
+   "name": "disk-027",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-028",
+   "location": "northeurope",
+   "name": "disk-028",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-029",
+   "location": "swedencentral",
+   "name": "disk-029",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-030",
+   "location": "westeurope",
+   "name": "disk-030",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-031",
+   "location": "northeurope",
+   "name": "disk-031",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-032",
+   "location": "swedencentral",
+   "name": "disk-032",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-033",
+   "location": "westeurope",
+   "name": "disk-033",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-034",
+   "location": "northeurope",
+   "name": "disk-034",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-035",
+   "location": "swedencentral",
+   "name": "disk-035",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-036",
+   "location": "westeurope",
+   "name": "disk-036",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-037",
+   "location": "northeurope",
+   "name": "disk-037",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-038",
+   "location": "swedencentral",
+   "name": "disk-038",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-039",
+   "location": "westeurope",
+   "name": "disk-039",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-040",
+   "location": "northeurope",
+   "name": "disk-040",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-041",
+   "location": "swedencentral",
+   "name": "disk-041",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-042",
+   "location": "westeurope",
+   "name": "disk-042",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-043",
+   "location": "northeurope",
+   "name": "disk-043",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-044",
+   "location": "swedencentral",
+   "name": "disk-044",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-045",
+   "location": "westeurope",
+   "name": "disk-045",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-046",
+   "location": "northeurope",
+   "name": "disk-046",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-047",
+   "location": "swedencentral",
+   "name": "disk-047",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-048",
+   "location": "westeurope",
+   "name": "disk-048",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-049",
+   "location": "northeurope",
+   "name": "disk-049",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-050",
+   "location": "swedencentral",
+   "name": "disk-050",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-051",
+   "location": "westeurope",
+   "name": "disk-051",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-052",
+   "location": "northeurope",
+   "name": "disk-052",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-053",
+   "location": "swedencentral",
+   "name": "disk-053",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-054",
+   "location": "westeurope",
+   "name": "disk-054",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-055",
+   "location": "northeurope",
+   "name": "disk-055",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-056",
+   "location": "swedencentral",
+   "name": "disk-056",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-057",
+   "location": "westeurope",
+   "name": "disk-057",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 64,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-058",
+   "location": "northeurope",
+   "name": "disk-058",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 96,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-059",
+   "location": "swedencentral",
+   "name": "disk-059",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 128,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-060",
+   "location": "westeurope",
+   "name": "disk-060",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "ActiveSAS",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-100",
+   "location": "northeurope",
+   "name": "disk-100",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-02-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-101",
+   "location": "swedencentral",
+   "name": "disk-101",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "ASR-ReplicaDisk": "x"
+   },
+   "timeCreated": "2025-03-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-102",
+   "location": "westeurope",
+   "name": "disk-102",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 224,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "asrseeddisk": "1"
+   },
+   "timeCreated": "2025-04-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-103",
+   "location": "northeurope",
+   "name": "disk-103",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 256,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "ASRSEEDDISK": "1"
+   },
+   "timeCreated": "2025-05-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-104",
+   "location": "swedencentral",
+   "name": "disk-104",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32,
+   "skuName": "Standard_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "timeCreated": "2025-06-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-105",
+   "location": "westeurope",
+   "name": "disk-105",
+   "resourceGroup": "rg-synth",
+   "sizeGB": null,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-07-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-106",
+   "location": "northeurope",
+   "name": "disk-106",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 0,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-08-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-107",
+   "location": "swedencentral",
+   "name": "disk-107",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 32767,
+   "skuName": "UltraSSD_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "timeCreated": "2025-09-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-108",
+   "location": null,
+   "name": "disk-\u00fcn\u00efcode-\u65e5\u672c",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 160,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "timeCreated": "2025-01-15T10:00:00Z"
+  },
+  {
+   "diskState": "Unattached",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-109",
+   "location": "northeurope",
+   "name": "disk-109",
+   "resourceGroup": "rg-synth",
+   "sizeGB": 192,
+   "skuName": "StandardSSD_LRS",
+   "subscriptionId": "sub-synth-1",
+   "tags": {},
+   "timeCreated": "2025-02-15T10:00:00Z"
+  }
+ ],
+ "total_records": 70,
+ "warnings": []
+}

@@ -1,0 +1,28 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1",
+   "mgAncestors": [
+    "mg-synth-root"
+   ],
+   "name": "Synthetic Sub 1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2",
+   "mgAncestors": [
+    "mg-synth-root"
+   ],
+   "name": "Synthetic Sub 2"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3",
+   "mgAncestors": [
+    "mg-synth-root"
+   ],
+   "name": "Synthetic Sub 3"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

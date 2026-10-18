@@ -1,0 +1,1653 @@
+{
+ "audit": {
+  "invariants": [
+   {
+    "description": "No resource is reported twice by the same check",
+    "id": "INV-01",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Every finding belongs to a check in the catalogue",
+    "id": "INV-02",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Every finding comes from a check that ran",
+    "id": "INV-03",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Finding counts per check match the coverage table",
+    "id": "INV-04",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Severity is one of info, low, medium, high",
+    "id": "INV-05",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Each finding's fingerprint recomputes from its content",
+    "id": "INV-06",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Every finding names a resource and has a message",
+    "id": "INV-07",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "No certainty wording in finding text (language lint)",
+    "id": "INV-08",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "No negative savings figure",
+    "id": "INV-09",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "No check reports as ran when a collector it needs had an error",
+    "id": "INV-10",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   },
+   {
+    "description": "Every finding carries an evidence trail (rule version and data digests)",
+    "id": "INV-11",
+    "passed": true,
+    "violation_count": 0,
+    "violations": []
+   }
+  ],
+  "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
+  "report_hash": "a07da31084449c14",
+  "status": "pass",
+  "version": "0.1"
+ },
+ "check_catalogue": [
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "unattached_disks"
+   ],
+   "confidence": "high",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-DISK-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Unattached managed disks",
+   "validation": "offline-only"
+  }
+ ],
+ "findings": [
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 128,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "237a01cd87d5d9dc",
+   "message": "Unattached disk (128 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-003",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 224,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "e574c6ac8b415c21",
+   "message": "Unattached disk (224 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-006",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 64,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "14d728693f6fb099",
+   "message": "Unattached disk (64 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-009",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 160,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "1847646708dc5daf",
+   "message": "Unattached disk (160 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-012",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 256,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "d38b3a9033bbad63",
+   "message": "Unattached disk (256 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-015",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 96,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "39bde92b18745494",
+   "message": "Unattached disk (96 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-018",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 192,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "d90762f5cdff0df5",
+   "message": "Unattached disk (192 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-021",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 32,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "4c137527ef224577",
+   "message": "Unattached disk (32 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-024",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 128,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "7d4c9f070b3659a7",
+   "message": "Unattached disk (128 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-027",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 224,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "02d2047b5867eaaf",
+   "message": "Unattached disk (224 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-030",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 64,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "204bcdf71a35d6b6",
+   "message": "Unattached disk (64 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-033",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 160,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "118e10dd7bfa1814",
+   "message": "Unattached disk (160 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-036",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 256,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "2cc35c63a4b43011",
+   "message": "Unattached disk (256 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-039",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 96,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "243287ee2238ffad",
+   "message": "Unattached disk (96 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-042",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 192,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "f063cfe9f248dd5a",
+   "message": "Unattached disk (192 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-045",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 32,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "b691562640440846",
+   "message": "Unattached disk (32 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-048",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 128,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "c5bc6e81f767deaa",
+   "message": "Unattached disk (128 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-051",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 224,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "b7dbd27c299f825e",
+   "message": "Unattached disk (224 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-054",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 64,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-04-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "a3adcfaafbd9aa49",
+   "message": "Unattached disk (64 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-057",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": 160,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "bcafd42ae695a0c3",
+   "message": "Unattached disk (160 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-060",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 32,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "c384bd586edf07d9",
+   "message": "Unattached disk (32 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-104",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "westeurope",
+    "sizeGB": null,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-07-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "7edd8522a599e468",
+   "message": "Unattached disk (None GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-105",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 0,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "dbab5cb588072189",
+   "message": "Unattached disk (0 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-106",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 32767,
+    "skuName": "UltraSSD_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "70711ebd8738e9f1",
+   "message": "Unattached disk (32767 GB, UltraSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-107",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": null,
+    "sizeGB": 160,
+    "skuName": "Premium_LRS",
+    "timeCreated": "2025-01-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "d141cbdbdc1cb6a6",
+   "message": "Unattached disk (160 GB, Premium_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-108",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 192,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "46161ad3657bb5e4",
+   "message": "Unattached disk (192 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-109",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 64,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "583c3f970f8fc812",
+   "message": "Unattached disk (64 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-001",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 160,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "179eb3fcf46c06e4",
+   "message": "Unattached disk (160 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-004",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 256,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "4c38d5dc4ccef5fd",
+   "message": "Unattached disk (256 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-007",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 96,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "96e82ca7c1a201f1",
+   "message": "Unattached disk (96 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-010",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 192,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "041bef140c969edf",
+   "message": "Unattached disk (192 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-013",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 32,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "76ce12eb55896082",
+   "message": "Unattached disk (32 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-016",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 128,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "2494e389ceaf4013",
+   "message": "Unattached disk (128 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-019",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 224,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "5148dd8cd9fec038",
+   "message": "Unattached disk (224 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-022",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 64,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "81e9b98a642b848d",
+   "message": "Unattached disk (64 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-025",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 160,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "5b049503f5312b1c",
+   "message": "Unattached disk (160 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-028",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 256,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "356553e1ecb8a92a",
+   "message": "Unattached disk (256 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-031",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 96,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "d1b6fbe0e5c67f01",
+   "message": "Unattached disk (96 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-034",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 192,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "5e546f3ae18d674b",
+   "message": "Unattached disk (192 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-037",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 32,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "bd26fcf9f1e2b62e",
+   "message": "Unattached disk (32 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-040",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 128,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "87ec956ae8e3a369",
+   "message": "Unattached disk (128 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-043",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 224,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "da470b8e0468a266",
+   "message": "Unattached disk (224 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-046",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 64,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "a7a7ba6ec3d47ccc",
+   "message": "Unattached disk (64 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-049",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 160,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-08-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "ce2c977d43eeac03",
+   "message": "Unattached disk (160 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-052",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 256,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-02-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "ded64ec69a7a4581",
+   "message": "Unattached disk (256 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-055",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "northeurope",
+    "sizeGB": 96,
+    "skuName": "StandardSSD_LRS",
+    "timeCreated": "2025-05-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "124ff29fe53b442a",
+   "message": "Unattached disk (96 GB, StandardSSD_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-058",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 96,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "4d4029a5d3328b98",
+   "message": "Unattached disk (96 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-002",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 192,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "d0a0387164d8af9d",
+   "message": "Unattached disk (192 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-005",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 32,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "b6c51b034d9e78d6",
+   "message": "Unattached disk (32 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-008",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 128,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "13246fc0dc8e2026",
+   "message": "Unattached disk (128 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-011",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 224,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "eb61046227fc0f63",
+   "message": "Unattached disk (224 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-014",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 64,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "ca3f92eea216e0c0",
+   "message": "Unattached disk (64 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-017",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 160,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "dbdfaef5c3a50187",
+   "message": "Unattached disk (160 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-020",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 256,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "ca9f5ca2a32698ee",
+   "message": "Unattached disk (256 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-023",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 96,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "365004fdbab7381b",
+   "message": "Unattached disk (96 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-026",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 192,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "10e67f66057f2cc3",
+   "message": "Unattached disk (192 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-029",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 32,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "0fd7f59d9ac0ae00",
+   "message": "Unattached disk (32 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-032",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 128,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "99093e428f5b5aaf",
+   "message": "Unattached disk (128 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-035",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 224,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "43bedf80b97eb1c2",
+   "message": "Unattached disk (224 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-038",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 64,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "2d4cb06ab76f523d",
+   "message": "Unattached disk (64 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-041",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 160,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "e2c8bb899e87fd5f",
+   "message": "Unattached disk (160 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-044",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 256,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "22771cd5f97741d4",
+   "message": "Unattached disk (256 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-047",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 96,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "58263ff4fa155bdb",
+   "message": "Unattached disk (96 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-050",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 192,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-09-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "a948963ca2bd3e76",
+   "message": "Unattached disk (192 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-053",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 32,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-03-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "3fa36fddec672405",
+   "message": "Unattached disk (32 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-056",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-DISK-01",
+   "details": {
+    "diskState": "Unattached",
+    "location": "swedencentral",
+    "sizeGB": 128,
+    "skuName": "Standard_LRS",
+    "timeCreated": "2025-06-15T10:00:00Z"
+   },
+   "evidence": {
+    "collectors": [
+     "unattached_disks"
+    ],
+    "logic_hash": "ef69f27df1a6",
+    "snapshot_digests": {
+     "unattached_disks": "42b58d4a31bd"
+    }
+   },
+   "fingerprint": "88d1c2c66c48b48d",
+   "message": "Unattached disk (128 GB, Standard_LRS) incurs storage cost",
+   "resource_id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-059",
+   "severity": "medium"
+  }
+ ],
+ "manifest": {
+  "api_calls": [],
+  "checks": [
+   {
+    "findings": 66,
+    "id": "ORPH-DISK-01",
+    "status": "ran"
+   }
+  ],
+  "collector_errors": [],
+  "config": {
+   "checks": {},
+   "domains": {},
+   "management_groups_count": 0,
+   "profile": "standard",
+   "subscriptions_count": 0
+  },
+  "identity": {},
+  "schema_version": "0.1",
+  "scope": {
+   "management_groups": 2,
+   "subscriptions": 3
+  }
+ },
+ "schema_version": "0.1"
+}

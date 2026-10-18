@@ -1,0 +1,21 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "ancestors": [],
+   "displayName": "Synthetic Root",
+   "id": "/providers/Microsoft.Management/managementGroups/mg-synth-root",
+   "name": "mg-synth-root"
+  },
+  {
+   "ancestors": [
+    "mg-synth-root"
+   ],
+   "displayName": "Synthetic Prod",
+   "id": "/providers/Microsoft.Management/managementGroups/mg-synth-prod",
+   "name": "mg-synth-prod"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}
