@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:12 UTC
+Last updated: 2026-10-18 15:13 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:12
-Base commit: c20f2ba
+Last checkpoint (UTC): 2026-10-18 15:13
+Base commit: d3f9697
 Gates: pass
-Files changed in this checkpoint: 8
-narrative_hash: 40306882e1f3
+Files changed in this checkpoint: 3
+narrative_hash: a96cb6c7d9c3
 stale_count: 0
 <!-- auto:end -->
 
@@ -43,6 +43,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: backlog 9 design written (docs/MODULE-MONITORING-SECURITY.md) with Learn-verified findings: Log Analytics queries use a different host (ADR 0007 draft, parked as pending #10). Tier A built offline: MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (info, low confidence, property names UNVERIFIED live). Golden 86. Next: backlog 22 extra accuracy tests, then 16 tailoring config design, 20 dashboard mock-ups.
 - 2026-10-18: backlog 7 batch 4 done: ORPH-SNAP-01/02/03, MOD-STORV1-01, IDLE-VMDISK-01, ORPH-PDNS-01, ORPH-PE-01. New mechanism: collect() writes snapshot/_meta.json collected_at; age rules use it (checks.collected_at), missing => NotAssessed => "not assessed because X". Golden 93. Predicates from hub queries and Storage/Networking workbooks at f12c29e; UNVERIFIED live. Next: 22 accuracy tests, 14 NOTICE audit, rightsizing design, 16 tailoring design, 20 mock-ups.
 - 2026-10-18: backlog 22 mostly done: tests/test_accuracy.py applies to every check (fuzz, metamorphic, locality, KQL contract). It found 5 real crashes on malformed rows, now fixed with guards. Next: 14 NOTICE audit, rightsizing design, 16 tailoring design, 20 mock-ups.
+- 2026-10-18: backlog 14 NOTICE audit done: upstream MIT text verified identical (whitespace aside), derived files listed, 15 locked dependencies with declared licences (certifi is MPL-2.0, unmodified), excluded-source name scan clean. Next: rightsizing design, 16 tailoring design, 20 mock-ups.
 ## In progress
 Nothing half-done.
 ## Next step

@@ -130,3 +130,15 @@ def test_runtime_lock_matches_declared_extras_and_has_hashes():
     lock = (root / "requirements" / "runtime.txt").read_text()
     pinned = re.findall(r"^([a-z0-9_.-]+)==", lock, re.M)
     assert declared <= set(pinned) and lock.count("--hash=sha256:") >= len(pinned)
+
+
+def test_notice_covers_every_locked_dependency_and_upstream_licence():
+    import pathlib
+    import re
+
+    root = pathlib.Path(__file__).resolve().parent.parent
+    notice = (root / "NOTICE.md").read_text().lower().replace("_", "-")
+    lock = (root / "requirements" / "runtime.txt").read_text()
+    for name in re.findall(r"^([a-z0-9_.-]+)==", lock, re.M):
+        assert name.lower().replace("_", "-") in notice, f"{name} is in the lock file but not in NOTICE.md"
+    assert "copyright (c) microsoft corporation" in notice and "permission is hereby granted" in notice
