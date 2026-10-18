@@ -1,0 +1,21 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "backupType": "Periodic",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-many-copies",
+   "intervalMinutes": 240,
+   "multiWrite": false,
+   "retentionHours": 240
+  },
+  {
+   "backupType": "Periodic",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-default",
+   "intervalMinutes": 240,
+   "multiWrite": false,
+   "retentionHours": 8
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

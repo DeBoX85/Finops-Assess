@@ -21,20 +21,20 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Premium disks on powered-off VMs | DONE-OFFLINE | IDLE-VMDISK-01 | Also covers data disks (workbook: OS disk only) |
 | Snapshots older than 30 days / premium / source disk deleted | DONE-OFFLINE | ORPH-SNAP-01, ORPH-SNAP-02, ORPH-SNAP-03 | Age uses the snapshot's collection time; source-deleted only judged for scanned subscriptions |
 | Storage accounts not v2 | DONE-OFFLINE | MOD-STORV1-01 | Hub query LegacyStorageAccounts |
-| Idle backups (last backup > 90 days) | PLANNED | backlog 7 batch 4 | recoveryservicesresources |
-| Recovery vault replication GRS vs LRS | PLANNED | backlog 9 | Judgement call; needs customer context, report as info |
+| Idle backups (last backup > 90 days) | DONE-OFFLINE | IDLE-BKP-01 | See batch 6 below |
+| Recovery vault replication GRS vs LRS | DIFFERENT | OPT-VAULT-01 | See batch 6 below |
 | Disk last modified date (ARM createdTime/changedTime) | PLANNED | backlog 7 | Needs ARM call beyond ARG |
 | Empty App Service plans | DONE-OFFLINE | ORPH-ASP-01 | |
 | Empty SQL elastic pools | DONE-OFFLINE | ORPH-EPOOL-01 | |
 | Unassociated DDoS plans | DONE-OFFLINE | ORPH-DDOS-01 | |
 | Databases "idle over 30 days" | DIFFERENT | none yet | The workbook query matches names containing old/Dev/test and measures no activity. Not copied. Replacement needs Azure Monitor metrics and peak-aware rules (DEV-PRINCIPLES R10) |
-| Idle SQL pool / unused Synapse workspaces | PLANNED | backlog 7 batch 4 | |
-| Cosmos DB RU reduction, throughput mode, continuous backup | PLANNED | backlog 7 | Via Advisor in ARG; value is Advisor's own figure |
+| Idle SQL pool / unused Synapse workspaces | DIFFERENT | ORPH-SYN-01 | Workspaces only; idle SQL pool needs metrics |
+| Cosmos DB RU reduction, throughput mode, continuous backup | DONE-OFFLINE | ADV-COST-01, OPT-COSBKP-01 | Advisor items via pass-through; backup mode check is ours |
 | Azure Hybrid Benefit (Windows, Linux, SQL, VMSS, Coverage summary) | PLANNED | backlog 7 / hub AHB queries | Needs Microsoft.Compute/skus call for vCPU; savings need list price |
-| Azure Firewall Premium unused features | PLANNED | backlog 9 | |
+| Azure Firewall Premium unused features | DIFFERENT | OPT-FWPREM-01 | See batch 6 below |
 | Reservation and savings plan recommendations (Advisor route) | PLANNED | backlog 7 | Reader is enough via advisorresources |
 | Commitment discount utilisation, billing-scope recommendations | PLANNED | backlog 26 | Needs billing permissions and Cost endpoints (ADR 0006 pending) |
-| Advisor cost recommendations (compute, monitoring) | PLANNED | backlog 7 | Passed through with Advisor's own savings, labelled as such |
+| Advisor cost recommendations (compute, monitoring) | DONE-OFFLINE | ADV-COST-01 | Passed through with Advisor's own savings, labelled as such |
 | Log Analytics ingestion trend (Usage table) | PLANNED | backlog 9 | Needs workspace read; module in monitoring cost assessment |
 | Sustainability (Advisor carbon) | NOT-PLANNED (this round) | | Not a cost check; revisit |
 | Top 10 services, AKS list, resource distribution | DIFFERENT | cost collectors | Cost views come from cost data, not inventory counts |
@@ -71,6 +71,16 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | SQL Server VMs without Hybrid Benefit | DONE-OFFLINE | LIC-AHBSQL-01 | Hub query SQLVMsWithoutAHB; DR licence type and unknown values are not reported |
 | AKS autoscaling pools not on Spot | DIFFERENT | OPT-AKSSPT-01 | Hub query NonSpotAKSClusters; ours lists user pools only (Spot cannot be system pools, Learn), info severity, a prompt not a finding |
 | Advisor cost recommendations | DONE-OFFLINE | ADV-COST-01 | Hub query AdvisorCost; pass-through, Advisor's own savings figure labelled and never summed |
+
+## Workbook items added in batch 6 (2026-10-18)
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| Idle backups (last backup > 90 days) | DONE-OFFLINE | IDLE-BKP-01 | Same 90-day rule; message does not assume the cause (failing backup versus no longer needed) |
+| Recovery vault replication GRS vs LRS | DIFFERENT | OPT-VAULT-01 | Only GRS vaults in Dev/Test-looking subscriptions, info; the workbook just lists redundancy |
+| Cosmos DB backup modes (continuous likely cheaper) | DIFFERENT | OPT-COSBKP-01 | Workbook thresholds kept; wording is evaluate, not saving (Learn: continuous mode is one-way and changes restore model) |
+| Cosmos DB RU reduction and throughput mode | DONE-OFFLINE | ADV-COST-01 | Covered by the Advisor pass-through, not a separate check |
+| Unused Synapse workspaces | DIFFERENT | ORPH-SYN-01 | Info only: serverless SQL costs nothing until queried (Learn), so zero pools does not mean zero use |
+| Azure Firewall Premium unused features | DIFFERENT | OPT-FWPREM-01 | Checks IDPS and TLS inspection only; URL filtering and web categories are not inspected, so the message says so |
 
 ## Beyond the workbooks (F-CAT only, today)
 Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).

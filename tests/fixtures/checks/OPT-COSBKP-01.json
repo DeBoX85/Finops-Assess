@@ -1,0 +1,98 @@
+{
+ "cases": [
+  {
+   "name": "many copies, and 3 copies within 7 days, reported",
+   "snapshot": {
+    "cosmos_accounts": {
+     "rows": [
+      {
+       "id": "/c/1",
+       "backupType": "Periodic",
+       "retentionHours": 240,
+       "intervalMinutes": 240,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/2",
+       "backupType": "periodic",
+       "retentionHours": 168,
+       "intervalMinutes": 1440,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/10",
+       "backupType": "Periodic",
+       "retentionHours": 336,
+       "intervalMinutes": 1440,
+       "multiWrite": false
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/c/1",
+    "/c/2",
+    "/c/10"
+   ]
+  },
+  {
+   "name": "defaults, continuous, multi write, unknown not reported",
+   "snapshot": {
+    "cosmos_accounts": {
+     "rows": [
+      {
+       "id": "/c/3",
+       "backupType": "Periodic",
+       "retentionHours": 8,
+       "intervalMinutes": 240,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/4",
+       "backupType": "Continuous",
+       "retentionHours": null,
+       "intervalMinutes": null,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/5",
+       "backupType": "Periodic",
+       "retentionHours": 240,
+       "intervalMinutes": 240,
+       "multiWrite": true
+      },
+      {
+       "id": "/c/6",
+       "backupType": "Periodic",
+       "retentionHours": 240,
+       "intervalMinutes": 240,
+       "multiWrite": null
+      },
+      {
+       "id": "/c/7",
+       "backupType": "Periodic",
+       "retentionHours": 240,
+       "intervalMinutes": 0,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/8",
+       "backupType": "Periodic",
+       "retentionHours": null,
+       "intervalMinutes": 240,
+       "multiWrite": false
+      },
+      {
+       "id": "/c/9",
+       "backupType": "Periodic",
+       "retentionHours": 48,
+       "intervalMinutes": 1440,
+       "multiWrite": false
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

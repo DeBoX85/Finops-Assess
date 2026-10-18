@@ -340,7 +340,57 @@ def estate():
             },
         ],
     }
+    rsv = "Microsoft.RecoveryServices/vaults/"
+    syn = base + "Synapse/workspaces/"
+    batch6 = {
+        "backup_items": [
+            {
+                "id": base + rsv + "vault1/backupFabrics/Azure/protectionContainers/c1/protectedItems/vm-old",
+                "lastBackupTime": "2026-05-01T00:00:00Z",
+                "protectionState": "Protected",
+                "workloadType": "VM",
+            },
+            {
+                "id": base + rsv + "vault1/backupFabrics/Azure/protectionContainers/c1/protectedItems/vm-recent",
+                "lastBackupTime": "2026-09-30T00:00:00Z",
+                "protectionState": "Protected",
+                "workloadType": "VM",
+            },
+        ],
+        "recovery_vaults": [
+            {"id": sub4 + "RecoveryServices/vaults/vault-dev-grs", "subscriptionId": "sub-synth-4", "redundancy": "GeoRedundant"},
+            {"id": sub4 + "RecoveryServices/vaults/vault-dev-lrs", "subscriptionId": "sub-synth-4", "redundancy": "LocallyRedundant"},
+            {"id": base + "RecoveryServices/vaults/vault-prod-grs", "subscriptionId": "sub-synth-1", "redundancy": "GeoRedundant"},
+        ],
+        "cosmos_accounts": [
+            {
+                "id": base + "DocumentDB/databaseAccounts/cosmos-many-copies",
+                "backupType": "Periodic",
+                "retentionHours": 240,
+                "intervalMinutes": 240,
+                "multiWrite": False,
+            },
+            {
+                "id": base + "DocumentDB/databaseAccounts/cosmos-default",
+                "backupType": "Periodic",
+                "retentionHours": 8,
+                "intervalMinutes": 240,
+                "multiWrite": False,
+            },
+        ],
+        "synapse_workspaces": [{"id": syn + "syn-empty"}, {"id": syn + "syn-sql"}],
+        "synapse_pools": [{"id": syn + "syn-sql/sqlPools/pool1", "poolType": "microsoft.synapse/workspaces/sqlpools"}],
+        "azure_firewalls": [
+            {"id": net + "azureFirewalls/fw-premium-idle", "skuTier": "Premium", "policyId": net + "firewallPolicies/pol-off"},
+            {"id": net + "azureFirewalls/fw-premium-idps", "skuTier": "Premium", "policyId": net + "firewallPolicies/pol-alert"},
+        ],
+        "firewall_policies": [
+            {"id": net + "firewallPolicies/pol-off", "skuTier": "Premium", "idpsMode": "Off", "tlsSecretId": None},
+            {"id": net + "firewallPolicies/pol-alert", "skuTier": "Premium", "idpsMode": "Alert", "tlsSecretId": None},
+        ],
+    }
     return {
+        **batch6,
         **batch5,
         **batch4,
         **batch3,

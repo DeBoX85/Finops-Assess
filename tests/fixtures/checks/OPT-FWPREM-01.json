@@ -1,0 +1,122 @@
+{
+ "cases": [
+  {
+   "name": "premium with neither idps nor tls reported",
+   "snapshot": {
+    "azure_firewalls": {
+     "rows": [
+      {
+       "id": "/fw/1",
+       "skuTier": "Premium",
+       "policyId": "/pol/OFF"
+      },
+      {
+       "id": "/fw/2",
+       "skuTier": "Premium",
+       "policyId": "/pol/blank"
+      }
+     ]
+    },
+    "firewall_policies": {
+     "rows": [
+      {
+       "id": "/pol/off",
+       "idpsMode": "Off",
+       "tlsSecretId": null,
+       "basePolicyId": null
+      },
+      {
+       "id": "/pol/blank",
+       "idpsMode": "",
+       "tlsSecretId": null,
+       "basePolicyId": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/fw/1",
+    "/fw/2"
+   ]
+  },
+  {
+   "name": "idps, tls, standard, parent policy, missing policy, no policy not reported",
+   "snapshot": {
+    "azure_firewalls": {
+     "rows": [
+      {
+       "id": "/fw/3",
+       "skuTier": "Premium",
+       "policyId": "/pol/alert"
+      },
+      {
+       "id": "/fw/4",
+       "skuTier": "Premium",
+       "policyId": "/pol/tls"
+      },
+      {
+       "id": "/fw/5",
+       "skuTier": "Standard",
+       "policyId": "/pol/off"
+      },
+      {
+       "id": "/fw/6",
+       "skuTier": "Premium",
+       "policyId": "/pol/child"
+      },
+      {
+       "id": "/fw/7",
+       "skuTier": "Premium",
+       "policyId": "/pol/gone"
+      },
+      {
+       "id": "/fw/8",
+       "skuTier": "Premium",
+       "policyId": null
+      },
+      {
+       "id": "/fw/9",
+       "skuTier": "Premium",
+       "policyId": "/pol/deny"
+      }
+     ]
+    },
+    "firewall_policies": {
+     "rows": [
+      {
+       "id": "/pol/alert",
+       "idpsMode": "Alert",
+       "tlsSecretId": null,
+       "basePolicyId": null
+      },
+      {
+       "id": "/pol/tls",
+       "idpsMode": "Off",
+       "tlsSecretId": "https://kv/secrets/ca",
+       "basePolicyId": null
+      },
+      {
+       "id": "/pol/off",
+       "idpsMode": "Off",
+       "tlsSecretId": null,
+       "basePolicyId": null
+      },
+      {
+       "id": "/pol/child",
+       "idpsMode": "Off",
+       "tlsSecretId": null,
+       "basePolicyId": "/pol/parent"
+      },
+      {
+       "id": "/pol/deny",
+       "idpsMode": "DENY",
+       "tlsSecretId": null,
+       "basePolicyId": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

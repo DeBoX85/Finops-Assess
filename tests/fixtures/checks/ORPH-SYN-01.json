@@ -1,0 +1,55 @@
+{
+ "cases": [
+  {
+   "name": "workspace without pools reported, pool matching ignores case",
+   "snapshot": {
+    "synapse_workspaces": {
+     "rows": [
+      {
+       "id": "/ws/empty"
+      },
+      {
+       "id": "/WS/Has-Sql"
+      },
+      {
+       "id": "/ws/has-spark"
+      }
+     ]
+    },
+    "synapse_pools": {
+     "rows": [
+      {
+       "id": "/ws/has-sql/sqlPools/p1"
+      },
+      {
+       "id": "/ws/has-spark/bigDataPools/s1"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/ws/empty"
+   ]
+  },
+  {
+   "name": "all workspaces have pools",
+   "snapshot": {
+    "synapse_workspaces": {
+     "rows": [
+      {
+       "id": "/ws/a"
+      }
+     ]
+    },
+    "synapse_pools": {
+     "rows": [
+      {
+       "id": "/ws/a/sqlPools/p"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

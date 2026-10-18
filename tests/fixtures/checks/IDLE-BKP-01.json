@@ -1,0 +1,59 @@
+{
+ "cases": [
+  {
+   "name": "older than 90 days reported",
+   "snapshot": {
+    "backup_items": {
+     "rows": [
+      {
+       "id": "/b/1",
+       "lastBackupTime": "2026-05-01T00:00:00Z",
+       "protectionState": "Protected"
+      },
+      {
+       "id": "/b/2",
+       "lastBackupTime": "2026-06-30T00:00:00Z",
+       "protectionState": "ProtectionStopped"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/b/1",
+    "/b/2"
+   ]
+  },
+  {
+   "name": "recent, exactly 90 days, missing or bad time not reported",
+   "snapshot": {
+    "backup_items": {
+     "rows": [
+      {
+       "id": "/b/3",
+       "lastBackupTime": "2026-09-30T00:00:00Z"
+      },
+      {
+       "id": "/b/4",
+       "lastBackupTime": "2026-07-03T00:00:00Z"
+      },
+      {
+       "id": "/b/5",
+       "lastBackupTime": null
+      },
+      {
+       "id": "/b/6",
+       "lastBackupTime": "not a date"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Synapse/workspaces/syn-empty"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Synapse/workspaces/syn-sql"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

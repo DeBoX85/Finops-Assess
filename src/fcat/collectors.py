@@ -163,6 +163,40 @@ KQL_ADVISOR_COST = (
     "savingsCurrency=tostring(properties.extendedProperties.savingsCurrency), lastUpdated=tostring(properties.lastUpdated) | order by id asc"
 )
 
+# Batch 6 (2026-10-18). Workbook queries (MIT, f12c29e): idleBackups, backupStorageReplication, Cosmos DB backup modes, Synapse unused workspaces, Optimize Premium AZ Firewall.
+# Property names from the workbook and Learn ARM schemas (read 2026-10-18); UNVERIFIED live.
+KQL_BACKUP_ITEMS = (
+    "recoveryservicesresources | where type =~ 'microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems' "
+    "| project id, name, subscriptionId, resourceGroup, location, vaultId=tostring(properties.vaultId), "
+    "sourceResourceId=tostring(properties.sourceResourceId), workloadType=tostring(properties.workloadType), "
+    "protectionState=tostring(properties.protectionState), lastBackupTime=tostring(properties.lastBackupTime) | order by id asc"
+)
+KQL_RECOVERY_VAULTS = _NET.format(
+    t="microsoft.recoveryservices/vaults",
+    f="skuName=tostring(sku.name), redundancy=tostring(properties.redundancySettings.standardTierStorageRedundancy), ",
+)
+KQL_COSMOS_ACCOUNTS = _NET.format(
+    t="microsoft.documentdb/databaseaccounts",
+    f="backupType=tostring(properties.backupPolicy.type), "
+    "retentionHours=toint(properties.backupPolicy.periodicModeProperties.backupRetentionIntervalInHours), "
+    "intervalMinutes=toint(properties.backupPolicy.periodicModeProperties.backupIntervalInMinutes), "
+    "multiWrite=tobool(properties.enableMultipleWriteLocations), ",
+)
+KQL_SYNAPSE_WORKSPACES = _NET.format(t="microsoft.synapse/workspaces", f="")
+KQL_SYNAPSE_POOLS = (
+    "resources | where type in~ ('microsoft.synapse/workspaces/sqlpools', 'microsoft.synapse/workspaces/bigdatapools') "
+    "| project id, name, subscriptionId, resourceGroup, location, poolType=type, tags | order by id asc"
+)
+KQL_AZURE_FIREWALLS = _NET.format(
+    t="microsoft.network/azurefirewalls", f="skuTier=tostring(properties.sku.tier), policyId=tostring(properties.firewallPolicy.id), "
+)
+KQL_FIREWALL_POLICIES = _NET.format(
+    t="microsoft.network/firewallpolicies",
+    f="skuTier=tostring(properties.sku.tier), idpsMode=tostring(properties.intrusionDetection.mode), "
+    "tlsSecretId=tostring(properties.transportSecurity.certificateAuthority.keyVaultSecretId), "
+    "basePolicyId=tostring(properties.basePolicy.id), ",
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
@@ -193,6 +227,13 @@ COLLECTORS = {
     "sql_vms": KQL_SQL_VMS,
     "aks_pools": KQL_AKS_POOLS,
     "advisor_cost": KQL_ADVISOR_COST,
+    "backup_items": KQL_BACKUP_ITEMS,
+    "recovery_vaults": KQL_RECOVERY_VAULTS,
+    "cosmos_accounts": KQL_COSMOS_ACCOUNTS,
+    "synapse_workspaces": KQL_SYNAPSE_WORKSPACES,
+    "synapse_pools": KQL_SYNAPSE_POOLS,
+    "azure_firewalls": KQL_AZURE_FIREWALLS,
+    "firewall_policies": KQL_FIREWALL_POLICIES,
 }
 
 

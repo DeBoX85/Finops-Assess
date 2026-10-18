@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "c54da3fea4934808",
+  "report_hash": "19ede527b95ddcf2",
   "status": "pass",
   "version": "0.1"
  },
@@ -700,6 +700,104 @@
    "savings_basis": "estimate",
    "title": "Azure Advisor cost recommendations (pass-through)",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "backup_items"
+   ],
+   "confidence": "low",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "IDLE-BKP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Backup items with no backup in 90 days",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "recovery_vaults",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "optimization",
+   "framework": "Usage Optimization",
+   "id": "OPT-VAULT-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Geo-redundant backup vaults in Dev/Test-looking subscriptions",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "cosmos_accounts"
+   ],
+   "confidence": "low",
+   "domain": "optimization",
+   "framework": "Usage Optimization",
+   "id": "OPT-COSBKP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Cosmos DB accounts paying for extra periodic backup copies",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "synapse_workspaces",
+    "synapse_pools"
+   ],
+   "confidence": "low",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-SYN-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Synapse workspaces with no dedicated SQL or Spark pools",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "azure_firewalls",
+    "firewall_policies"
+   ],
+   "confidence": "low",
+   "domain": "optimization",
+   "framework": "Rate Optimization",
+   "id": "OPT-FWPREM-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Azure Firewall Premium without IDPS or TLS inspection configured",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -770,6 +868,28 @@
    "message": "Cost Management holds no cost data for this subscription offer; cost-based checks cannot be assessed for it",
    "resource_id": "/subscriptions/sub-synth-3",
    "severity": "info"
+  },
+  {
+   "check_id": "IDLE-BKP-01",
+   "details": {
+    "age_days": 153,
+    "protectionState": "Protected",
+    "source": null,
+    "workloadType": "VM"
+   },
+   "evidence": {
+    "collectors": [
+     "backup_items"
+    ],
+    "logic_hash": "03f38e1c2708",
+    "snapshot_digests": {
+     "backup_items": "7a3ac99c4165"
+    }
+   },
+   "fingerprint": "d940db1f146edb4f",
+   "message": "No backup for 153 days: check whether backups are failing or the item is no longer needed",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Microsoft.RecoveryServices/vaults/vault1/backupFabrics/Azure/protectionContainers/c1/protectedItems/vm-old",
+   "severity": "low"
   },
   {
    "check_id": "IDLE-VMDISK-01",
@@ -1026,6 +1146,73 @@
    "fingerprint": "9b7869de0e1f6da7",
    "message": "Autoscaling user node pool uses regular VMs: ask whether any of its workloads can tolerate Spot evictions",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.ContainerService/managedClusters/aks-1/agentPools/apps",
+   "severity": "info"
+  },
+  {
+   "check_id": "OPT-COSBKP-01",
+   "details": {
+    "backup_copies": 60.0,
+    "free_copies": 2,
+    "intervalMinutes": 240,
+    "retentionHours": 240
+   },
+   "evidence": {
+    "collectors": [
+     "cosmos_accounts"
+    ],
+    "logic_hash": "3d9f20c12ac0",
+    "snapshot_digests": {
+     "cosmos_accounts": "cc0a0cee52a3"
+    }
+   },
+   "fingerprint": "0b88b117d3c51ac8",
+   "message": "Periodic backup keeps about 60 copies (2 are free): evaluate Continuous 7-day backup",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-many-copies",
+   "severity": "info"
+  },
+  {
+   "check_id": "OPT-FWPREM-01",
+   "details": {
+    "idpsMode": "Off",
+    "location": null,
+    "policy": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/firewallPolicies/pol-off"
+   },
+   "evidence": {
+    "collectors": [
+     "azure_firewalls",
+     "firewall_policies"
+    ],
+    "logic_hash": "3f3136b0fb9d",
+    "snapshot_digests": {
+     "azure_firewalls": "2ca9e97fe2a6",
+     "firewall_policies": "3eab2cc674f8"
+    }
+   },
+   "fingerprint": "17bcf8cc82ffd56b",
+   "message": "Premium firewall: its policy has no IDPS (Alert or Deny) and no TLS inspection; check URL filtering and web categories before considering Standard",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/azureFirewalls/fw-premium-idle",
+   "severity": "low"
+  },
+  {
+   "check_id": "OPT-VAULT-01",
+   "details": {
+    "location": null,
+    "redundancy": "GeoRedundant"
+   },
+   "evidence": {
+    "collectors": [
+     "recovery_vaults",
+     "subscriptions"
+    ],
+    "logic_hash": "4df58a5caa6d",
+    "snapshot_digests": {
+     "recovery_vaults": "ec94afa0dfc9",
+     "subscriptions": "6d3c3a547749"
+    }
+   },
+   "fingerprint": "62f2134bb0ba9b93",
+   "message": "Recovery Services vault is geo-redundant in a subscription that looks like Dev/Test: review whether that is needed",
+   "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.RecoveryServices/vaults/vault-dev-grs",
    "severity": "info"
   },
   {
@@ -2920,6 +3107,27 @@
    "severity": "low"
   },
   {
+   "check_id": "ORPH-SYN-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "synapse_workspaces",
+     "synapse_pools"
+    ],
+    "logic_hash": "74305b429cbf",
+    "snapshot_digests": {
+     "synapse_pools": "c33c849bcf38",
+     "synapse_workspaces": "ef82cc776a89"
+    }
+   },
+   "fingerprint": "b24e851552b3231a",
+   "message": "Synapse workspace has no dedicated SQL or Spark pool; serverless SQL may still be in use",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Synapse/workspaces/syn-empty",
+   "severity": "info"
+  },
+  {
    "check_id": "ORPH-VGW-01",
    "details": {
     "location": null,
@@ -3126,6 +3334,31 @@
    {
     "findings": 1,
     "id": "ADV-COST-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "IDLE-BKP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "OPT-VAULT-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "OPT-COSBKP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-SYN-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "OPT-FWPREM-01",
     "status": "ran"
    }
   ],

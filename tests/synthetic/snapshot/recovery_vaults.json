@@ -1,0 +1,22 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.RecoveryServices/vaults/vault-dev-grs",
+   "redundancy": "GeoRedundant",
+   "subscriptionId": "sub-synth-4"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.RecoveryServices/vaults/vault-dev-lrs",
+   "redundancy": "LocallyRedundant",
+   "subscriptionId": "sub-synth-4"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.RecoveryServices/vaults/vault-prod-grs",
+   "redundancy": "GeoRedundant",
+   "subscriptionId": "sub-synth-1"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

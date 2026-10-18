@@ -1,0 +1,11 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Synapse/workspaces/syn-sql/sqlPools/pool1",
+   "poolType": "microsoft.synapse/workspaces/sqlpools"
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

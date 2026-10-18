@@ -680,3 +680,135 @@ def advisor_cost(snap):
                 "lastUpdated": r.get("lastUpdated"),
             },
         )  # fmt: skip
+
+
+# ---- Batch 6 (2026-10-18). Workbook predicates (MIT, f12c29e); Learn facts read 2026-10-18; all UNVERIFIED live.
+IDLE_BACKUP_DAYS = 90  # same threshold as the workbook "Idle backups" query
+
+
+@check(_cm("IDLE-BKP-01", "orphaned", "Usage Optimization", "Backup items with no backup in 90 days", "backup_items", conf="low"))
+def idle_backups(snap):
+    """Workbook rule: lastBackupTime older than 90 days at the snapshot's collection time. Items with no timestamp are skipped (never backed up is a different question).
+    A stale item may mean failing backups (a reliability problem) or a source that no longer needs protection; the message does not choose. Stopped protection with retained
+    data is common and is shown in the details."""
+    ref = collected_at(snap)
+    for r in _rows(snap, "backup_items"):
+        t = _parse_ts(r.get("lastBackupTime"))
+        if t is not None and (ref - t).days > IDLE_BACKUP_DAYS:
+            yield Finding(
+                "IDLE-BKP-01", r["id"], "low", f"No backup for {(ref - t).days} days: check whether backups are failing or the item is no longer needed",
+                {"protectionState": r.get("protectionState"), "workloadType": r.get("workloadType"), "source": r.get("sourceResourceId"), "age_days": (ref - t).days},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "OPT-VAULT-01",
+        "optimization",
+        "Usage Optimization",
+        "Geo-redundant backup vaults in Dev/Test-looking subscriptions",
+        "recovery_vaults",
+        "subscriptions",
+        conf="low",
+    )
+)
+def grs_vaults_in_devtest(snap):
+    """Judgement prompt, severity info. Heuristic as SEC-DEFDEV-01: quota id contains 'devtest'. Redundancy value GeoRedundant (workbook property
+    standardTierStorageRedundancy). Whether a dev copy needs geo-redundancy is a business decision; no saving is claimed."""
+    dev = _devtest_subs(snap)
+    for r in _rows(snap, "recovery_vaults"):
+        if str(r.get("subscriptionId") or "").lower() in dev and str(r.get("redundancy") or "").lower() == "georedundant":
+            yield Finding(
+                "OPT-VAULT-01", r["id"], "info", "Recovery Services vault is geo-redundant in a subscription that looks like Dev/Test: review whether that is needed",
+                {"redundancy": r.get("redundancy"), "location": r.get("location")},
+            )  # fmt: skip
+
+
+COSMOS_FREE_COPIES = 2  # Learn: two periodic backups are free, extra copies are charged
+
+
+@check(
+    _cm(
+        "OPT-COSBKP-01",
+        "optimization",
+        "Usage Optimization",
+        "Cosmos DB accounts paying for extra periodic backup copies",
+        "cosmos_accounts",
+        conf="low",
+    )
+)
+def cosmos_periodic_extra_copies(snap):
+    """Workbook rule: Periodic policy, single-write account, copies = retention hours / interval hours, and copies >= 10 or (copies > 2 and retention <= 168 h).
+    Learn (read 2026-10-18): 2 copies are free, extra copies are charged; the Continuous 7-day tier has no backup storage charge, but continuous mode changes the
+    restore model, migration is one-way, and some accounts cannot migrate. So this is a prompt to evaluate, not a saving. Missing numbers mean the account is skipped."""
+    for r in _rows(snap, "cosmos_accounts"):
+        ret, interval = r.get("retentionHours"), r.get("intervalMinutes")
+        nums = all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in (ret, interval))
+        if str(r.get("backupType") or "").lower() != "periodic" or r.get("multiWrite") is not False or not nums or interval <= 0:
+            continue
+        copies = ret / (interval / 60)
+        if copies >= 10 or (copies > COSMOS_FREE_COPIES and ret <= 168):
+            yield Finding(
+                "OPT-COSBKP-01", r["id"], "info", f"Periodic backup keeps about {copies:g} copies ({COSMOS_FREE_COPIES} are free): evaluate Continuous 7-day backup",
+                {"backup_copies": round(copies, 2), "free_copies": COSMOS_FREE_COPIES, "retentionHours": ret, "intervalMinutes": interval},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "ORPH-SYN-01",
+        "orphaned",
+        "Usage Optimization",
+        "Synapse workspaces with no dedicated SQL or Spark pools",
+        "synapse_workspaces",
+        "synapse_pools",
+        conf="low",
+    )
+)
+def synapse_workspaces_without_pools(snap):
+    """Workbook rule: workspace with zero sqlPools and zero bigDataPools. Learn (read 2026-10-18): every workspace has a serverless SQL endpoint that costs nothing
+    until queried, so such a workspace may still be in use and its direct cost may be near zero (the linked storage is not assessed here). Severity info.
+    Pool resources are matched to the workspace by id prefix, case-insensitive."""
+    owners = set()
+    for p in _rows(snap, "synapse_pools"):
+        pid = str(p.get("id") or "").lower()
+        for marker in ("/sqlpools/", "/bigdatapools/"):
+            if marker in pid:
+                owners.add(pid.split(marker)[0])
+    for w in _rows(snap, "synapse_workspaces"):
+        if str(w["id"]).lower() not in owners:
+            yield Finding(
+                "ORPH-SYN-01", w["id"], "info", "Synapse workspace has no dedicated SQL or Spark pool; serverless SQL may still be in use",
+                {"location": w.get("location")},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "OPT-FWPREM-01",
+        "optimization",
+        "Rate Optimization",
+        "Azure Firewall Premium without IDPS or TLS inspection configured",
+        "azure_firewalls",
+        "firewall_policies",
+        conf="low",
+    )
+)
+def firewall_premium_unused_features(snap):
+    """Workbook rule: Premium firewall whose policy has IDPS mode neither Alert nor Deny and no TLS inspection certificate. Learn (read 2026-10-18): Premium also offers URL
+    filtering and web categories, which this check does NOT inspect, so 'no premium feature used' is not proven; the message says IDPS and TLS only. Policies with a parent
+    policy are skipped because the effective IDPS mode is the stricter of parent and child (Learn). Firewalls whose policy is not in the snapshot are skipped. A missing
+    IDPS property is treated as not enabled, as in the workbook (UNVERIFIED live)."""
+    pols = {str(p["id"]).lower(): p for p in _rows(snap, "firewall_policies")}
+    for f in _rows(snap, "azure_firewalls"):
+        if str(f.get("skuTier") or "").lower() != "premium":
+            continue
+        pol = pols.get(str(f.get("policyId") or "").lower())
+        if pol is None or not _blank(pol.get("basePolicyId")):
+            continue
+        if str(pol.get("idpsMode") or "").lower() in ("alert", "deny") or not _blank(pol.get("tlsSecretId")):
+            continue
+        yield Finding(
+            "OPT-FWPREM-01", f["id"], "low", "Premium firewall: its policy has no IDPS (Alert or Deny) and no TLS inspection; check URL filtering and web categories before considering Standard",
+            {"policy": pol["id"], "idpsMode": pol.get("idpsMode"), "location": f.get("location")},
+        )  # fmt: skip

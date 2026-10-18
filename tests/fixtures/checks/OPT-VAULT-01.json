@@ -1,0 +1,74 @@
+{
+ "cases": [
+  {
+   "name": "grs vault in devtest reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "recovery_vaults": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "subscriptionId": "s1",
+       "redundancy": "GeoRedundant"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1"
+   ]
+  },
+  {
+   "name": "lrs, zrs, unknown, non devtest not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s2",
+       "subscriptionId": "s2",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "recovery_vaults": {
+     "rows": [
+      {
+       "id": "/v/2",
+       "subscriptionId": "s1",
+       "redundancy": "LocallyRedundant"
+      },
+      {
+       "id": "/v/3",
+       "subscriptionId": "s1",
+       "redundancy": "ZoneRedundant"
+      },
+      {
+       "id": "/v/4",
+       "subscriptionId": "s1",
+       "redundancy": null
+      },
+      {
+       "id": "/v/5",
+       "subscriptionId": "s2",
+       "redundancy": "GeoRedundant"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/azureFirewalls/fw-premium-idle",
+   "policyId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/firewallPolicies/pol-off",
+   "skuTier": "Premium"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/azureFirewalls/fw-premium-idps",
+   "policyId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/firewallPolicies/pol-alert",
+   "skuTier": "Premium"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

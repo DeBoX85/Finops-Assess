@@ -72,4 +72,11 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["LIC-AHBSQL-01"] == {"sql-payg"}
     assert by["OPT-AKSSPT-01"] == {"apps"}
     assert by["ADV-COST-01"] == {"rec-resize"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6
+    # batch 6, hand-derived: stale backup item; GRS vault only in the Dev/Test subscription; 240 h / 4 h interval = 60 copies; workspace without pools;
+    # Premium firewall whose policy has IDPS Off and no TLS (the Alert one must NOT appear)
+    assert by["IDLE-BKP-01"] == {"vm-old"}
+    assert by["OPT-VAULT-01"] == {"vault-dev-grs"}
+    assert by["OPT-COSBKP-01"] == {"cosmos-many-copies"}
+    assert by["ORPH-SYN-01"] == {"syn-empty"}
+    assert by["OPT-FWPREM-01"] == {"fw-premium-idle"}
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5

@@ -1,0 +1,19 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/firewallPolicies/pol-off",
+   "idpsMode": "Off",
+   "skuTier": "Premium",
+   "tlsSecretId": null
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/firewallPolicies/pol-alert",
+   "idpsMode": "Alert",
+   "skuTier": "Premium",
+   "tlsSecretId": null
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

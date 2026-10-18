@@ -1,0 +1,19 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Microsoft.RecoveryServices/vaults/vault1/backupFabrics/Azure/protectionContainers/c1/protectedItems/vm-old",
+   "lastBackupTime": "2026-05-01T00:00:00Z",
+   "protectionState": "Protected",
+   "workloadType": "VM"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Microsoft.RecoveryServices/vaults/vault1/backupFabrics/Azure/protectionContainers/c1/protectedItems/vm-recent",
+   "lastBackupTime": "2026-09-30T00:00:00Z",
+   "protectionState": "Protected",
+   "workloadType": "VM"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}
