@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-17 23:01 UTC
+Last updated: 2026-10-18 13:29 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-17 23:01
-Base commit: 9a602a0
+Last checkpoint (UTC): 2026-10-18 13:29
+Base commit: de3ed5e
 Gates: pass
-Files changed in this checkpoint: 3
-narrative_hash: 43caef124850
+Files changed in this checkpoint: 2
+narrative_hash: ccc06fd7a189
 stale_count: 0
 <!-- auto:end -->
 
@@ -27,6 +27,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18 later: owner wants export write mode as a toggleable opt-in; ADR 0005 drafted (proposed). Asked owner to approve rule 1 wording and how far to go (design only vs implement). Owner also asked for more built-in output-accuracy tests; suggestions given in chat, to be added to docs/AUDIT.md and BACKLOG.
 - 2026-10-18: owner said start work. Maturity questionnaire DRAFT v0.1 written (docs/maturity/QUESTIONNAIRE-DRAFT.md), awaiting owner review. Workbook queries are already in docs/KB/sources/workbook-queries-raw.json (extracted from the toolkit repo); owner offered to upload workbook JSON if needed (not needed unless a newer version is wanted).
 - 2026-10-18 later: owner asked for a shorter, plainer questionnaire split by "visible in portal/CLI" (owner, Part 1) vs customer (Part 2). Done as v0.2 in docs/maturity/ (13 questions, 3 plain-language answers). Numeric cut-offs dropped (no official source). Owner confirmed: unanswered capabilities show as pending/needs input. Awaiting owner review of v0.2.
+- 2026-10-18 later: owner asked whether the cloud app is the right place to work. Answer: fine for the no-tenant phase; for live (G2) testing run the tool on the owner's laptop (az login) and decide how customer output is shared with Claude (confidentiality). Same repo and CLAUDE.md work on every Claude Code surface (docs read 2026-10-18). Owner decision pending on the live-testing setup.
 ## In progress
 Nothing half-done.
 ## Next step
