@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 13:40 UTC
+Last updated: 2026-10-18 13:42 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 13:40
-Base commit: 75989de
-Gates: pass
-Files changed in this checkpoint: 6
-narrative_hash: cfeed3bf3ec2
+Last checkpoint (UTC): 2026-10-18 13:42
+Base commit: ca44d9c
+Gates: FAIL
+Files changed in this checkpoint: 12
+narrative_hash: ca6ab02c42fc
 stale_count: 0
 <!-- auto:end -->
 
@@ -30,10 +30,11 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18 later: owner asked whether the cloud app is the right place to work. Answer: fine for the no-tenant phase; for live (G2) testing run the tool on the owner's laptop (az login) and decide how customer output is shared with Claude (confidentiality). Same repo and CLAUDE.md work on every Claude Code surface (docs read 2026-10-18). Owner decision pending on the live-testing setup.
 - 2026-10-18: Output audit Layer A BUILT (src/fcat/audit.py, 11 invariants, evidence + fingerprint per finding, report fingerprint, HTML/Excel/JSON audit section, CLI exit 3). Metamorphic tests added (row order, exclusions). Tests 54 pass.
 - 2026-10-18: Synthetic estate + golden report BUILT (scripts/make_synthetic.py, tests/test_golden.py). Formatting-only edits to a check change its logic hash and therefore the golden; re-approve with --approve and review the diff.
+- 2026-10-18: Backlog 18 research done (KB note 10). Added src/fcat/billing.py, check BILL-OFFER-01, quotaId in subscriptions collector, golden updated (diff reviewed: only BILL additions). Key finding: CSP customers see RETAIL cost only and zero for reservation usage; Sponsorship and classic CSP have no Cost Management data. Open questions for owner in note 10 (not blocking).
 ## In progress
 Nothing half-done.
 ## Next step
-Owner review of maturity questionnaire and confidence-label rule (reminder due next stopping point). Backlog item 2 Layer A part 1 DONE; items 2 and 3 DONE; next 18 (CSP/MCA cost API research), 4, 5, 7, 8. Old text: output audit Layer A (finding fingerprints/evidence, invariants checker, Audit section), then synthetic estate + golden report, cost collectors research. Add branding/module-weighting config to the plan.
+Owner review of maturity questionnaire and confidence-label rule (reminder due next stopping point). Backlog item 2 Layer A part 1 DONE; items 2, 3, 18 DONE; next 4 (cost collectors + allowlist ADR), 5, 7, 8. Old text: output audit Layer A (finding fingerprints/evidence, invariants checker, Audit section), then synthetic estate + golden report, cost collectors research. Add branding/module-weighting config to the plan.
 ## Open questions for the user
 Audit sample size and confidence thresholds (explained in chat, awaiting agreement); maturity scope wording; Approve PLAN v0.1 formally.
 ## Blockers

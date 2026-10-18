@@ -29,7 +29,11 @@ def test_report_matches_golden(tmp_path):
 def test_golden_is_correct_by_independent_derivation():
     """Expected findings derived by hand from the estate definition, not from the check code."""
     golden = json.loads(ms.GOLDEN.read_text())
-    got = {f["resource_id"].rsplit("/", 1)[-1] for f in golden["findings"]}
+    got = {f["resource_id"].rsplit("/", 1)[-1] for f in golden["findings"] if f["check_id"] == "ORPH-DISK-01"}
+    bill = {
+        f["resource_id"].rsplit("/", 1)[-1]: f["details"]["cost_management"] for f in golden["findings"] if f["check_id"] == "BILL-OFFER-01"
+    }
+    assert bill == {"sub-synth-2": "depends", "sub-synth-3": "unsupported"}  # sub 1 is Enterprise Agreement: supported, no finding
     expected = {f"disk-{n:03d}" for n in list(range(1, 61)) + [104, 105, 106, 107, 108, 109]}
     assert got == expected and not (got & EXCLUDED)
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 66
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68

@@ -6,21 +6,24 @@
    "mgAncestors": [
     "mg-synth-root"
    ],
-   "name": "Synthetic Sub 1"
+   "name": "Synthetic Sub 1",
+   "quotaId": "EnterpriseAgreement_2014-09-01"
   },
   {
    "id": "/subscriptions/sub-synth-2",
    "mgAncestors": [
     "mg-synth-root"
    ],
-   "name": "Synthetic Sub 2"
+   "name": "Synthetic Sub 2",
+   "quotaId": "CSP_2015-05-01"
   },
   {
    "id": "/subscriptions/sub-synth-3",
    "mgAncestors": [
     "mg-synth-root"
    ],
-   "name": "Synthetic Sub 3"
+   "name": "Synthetic Sub 3",
+   "quotaId": "Sponsored_2016-01-01"
   }
  ],
  "total_records": 3,

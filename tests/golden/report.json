@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "a07da31084449c14",
+  "report_hash": "2c01e2e17c6976ba",
   "status": "pass",
   "version": "0.1"
  },
@@ -103,9 +103,70 @@
    "savings_basis": "none",
    "title": "Unattached managed disks",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "subscriptions"
+   ],
+   "confidence": "medium",
+   "domain": "billing",
+   "framework": "Data Ingestion",
+   "id": "BILL-OFFER-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Cost Management data availability by subscription offer",
+   "validation": "offline-only"
   }
  ],
  "findings": [
+  {
+   "check_id": "BILL-OFFER-01",
+   "details": {
+    "cost_management": "depends",
+    "offer_note": "CSP: supported when on a Microsoft Customer Agreement Azure plan; classic CSP is NOT supported",
+    "quotaId": "CSP_2015-05-01"
+   },
+   "evidence": {
+    "collectors": [
+     "subscriptions"
+    ],
+    "logic_hash": "3d6cdde93e63",
+    "snapshot_digests": {
+     "subscriptions": "8373cc35647d"
+    }
+   },
+   "fingerprint": "3bb217cf48950872",
+   "message": "Cost data may not be available: this quota ID is shared by supported and unsupported agreement types; confirm the billing account type",
+   "resource_id": "/subscriptions/sub-synth-2",
+   "severity": "info"
+  },
+  {
+   "check_id": "BILL-OFFER-01",
+   "details": {
+    "cost_management": "unsupported",
+    "offer_note": "Microsoft Azure Sponsorship",
+    "quotaId": "Sponsored_2016-01-01"
+   },
+   "evidence": {
+    "collectors": [
+     "subscriptions"
+    ],
+    "logic_hash": "3d6cdde93e63",
+    "snapshot_digests": {
+     "subscriptions": "8373cc35647d"
+    }
+   },
+   "fingerprint": "62e889567f53951a",
+   "message": "Cost Management holds no cost data for this subscription offer; cost-based checks cannot be assessed for it",
+   "resource_id": "/subscriptions/sub-synth-3",
+   "severity": "info"
+  },
   {
    "check_id": "ORPH-DISK-01",
    "details": {
@@ -1631,6 +1692,11 @@
    {
     "findings": 66,
     "id": "ORPH-DISK-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "BILL-OFFER-01",
     "status": "ran"
    }
   ],

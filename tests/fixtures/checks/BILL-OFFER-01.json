@@ -1,0 +1,98 @@
+{
+ "cases": [
+  {
+   "name": "supported offers produce no finding",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/a",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/b",
+       "quotaId": "Pay-as-you-go_2014-09-01"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "sponsorship is unsupported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s",
+       "quotaId": "Sponsored_2016-01-01"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s"
+   ]
+  },
+  {
+   "name": "CSP quota id is ambiguous and reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/c",
+       "quotaId": "CSP_2015-05-01"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/c"
+   ]
+  },
+  {
+   "name": "unknown and missing quota ids are reported not guessed",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/u",
+       "quotaId": "Brand-New_2030"
+      },
+      {
+       "id": "/subscriptions/n",
+       "quotaId": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/n",
+    "/subscriptions/u"
+   ]
+  },
+  {
+   "name": "quota id match ignores case",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/l",
+       "quotaId": "enterpriseagreement_2014-09-01"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "no subscriptions no findings",
+   "snapshot": {
+    "subscriptions": {
+     "rows": []
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

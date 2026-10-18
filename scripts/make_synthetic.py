@@ -15,7 +15,11 @@ GOLDEN = ROOT / "tests" / "golden" / "report.json"
 
 
 def estate():
-    subs = [{"id": f"/subscriptions/sub-synth-{i}", "name": f"Synthetic Sub {i}", "mgAncestors": ["mg-synth-root"]} for i in (1, 2, 3)]
+    quota = {1: "EnterpriseAgreement_2014-09-01", 2: "CSP_2015-05-01", 3: "Sponsored_2016-01-01"}  # supported / ambiguous / unsupported
+    subs = [
+        {"id": f"/subscriptions/sub-synth-{i}", "name": f"Synthetic Sub {i}", "quotaId": quota[i], "mgAncestors": ["mg-synth-root"]}
+        for i in (1, 2, 3)
+    ]
     mgs = [
         {
             "id": "/providers/Microsoft.Management/managementGroups/mg-synth-root",

@@ -7,6 +7,7 @@ from . import arg
 KQL_SUBSCRIPTIONS = (
     "resourcecontainers | where type == 'microsoft.resources/subscriptions' "
     "| project id, name, subscriptionId, tenantId, state=tostring(properties.state), "
+    "quotaId=tostring(properties.subscriptionPolicies.quotaId), "
     "mgAncestors=properties.managementGroupAncestorsChain | order by id asc"
 )
 

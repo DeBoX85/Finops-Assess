@@ -1,3 +1,4 @@
+from . import billing
 from .checks import CheckMeta, Finding, check
 
 # ADR 0004 (hybrid): KQL narrows to unmanaged-by-VM disks; the rules below live in Python so they are unit tested.
@@ -38,4 +39,36 @@ def unattached_disks(snap):
             "medium",
             f"Unattached disk ({d.get('sizeGB')} GB, {d.get('skuName')}) incurs storage cost",
             {k: d.get(k) for k in ("location", "skuName", "sizeGB", "timeCreated", "diskState")},
+        )
+
+
+@check(
+    CheckMeta(
+        id="BILL-OFFER-01",
+        domain="billing",
+        title="Cost Management data availability by subscription offer",
+        collectors=("subscriptions",),
+        permissions=("Reader",),
+        savings_basis="none",
+        confidence="medium",  # ambiguous quota IDs (shared across agreements) need a live probe
+        framework="Data Ingestion",
+    )
+)
+def offer_cost_data(snap):
+    """Tells the reader which subscriptions cannot or may not have cost data, so cost checks are never silently empty."""
+    for s in snap.load("subscriptions")["rows"]:
+        c = billing.classify(s.get("quotaId"))
+        if c["cost_management"] == "supported":
+            continue
+        msg = {
+            "unsupported": "Cost Management holds no cost data for this subscription offer; cost-based checks cannot be assessed for it",
+            "depends": "Cost data may not be available: this quota ID is shared by supported and unsupported agreement types; confirm the billing account type",
+            "unknown": "Offer not recognised; cost data availability not assessed",
+        }[c["cost_management"]]
+        yield Finding(
+            "BILL-OFFER-01",
+            s["id"],
+            "info",
+            msg,
+            {"quotaId": c["quota_id"], "offer_note": c["note"], "cost_management": c["cost_management"]},
         )
