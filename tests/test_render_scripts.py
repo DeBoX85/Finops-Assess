@@ -11,7 +11,7 @@ import checkpoint
 def doc(tmp):
     snap = Snapshot(tmp / "s")
     snap.save("unattached_disks", {"rows": [{"id": "/d<1>", "sizeGB": 1, "skuName": "S"}]})
-    snap.save("subscriptions", {"rows": [{"id": "/s"}]})
+    snap.save("subscriptions", {"rows": [{"id": "/s", "quotaId": "EnterpriseAgreement_2014-09-01"}]})
     cfg = config.Config()
     f, st = checks.run_all(cfg, snap)
     m = manifest.build(cfg, {}, [], st, [], manifest.now(), manifest.now(), manifest.scope_summary(snap))

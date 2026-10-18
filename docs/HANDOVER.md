@@ -2,10 +2,10 @@
 Last updated: 2026-10-18 13:42 UTC
 <!-- auto:start -->
 Last checkpoint (UTC): 2026-10-18 13:42
-Base commit: ca44d9c
-Gates: FAIL
-Files changed in this checkpoint: 12
-narrative_hash: ca6ab02c42fc
+Base commit: 8804eba
+Gates: pass
+Files changed in this checkpoint: 2
+narrative_hash: d37a4241ba1f
 stale_count: 0
 <!-- auto:end -->
 
@@ -30,6 +30,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18 later: owner asked whether the cloud app is the right place to work. Answer: fine for the no-tenant phase; for live (G2) testing run the tool on the owner's laptop (az login) and decide how customer output is shared with Claude (confidentiality). Same repo and CLAUDE.md work on every Claude Code surface (docs read 2026-10-18). Owner decision pending on the live-testing setup.
 - 2026-10-18: Output audit Layer A BUILT (src/fcat/audit.py, 11 invariants, evidence + fingerprint per finding, report fingerprint, HTML/Excel/JSON audit section, CLI exit 3). Metamorphic tests added (row order, exclusions). Tests 54 pass.
 - 2026-10-18: Synthetic estate + golden report BUILT (scripts/make_synthetic.py, tests/test_golden.py). Formatting-only edits to a check change its logic hash and therefore the golden; re-approve with --approve and review the diff.
+- (Earlier checkpoint of this unit pushed to wip/auto only because one test needed a quotaId in its fixture; fixed in the next commit.)
 - 2026-10-18: Backlog 18 research done (KB note 10). Added src/fcat/billing.py, check BILL-OFFER-01, quotaId in subscriptions collector, golden updated (diff reviewed: only BILL additions). Key finding: CSP customers see RETAIL cost only and zero for reservation usage; Sponsorship and classic CSP have no Cost Management data. Open questions for owner in note 10 (not blocking).
 ## In progress
 Nothing half-done.
