@@ -32,6 +32,6 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 27. (DONE 2026-10-18) Refuse or warn when `--out` is inside a git work tree and not ignored (threat T-01).
 - 28. (DONE 2026-10-18) Test that no token string reaches any output file (T-02).
 - 29. (DONE 2026-10-18) Hostile-string test for the HTML dashboard (T-05).
-- 30. Redacted export mode and an output purge command (T-07).
+- 30. (DONE 2026-10-18: `--redact`, `fcat purge`) Redacted export mode and an output purge command (T-07).
 - 31. (DONE 2026-10-18) Dependency pinning and SBOM in the manifest (T-10).
 - 12/13 status: DESIGN DRAFTED 2026-10-18 (docs/DOCTOR.md, docs/THREAT-MODEL.md); nothing built except the xlsx formula-injection fix (T-04).

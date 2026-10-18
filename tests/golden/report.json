@@ -2310,6 +2310,7 @@
    "subscriptions_count": 0
   },
   "identity": {},
+  "redacted": false,
   "schema_version": "0.1",
   "scope": {
    "management_groups": 2,
