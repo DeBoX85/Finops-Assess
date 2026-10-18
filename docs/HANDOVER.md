@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:17 UTC
+Last updated: 2026-10-18 15:20 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:17
-Base commit: 756dc11
+Last checkpoint (UTC): 2026-10-18 15:20
+Base commit: dd52d83
 Gates: pass
-Files changed in this checkpoint: 12
-narrative_hash: 356942adebff
+Files changed in this checkpoint: 4
+narrative_hash: d0b104faaaa5
 stale_count: 0
 <!-- auto:end -->
 
@@ -46,6 +46,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: backlog 14 NOTICE audit done: upstream MIT text verified identical (whitespace aside), derived files listed, 15 locked dependencies with declared licences (certifi is MPL-2.0, unmodified), excluded-source name scan clean. Next: rightsizing design, 16 tailoring design, 20 mock-ups.
 - 2026-10-18: rightsizing design done (docs/RIGHTSIZING.md, Learn-verified Advisor/Migrate/metrics facts) and src/fcat/rightsize.py (pure, tested). Thresholds are my PROPOSAL (limit 60% projected P99 of hourly max), echoed in every result. Next: 16 tailoring config design, 20 dashboard mock-ups.
 - 2026-10-18: backlog 16 partly built: [report] config (title, subtitle, prepared_by/for, footer, accent, logo, hide), --branding FILE, manifest.report_options (golden updated), docs/TAILORING.md, tests/test_tailoring.py. Integrity rules: findings and audit result never hidden; hidden coverage becomes a one-line statement. Next: 20 dashboard mock-ups.
+- 2026-10-18: backlog 20 done: three static mock-ups in docs/mockups (brief for executives, ledger for consultants with filters, maturity view with 22 capabilities and no scores) from scripts/make_mockups.py. Checked at 1100 and 390 px, no overflow, no JS errors. Palette slots validated (dataviz validator, light). Owner taste review parked (#6). Round of 6 tasks complete.
 ## In progress
 Nothing half-done.
 ## Next step
