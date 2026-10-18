@@ -118,6 +118,13 @@ def estate():
             "osDiskId": base + "Compute/disks/vm-dealloc-os",
         },
         {"id": base + "Compute/virtualMachines/vm-run", "vmSize": "Standard_B2s", "powerState": "PowerState/running"},
+        {
+            "id": base + "Compute/virtualMachines/vm-unmanaged",
+            "vmSize": "Standard_D2s_v3",
+            "powerState": "PowerState/running",
+            "osDiskId": None,
+            "osDiskVhdUri": "https://stsynth.blob.core.windows.net/vhds/vm-unmanaged-os.vhd",
+        },
     ]
     P = lambda ips=0, adr=0: {"properties": {"backendIPConfigurations": [{}] * ips, "backendAddresses": [{}] * adr}}  # noqa: E731
     net = base + "Network/"
@@ -130,6 +137,7 @@ def estate():
         "app_gateways": [
             {"id": net + "applicationGateways/agw-empty", "skuName": "WAF_v2", "backendPools": [P()]},
             {"id": net + "applicationGateways/agw-ok", "skuName": "Standard_v2", "backendPools": [P(adr=1)]},
+            {"id": net + "applicationGateways/agw-v1", "skuName": "Standard_Medium", "skuTier": "Standard", "backendPools": [P(ips=1)]},
         ],
         "elastic_pools": [
             {"id": base + "Sql/servers/sql1/elasticPools/pool-empty", "skuName": "GP_Gen5"},
@@ -236,7 +244,104 @@ def estate():
             {"id": net + "privateEndpoints/pe-ok", "connState": "Approved"},
         ],
     }
+    sub4 = "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft."
+    batch5 = {
+        "vm_licensing": [
+            {
+                "id": base + "Compute/virtualMachines/win-payg",
+                "subscriptionId": "sub-synth-1",
+                "osType": "Windows",
+                "publisher": "MicrosoftWindowsServer",
+                "licenseType": None,
+                "resType": "microsoft.compute/virtualmachines",
+                "vmSize": "Standard_D4s_v5",
+            },
+            {
+                "id": base + "Compute/virtualMachines/win-ahb",
+                "subscriptionId": "sub-synth-1",
+                "osType": "Windows",
+                "publisher": "MicrosoftWindowsServer",
+                "licenseType": "Windows_Server",
+            },
+            {
+                "id": base + "Compute/virtualMachines/linux-1",
+                "subscriptionId": "sub-synth-1",
+                "osType": "Linux",
+                "publisher": "canonical",
+                "licenseType": None,
+            },
+            {
+                "id": sub4 + "Compute/virtualMachines/win-dev",
+                "subscriptionId": "sub-synth-4",
+                "osType": "Windows",
+                "publisher": "MicrosoftWindowsServer",
+                "licenseType": None,
+            },
+        ],
+        "sql_vms": [
+            {
+                "id": base + "SqlVirtualMachine/sqlVirtualMachines/sql-payg",
+                "subscriptionId": "sub-synth-1",
+                "sqlLicenseType": "PAYG",
+                "sqlImageSku": "Enterprise",
+                "sqlImageOffer": "SQL2022-WS2022",
+            },
+            {
+                "id": base + "SqlVirtualMachine/sqlVirtualMachines/sql-ahub",
+                "subscriptionId": "sub-synth-1",
+                "sqlLicenseType": "AHUB",
+                "sqlImageSku": "Enterprise",
+            },
+            {
+                "id": sub4 + "SqlVirtualMachine/sqlVirtualMachines/sql-dev",
+                "subscriptionId": "sub-synth-4",
+                "sqlLicenseType": "PAYG",
+                "sqlImageSku": "Standard",
+            },
+        ],
+        "aks_pools": [
+            {
+                "id": base + "ContainerService/managedClusters/aks-1",
+                "poolName": "system",
+                "poolMode": "System",
+                "autoScale": True,
+                "priority": None,
+            },
+            {
+                "id": base + "ContainerService/managedClusters/aks-1",
+                "poolName": "apps",
+                "poolMode": "User",
+                "autoScale": True,
+                "priority": None,
+                "vmSize": "Standard_D4s_v5",
+                "minCount": 2,
+                "maxCount": 8,
+                "nodeCount": 3,
+            },
+        ],
+        "advisor_cost": [
+            {
+                "id": base + "Advisor/recommendations/rec-resize",
+                "impact": "High",
+                "problem": "Right-size or shutdown underutilized virtual machines",
+                "solution": "Resize",
+                "status": "New",
+                "savingsAmount": 100.0,
+                "savingsCurrency": "USD",
+                "targetResourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run",
+            },
+            {
+                "id": base + "Advisor/recommendations/rec-dismissed",
+                "impact": "Medium",
+                "problem": "Buy reserved instances",
+                "status": "Dismissed",
+                "savingsAmount": 50.0,
+                "savingsCurrency": "USD",
+            },
+        ],
+    }
     return {
+        **batch5,
         **batch4,
         **batch3,
         **tier_a,

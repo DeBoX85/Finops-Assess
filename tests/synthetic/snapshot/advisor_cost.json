@@ -1,0 +1,25 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-resize",
+   "impact": "High",
+   "problem": "Right-size or shutdown underutilized virtual machines",
+   "savingsAmount": 100.0,
+   "savingsCurrency": "USD",
+   "solution": "Resize",
+   "status": "New",
+   "targetResourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-dismissed",
+   "impact": "Medium",
+   "problem": "Buy reserved instances",
+   "savingsAmount": 50.0,
+   "savingsCurrency": "USD",
+   "status": "Dismissed"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

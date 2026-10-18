@@ -57,7 +57,8 @@ KQL_VMS = (
     "| project id, name, subscriptionId, resourceGroup, location, vmSize=tostring(properties.hardwareProfile.vmSize), "
     "powerState=tostring(properties.extended.instanceView.powerState.code), "
     "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), "
-    "osDiskId=tostring(properties.storageProfile.osDisk.managedDisk.id), dataDisks=properties.storageProfile.dataDisks, tags | order by id asc"
+    "osDiskId=tostring(properties.storageProfile.osDisk.managedDisk.id), osDiskVhdUri=tostring(properties.storageProfile.osDisk.vhd.uri), "
+    "dataDisks=properties.storageProfile.dataDisks, tags | order by id asc"
 )
 
 # Batch 3 (backlog 7). Predicates re-read from the hub queries at finops-toolkit f12c29e on 2026-10-18; UNVERIFIED live.
@@ -129,6 +130,39 @@ KQL_PRIVATE_ENDPOINTS = _NET.format(
     ".properties.privateLinkServiceConnectionState.status), ",
 )
 
+# Batch 5 (2026-10-18). Hub queries VMsWithoutAHB, SQLVMsWithoutAHB, NonSpotAKSClusters, AdvisorCost (MIT, f12c29e); UNVERIFIED live.
+# VMs and scale sets share one query: VMSS keep their profile under properties.virtualMachineProfile.
+KQL_VM_LICENSING = (
+    "resources | where type =~ 'microsoft.compute/virtualmachines' or type =~ 'microsoft.compute/virtualmachinescalesets' "
+    "| project id, name, subscriptionId, resourceGroup, location, resType=type, "
+    "vmSize=tostring(coalesce(properties.hardwareProfile.vmSize, sku.name)), "
+    "osType=tostring(coalesce(properties.storageProfile.osDisk.osType, properties.virtualMachineProfile.storageProfile.osDisk.osType)), "
+    "publisher=tostring(coalesce(properties.storageProfile.imageReference.publisher, "
+    "properties.virtualMachineProfile.storageProfile.imageReference.publisher)), "
+    "licenseType=tostring(coalesce(properties.licenseType, properties.virtualMachineProfile.licenseType)), tags | order by id asc"
+)
+KQL_SQL_VMS = _NET.format(
+    t="microsoft.sqlvirtualmachine/sqlvirtualmachines",
+    f="sqlLicenseType=tostring(properties.sqlServerLicenseType), sqlImageSku=tostring(properties.sqlImageSku), "
+    "sqlImageOffer=tostring(properties.sqlImageOffer), vmResourceId=tostring(properties.virtualMachineResourceId), ",
+)
+KQL_AKS_POOLS = (
+    "resources | where type =~ 'microsoft.containerservice/managedclusters' | mv-expand pool = properties.agentPoolProfiles "
+    "| project id, name, subscriptionId, resourceGroup, location, poolName=tostring(pool.name), poolMode=tostring(pool.mode), "
+    "autoScale=tobool(pool.enableAutoScaling), priority=tostring(pool.scaleSetPriority), vmSize=tostring(pool.vmSize), "
+    "nodeCount=toint(pool['count']), minCount=toint(pool.minCount), maxCount=toint(pool.maxCount), tags | order by id asc"
+)
+# savingsAmount and savingsCurrency: Learn, Resource Graph samples for Advisor (read 2026-10-18). Period of savingsAmount is NOT stated there.
+KQL_ADVISOR_COST = (
+    "advisorresources | where type == 'microsoft.advisor/recommendations' | where properties.category == 'Cost' "
+    "| project id, subscriptionId, resourceGroup, impact=tostring(properties.impact), "
+    "problem=tostring(properties.shortDescription.problem), solution=tostring(properties.shortDescription.solution), "
+    "typeId=tostring(properties.recommendationTypeId), targetResourceId=tolower(tostring(properties.resourceMetadata.resourceId)), "
+    "impactedValue=tostring(properties.impactedValue), status=tostring(properties.recommendationStatus), "
+    "savingsAmount=todouble(properties.extendedProperties.savingsAmount), "
+    "savingsCurrency=tostring(properties.extendedProperties.savingsCurrency), lastUpdated=tostring(properties.lastUpdated) | order by id asc"
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
@@ -155,6 +189,10 @@ COLLECTORS = {
     "storage_accounts": KQL_STORAGE_ACCOUNTS,
     "private_dns_zones": KQL_PRIVATE_DNS,
     "private_endpoints": KQL_PRIVATE_ENDPOINTS,
+    "vm_licensing": KQL_VM_LICENSING,
+    "sql_vms": KQL_SQL_VMS,
+    "aks_pools": KQL_AKS_POOLS,
+    "advisor_cost": KQL_ADVISOR_COST,
 }
 
 

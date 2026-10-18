@@ -1,0 +1,73 @@
+{
+ "cases": [
+  {
+   "name": "autoscaling user regular pool reported per pool",
+   "snapshot": {
+    "aks_pools": {
+     "rows": [
+      {
+       "id": "/aks/1",
+       "poolName": "user1",
+       "poolMode": "User",
+       "autoScale": true,
+       "priority": null,
+       "vmSize": "Standard_D4s_v5",
+       "minCount": 1,
+       "maxCount": 5,
+       "nodeCount": 2
+      },
+      {
+       "id": "/aks/1",
+       "poolName": "user2",
+       "poolMode": "User",
+       "autoScale": true,
+       "priority": "Regular"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/aks/1/agentPools/user1",
+    "/aks/1/agentPools/user2"
+   ]
+  },
+  {
+   "name": "system, spot, fixed size, unknown not reported",
+   "snapshot": {
+    "aks_pools": {
+     "rows": [
+      {
+       "id": "/aks/2",
+       "poolName": "sys",
+       "poolMode": "System",
+       "autoScale": true,
+       "priority": null
+      },
+      {
+       "id": "/aks/2",
+       "poolName": "spot",
+       "poolMode": "User",
+       "autoScale": true,
+       "priority": "Spot"
+      },
+      {
+       "id": "/aks/2",
+       "poolName": "fixed",
+       "poolMode": "User",
+       "autoScale": false,
+       "priority": null
+      },
+      {
+       "id": "/aks/2",
+       "poolName": "unk",
+       "poolMode": "User",
+       "autoScale": null,
+       "priority": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

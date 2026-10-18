@@ -473,3 +473,210 @@ def disconnected_private_endpoints(snap):
     for r in _rows(snap, "private_endpoints"):
         if str(r.get("connState") or "").lower() == "disconnected":
             yield Finding("ORPH-PE-01", r["id"], "low", "Private endpoint connection is Disconnected", {"location": r.get("location")})
+
+
+# ---- Batch 5 (2026-10-18). Predicates from finops-toolkit hub queries (MIT, f12c29e, read 2026-10-18); retirement dates from Learn (read 2026-10-18).
+# All UNVERIFIED live. Retirement checks use positive evidence only (a retired SKU or an explicit VHD URI), never the absence of a property.
+def _cm(id_, domain, framework, title, *collectors, conf="medium", basis="none"):
+    return CheckMeta(
+        id=id_, domain=domain, title=title, collectors=collectors, permissions=("Reader",),
+        savings_basis=basis, confidence=conf, framework=framework,
+    )  # fmt: skip
+
+
+def _devtest_subs(snap) -> set:
+    return {
+        str(s.get("subscriptionId") or str(s.get("id")).split("/")[-1]).lower()
+        for s in _rows(snap, "subscriptions")
+        if "devtest" in str(s.get("quotaId") or "").lower()
+    }
+
+
+@check(
+    _cm(
+        "MOD-LBBAS-01",
+        "modernization",
+        "Architecting and Workload Placement",
+        "Load balancers on the retired Basic SKU",
+        "load_balancers",
+        conf="high",
+    )
+)
+def basic_load_balancers(snap):
+    """Learn (read 2026-10-18): Basic Load Balancer was retired on 2025-09-30. Existing ones keep running but are unsupported and have no SLA. Cloud Services
+    (extended support) is exempt per Learn; this check cannot tell (UNVERIFIED), so the message says so."""
+    for r in _rows(snap, "load_balancers"):
+        if str(r.get("skuName") or "").lower() == "basic":
+            yield Finding(
+                "MOD-LBBAS-01", r["id"], "medium", "Load balancer uses the Basic SKU, retired 2025-09-30 (no SLA); plan the upgrade to Standard",
+                {"location": r.get("location"), "note": "Cloud Services (extended support) is exempt per Learn; not detectable here"},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "MOD-PIPBAS-01",
+        "modernization",
+        "Architecting and Workload Placement",
+        "Public IP addresses on the retired Basic SKU",
+        "public_ips",
+        conf="high",
+    )
+)
+def basic_public_ips(snap):
+    """Learn (read 2026-10-18): Basic SKU public IPs were retired on 2025-09-30. A Microsoft Q&A answer says IPs on Application Gateway v1 and on Basic VPN gateways
+    followed other dates (UNVERIFIED, Q&A is not official documentation), so the message does not state an urgency for those."""
+    for r in _rows(snap, "public_ips"):
+        if str(r.get("skuName") or "").lower() == "basic":
+            yield Finding(
+                "MOD-PIPBAS-01", r["id"], "medium", "Public IP uses the Basic SKU, retired 2025-09-30; plan the upgrade to Standard",
+                {"location": r.get("location"), "allocation": r.get("allocation")},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "MOD-AGWV1-01",
+        "modernization",
+        "Architecting and Workload Placement",
+        "Application gateways on the retired v1 SKU",
+        "app_gateways",
+        conf="high",
+    )
+)
+def app_gateways_v1(snap):
+    """Learn (read 2026-10-18): Application Gateway V1 retired on 2026-04-28; remaining V1 gateways can be blocked and deleted by Microsoft. Hub query rule: tier Standard or WAF
+    (v2 tiers are Standard_v2 and WAF_v2)."""
+    for r in _rows(snap, "app_gateways"):
+        if str(r.get("skuTier") or "").lower() in ("standard", "waf"):
+            yield Finding(
+                "MOD-AGWV1-01", r["id"], "medium", f"Application gateway uses the retired v1 SKU ({r.get('skuTier')}); migrate to v2",
+                {"location": r.get("location"), "skuName": r.get("skuName"), "skuTier": r.get("skuTier"), "skuCapacity": r.get("skuCapacity")},
+            )  # fmt: skip
+
+
+@check(_cm("MOD-VMUNMG-01", "modernization", "Architecting and Workload Placement", "VMs using unmanaged disks", "vms", conf="medium"))
+def vms_with_unmanaged_disks(snap):
+    """Learn (read 2026-10-18): unmanaged disks fully retired 2026-03-31 (extended from 2025-09-30); VMs that use them cannot be started. The hub query tests for a
+    null managed disk; this check requires a positive VHD URI on the OS disk or a data disk instead, so a missing property is 'unknown', not a finding."""
+    for v in _rows(snap, "vms"):
+        dd = v.get("dataDisks") if isinstance(v.get("dataDisks"), list) else []
+        data_vhd = any(isinstance(d, dict) and isinstance(d.get("vhd"), dict) and not _blank(d["vhd"].get("uri")) for d in dd)
+        if not _blank(v.get("osDiskVhdUri")) or data_vhd:
+            yield Finding(
+                "MOD-VMUNMG-01", v["id"], "medium", "VM uses unmanaged (VHD blob) disks, retired 2026-03-31; migrate to managed disks",
+                {"vmSize": v.get("vmSize"), "os_disk_unmanaged": not _blank(v.get("osDiskVhdUri")), "data_disk_unmanaged": data_vhd},
+            )  # fmt: skip
+
+
+@check(
+    _cm(
+        "LIC-AHBWIN-01",
+        "licensing",
+        "Licensing and SaaS",
+        "Windows VMs and scale sets without Azure Hybrid Benefit",
+        "vm_licensing",
+        "subscriptions",
+        conf="low",
+    )
+)
+def windows_without_ahb(snap):
+    """Hub query rule: OS type Windows, image publisher not microsoftwindowsdesktop or microsoftvisualstudio, license type not starting with 'Windows'
+    (Windows_Server is Azure Hybrid Benefit, Windows_Client is multi-tenant hosting; Learn read 2026-10-18). Dev/Test subscriptions are skipped (quota id contains 'devtest';
+    broader than the hub query, which excludes only MSDNDevTest, to avoid false positives). Whether the customer holds eligible licences with Software Assurance
+    cannot be read from Azure, so confidence is low and the wording is 'review'. No cost figure: Learn says at least 8 core licences per VM apply; vCPU needs another call."""
+    dev = _devtest_subs(snap)
+    for r in _rows(snap, "vm_licensing"):
+        if str(r.get("osType") or "").lower() != "windows" or str(r.get("subscriptionId") or "").lower() in dev:
+            continue
+        if str(r.get("publisher") or "").lower() in ("microsoftwindowsdesktop", "microsoftvisualstudio"):
+            continue
+        if str(r.get("licenseType") or "").lower().startswith("windows"):
+            continue
+        yield Finding(
+            "LIC-AHBWIN-01", r["id"], "low", "Windows workload is not using Azure Hybrid Benefit: review whether eligible licences with Software Assurance exist",
+            {"resType": r.get("resType"), "vmSize": r.get("vmSize"), "licenseType": r.get("licenseType")},
+        )  # fmt: skip
+
+
+@check(
+    _cm(
+        "LIC-AHBSQL-01",
+        "licensing",
+        "Licensing and SaaS",
+        "SQL Server VMs on pay-as-you-go licensing",
+        "sql_vms",
+        "subscriptions",
+        conf="low",
+    )
+)
+def sql_vms_without_ahb(snap):
+    """Hub query rule: sqlServerLicenseType other than AHUB and edition not Developer or Express. Here only an explicit PAYG counts: DR (free DR replica licence, Learn read
+    2026-10-18) and unknown values are not reported, and an unknown edition is skipped. Dev/Test subscriptions skipped. Eligibility cannot be read from Azure, so wording is 'review'."""
+    dev = _devtest_subs(snap)
+    for r in _rows(snap, "sql_vms"):
+        sku = str(r.get("sqlImageSku") or "").lower()
+        if str(r.get("sqlLicenseType") or "").upper() != "PAYG" or not sku or sku in ("developer", "express"):
+            continue
+        if str(r.get("subscriptionId") or "").lower() in dev:
+            continue
+        yield Finding(
+            "LIC-AHBSQL-01", r["id"], "low", f"SQL Server VM ({r.get('sqlImageSku')}) pays per use: review Azure Hybrid Benefit eligibility",
+            {"sqlImageSku": r.get("sqlImageSku"), "sqlImageOffer": r.get("sqlImageOffer"), "licenseType": r.get("sqlLicenseType")},
+        )  # fmt: skip
+
+
+@check(_cm("OPT-AKSSPT-01", "optimization", "Rate Optimization", "AKS autoscaling user pools not using Spot", "aks_pools", conf="low"))
+def aks_pools_not_spot(snap):
+    """Hub query idea: autoscaling pool without Spot. Learn (read 2026-10-18): Spot pools must be user pools (never system), have no SLA and are evicted, and suit only
+    interruptible work. So this is a prompt to ask the owner, severity info, confidence low; only User-mode autoscaling pools are listed. No saving is claimed."""
+    for r in _rows(snap, "aks_pools"):
+        if (
+            r.get("autoScale") is True
+            and str(r.get("poolMode") or "").lower() == "user"
+            and str(r.get("priority") or "").lower() in ("", "regular")
+        ):
+            yield Finding(
+                "OPT-AKSSPT-01", f"{r['id']}/agentPools/{r.get('poolName')}", "info",
+                "Autoscaling user node pool uses regular VMs: ask whether any of its workloads can tolerate Spot evictions",
+                {"vmSize": r.get("vmSize"), "minCount": r.get("minCount"), "maxCount": r.get("maxCount"), "nodeCount": r.get("nodeCount")},
+            )  # fmt: skip
+
+
+ADVISOR_SEVERITY = {"high": "medium", "medium": "low", "low": "info"}
+ADVISOR_OPEN_STATES = ("", "new", "inprogress")
+
+
+@check(
+    _cm(
+        "ADV-COST-01",
+        "advisor",
+        "Usage Optimization",
+        "Azure Advisor cost recommendations (pass-through)",
+        "advisor_cost",
+        conf="medium",
+        basis="estimate",
+    )
+)
+def advisor_cost(snap):
+    """Pass-through of Microsoft's own recommendations, labelled as such. Advisor's savings figure is reported as 'advisor_reported_savings' with its currency and is NOT
+    verified by this tool; Learn (read 2026-10-18) does not state its period, and says it uses retail rates and overlapping data sets, so figures must not be summed.
+    Completed, Postponed and Dismissed recommendations are skipped (field recommendationStatus; an absent field counts as open)."""
+    for r in _rows(snap, "advisor_cost"):
+        if str(r.get("status") or "").lower() not in ADVISOR_OPEN_STATES:
+            continue
+        sav = r.get("savingsAmount")
+        yield Finding(
+            "ADV-COST-01", r["id"], ADVISOR_SEVERITY.get(str(r.get("impact") or "").lower(), "info"),
+            f"Advisor: {_text(r.get('problem')) or 'cost recommendation'}",
+            {
+                "source": "Azure Advisor",
+                "solution": r.get("solution"),
+                "typeId": r.get("typeId"),
+                "target": r.get("targetResourceId") or r.get("impactedValue"),
+                "advisor_reported_savings": sav if isinstance(sav, (int, float)) and not isinstance(sav, bool) else None,
+                "advisor_savings_currency": r.get("savingsCurrency"),
+                "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+                "lastUpdated": r.get("lastUpdated"),
+            },
+        )  # fmt: skip

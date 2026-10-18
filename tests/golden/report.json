@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "c181fa29c7e88399",
+  "report_hash": "c54da3fea4934808",
   "status": "pass",
   "version": "0.1"
  },
@@ -546,9 +546,189 @@
    "savings_basis": "none",
    "title": "Private endpoints in Disconnected state",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "load_balancers"
+   ],
+   "confidence": "high",
+   "domain": "modernization",
+   "framework": "Architecting and Workload Placement",
+   "id": "MOD-LBBAS-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Load balancers on the retired Basic SKU",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "public_ips"
+   ],
+   "confidence": "high",
+   "domain": "modernization",
+   "framework": "Architecting and Workload Placement",
+   "id": "MOD-PIPBAS-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Public IP addresses on the retired Basic SKU",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "app_gateways"
+   ],
+   "confidence": "high",
+   "domain": "modernization",
+   "framework": "Architecting and Workload Placement",
+   "id": "MOD-AGWV1-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Application gateways on the retired v1 SKU",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vms"
+   ],
+   "confidence": "medium",
+   "domain": "modernization",
+   "framework": "Architecting and Workload Placement",
+   "id": "MOD-VMUNMG-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "VMs using unmanaged disks",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vm_licensing",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "licensing",
+   "framework": "Licensing and SaaS",
+   "id": "LIC-AHBWIN-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Windows VMs and scale sets without Azure Hybrid Benefit",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "sql_vms",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "licensing",
+   "framework": "Licensing and SaaS",
+   "id": "LIC-AHBSQL-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "SQL Server VMs on pay-as-you-go licensing",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "aks_pools"
+   ],
+   "confidence": "low",
+   "domain": "optimization",
+   "framework": "Rate Optimization",
+   "id": "OPT-AKSSPT-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "AKS autoscaling user pools not using Spot",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "advisor_cost"
+   ],
+   "confidence": "medium",
+   "domain": "advisor",
+   "framework": "Usage Optimization",
+   "id": "ADV-COST-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "estimate",
+   "title": "Azure Advisor cost recommendations (pass-through)",
+   "validation": "offline-only"
   }
  ],
  "findings": [
+  {
+   "check_id": "ADV-COST-01",
+   "details": {
+    "advisor_reported_savings": 100.0,
+    "advisor_savings_currency": "USD",
+    "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+    "lastUpdated": null,
+    "solution": "Resize",
+    "source": "Azure Advisor",
+    "target": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run",
+    "typeId": null
+   },
+   "evidence": {
+    "collectors": [
+     "advisor_cost"
+    ],
+    "logic_hash": "70cc502fd2b8",
+    "snapshot_digests": {
+     "advisor_cost": "67e88bd12902"
+    }
+   },
+   "fingerprint": "f4b89c1fdd0b922e",
+   "message": "Advisor: Right-size or shutdown underutilized virtual machines",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-resize",
+   "severity": "medium"
+  },
   {
    "check_id": "BILL-OFFER-01",
    "details": {
@@ -607,7 +787,7 @@
     "logic_hash": "daafcff00b1a",
     "snapshot_digests": {
      "all_disks": "ed46c46eaf6f",
-     "vms": "1ababd48ce4b"
+     "vms": "9e6a9bc0c00b"
     }
    },
    "fingerprint": "6eb830ed1dc2b19a",
@@ -628,12 +808,120 @@
     ],
     "logic_hash": "64384817e502",
     "snapshot_digests": {
-     "vms": "1ababd48ce4b"
+     "vms": "9e6a9bc0c00b"
     }
    },
    "fingerprint": "254e29bb8cd755b9",
    "message": "VM (Standard_D4s_v5) is stopped but not deallocated, so compute is likely still billed",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
+   "severity": "medium"
+  },
+  {
+   "check_id": "LIC-AHBSQL-01",
+   "details": {
+    "licenseType": "PAYG",
+    "sqlImageOffer": "SQL2022-WS2022",
+    "sqlImageSku": "Enterprise"
+   },
+   "evidence": {
+    "collectors": [
+     "sql_vms",
+     "subscriptions"
+    ],
+    "logic_hash": "ede9e01be5e3",
+    "snapshot_digests": {
+     "sql_vms": "a1133aec2932",
+     "subscriptions": "6d3c3a547749"
+    }
+   },
+   "fingerprint": "d1a0714d4eb2adde",
+   "message": "SQL Server VM (Enterprise) pays per use: review Azure Hybrid Benefit eligibility",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/sql-payg",
+   "severity": "low"
+  },
+  {
+   "check_id": "LIC-AHBWIN-01",
+   "details": {
+    "licenseType": null,
+    "resType": "microsoft.compute/virtualmachines",
+    "vmSize": "Standard_D4s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "vm_licensing",
+     "subscriptions"
+    ],
+    "logic_hash": "92599fc610ea",
+    "snapshot_digests": {
+     "subscriptions": "6d3c3a547749",
+     "vm_licensing": "d895b50b011a"
+    }
+   },
+   "fingerprint": "64d8a7245ae4393e",
+   "message": "Windows workload is not using Azure Hybrid Benefit: review whether eligible licences with Software Assurance exist",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-payg",
+   "severity": "low"
+  },
+  {
+   "check_id": "MOD-AGWV1-01",
+   "details": {
+    "location": null,
+    "skuCapacity": null,
+    "skuName": "Standard_Medium",
+    "skuTier": "Standard"
+   },
+   "evidence": {
+    "collectors": [
+     "app_gateways"
+    ],
+    "logic_hash": "51d2a0a1f27a",
+    "snapshot_digests": {
+     "app_gateways": "d299553a8662"
+    }
+   },
+   "fingerprint": "dfca60d1d3282d76",
+   "message": "Application gateway uses the retired v1 SKU (Standard); migrate to v2",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-v1",
+   "severity": "medium"
+  },
+  {
+   "check_id": "MOD-LBBAS-01",
+   "details": {
+    "location": null,
+    "note": "Cloud Services (extended support) is exempt per Learn; not detectable here"
+   },
+   "evidence": {
+    "collectors": [
+     "load_balancers"
+    ],
+    "logic_hash": "befd46e3b827",
+    "snapshot_digests": {
+     "load_balancers": "f54f24e18a1f"
+    }
+   },
+   "fingerprint": "00247836b38b50f7",
+   "message": "Load balancer uses the Basic SKU, retired 2025-09-30 (no SLA); plan the upgrade to Standard",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/loadBalancers/lb-basic",
+   "severity": "medium"
+  },
+  {
+   "check_id": "MOD-PIPBAS-01",
+   "details": {
+    "allocation": "Dynamic",
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "public_ips"
+    ],
+    "logic_hash": "c8dd57394ad0",
+    "snapshot_digests": {
+     "public_ips": "abb04f7d284f"
+    }
+   },
+   "fingerprint": "52bf4ed3552ac086",
+   "message": "Public IP uses the Basic SKU, retired 2025-09-30; plan the upgrade to Standard",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-2",
    "severity": "medium"
   },
   {
@@ -656,6 +944,27 @@
    "message": "Storage account kind Storage is a legacy kind",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stlegacy",
    "severity": "low"
+  },
+  {
+   "check_id": "MOD-VMUNMG-01",
+   "details": {
+    "data_disk_unmanaged": false,
+    "os_disk_unmanaged": true,
+    "vmSize": "Standard_D2s_v3"
+   },
+   "evidence": {
+    "collectors": [
+     "vms"
+    ],
+    "logic_hash": "8627008a7b39",
+    "snapshot_digests": {
+     "vms": "9e6a9bc0c00b"
+    }
+   },
+   "fingerprint": "dc0256a1f4dbcc5f",
+   "message": "VM uses unmanaged (VHD blob) disks, retired 2026-03-31; migrate to managed disks",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-unmanaged",
+   "severity": "medium"
   },
   {
    "check_id": "MON-AICLS-01",
@@ -698,6 +1007,28 @@
    "severity": "info"
   },
   {
+   "check_id": "OPT-AKSSPT-01",
+   "details": {
+    "maxCount": 8,
+    "minCount": 2,
+    "nodeCount": 3,
+    "vmSize": "Standard_D4s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "aks_pools"
+    ],
+    "logic_hash": "57f5cf97ee60",
+    "snapshot_digests": {
+     "aks_pools": "4a709e48eada"
+    }
+   },
+   "fingerprint": "9b7869de0e1f6da7",
+   "message": "Autoscaling user node pool uses regular VMs: ask whether any of its workloads can tolerate Spot evictions",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.ContainerService/managedClusters/aks-1/agentPools/apps",
+   "severity": "info"
+  },
+  {
    "check_id": "ORPH-AGW-01",
    "details": {
     "location": null,
@@ -711,7 +1042,7 @@
     ],
     "logic_hash": "9b9ed01c9e71",
     "snapshot_digests": {
-     "app_gateways": "44461629e3c4"
+     "app_gateways": "d299553a8662"
     }
    },
    "fingerprint": "6a3c0e1bd3287d5e",
@@ -2755,6 +3086,46 @@
    {
     "findings": 1,
     "id": "ORPH-PE-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MOD-LBBAS-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MOD-PIPBAS-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MOD-AGWV1-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MOD-VMUNMG-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "LIC-AHBWIN-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "LIC-AHBSQL-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "OPT-AKSSPT-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ADV-COST-01",
     "status": "ran"
    }
   ],

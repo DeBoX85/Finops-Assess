@@ -1,0 +1,49 @@
+{
+ "cases": [
+  {
+   "name": "v1 tiers reported",
+   "snapshot": {
+    "app_gateways": {
+     "rows": [
+      {
+       "id": "/g/1",
+       "skuTier": "Standard",
+       "skuName": "Standard_Medium"
+      },
+      {
+       "id": "/g/2",
+       "skuTier": "WAF",
+       "skuName": "WAF_Large"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/g/1",
+    "/g/2"
+   ]
+  },
+  {
+   "name": "v2 and unknown not reported",
+   "snapshot": {
+    "app_gateways": {
+     "rows": [
+      {
+       "id": "/g/3",
+       "skuTier": "Standard_v2"
+      },
+      {
+       "id": "/g/4",
+       "skuTier": "WAF_v2"
+      },
+      {
+       "id": "/g/5",
+       "skuTier": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

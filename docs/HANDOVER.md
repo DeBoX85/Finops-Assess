@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:20 UTC
+Last updated: 2026-10-18 15:32 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:20
-Base commit: dd52d83
+Last checkpoint (UTC): 2026-10-18 15:32
+Base commit: 1dd358c
 Gates: pass
-Files changed in this checkpoint: 4
-narrative_hash: d0b104faaaa5
+Files changed in this checkpoint: 29
+narrative_hash: d90d706594e5
 stale_count: 0
 <!-- auto:end -->
 
@@ -47,6 +47,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: rightsizing design done (docs/RIGHTSIZING.md, Learn-verified Advisor/Migrate/metrics facts) and src/fcat/rightsize.py (pure, tested). Thresholds are my PROPOSAL (limit 60% projected P99 of hourly max), echoed in every result. Next: 16 tailoring config design, 20 dashboard mock-ups.
 - 2026-10-18: backlog 16 partly built: [report] config (title, subtitle, prepared_by/for, footer, accent, logo, hide), --branding FILE, manifest.report_options (golden updated), docs/TAILORING.md, tests/test_tailoring.py. Integrity rules: findings and audit result never hidden; hidden coverage becomes a one-line statement. Next: 20 dashboard mock-ups.
 - 2026-10-18: backlog 20 done: three static mock-ups in docs/mockups (brief for executives, ledger for consultants with filters, maturity view with 22 capabilities and no scores) from scripts/make_mockups.py. Checked at 1100 and 390 px, no overflow, no JS errors. Palette slots validated (dataviz validator, light). Owner taste review parked (#6). Round of 6 tasks complete.
+- 2026-10-18: parity batch 1 done (8 checks, 32 total, all offline-only): MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01, MOD-VMUNMG-01 (retirement dates from Learn), LIC-AHBWIN-01, LIC-AHBSQL-01 (eligibility unreadable, confidence low, no savings), OPT-AKSSPT-01 (prompt only), ADV-COST-01 (Advisor figure labelled, never summed, period unstated). New collectors vm_licensing, sql_vms, aks_pools, advisor_cost; vms gained osDiskVhdUri. Golden 101 (hand-derived +2 +6). Test change: locality test skips duplicate-id expanded rows. Next: batch 2 (Cosmos, Synapse, Firewall Premium, backups/vault).
 ## In progress
 Nothing half-done.
 ## Next step

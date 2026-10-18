@@ -1,0 +1,37 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-payg",
+   "licenseType": null,
+   "osType": "Windows",
+   "publisher": "MicrosoftWindowsServer",
+   "resType": "microsoft.compute/virtualmachines",
+   "subscriptionId": "sub-synth-1",
+   "vmSize": "Standard_D4s_v5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-ahb",
+   "licenseType": "Windows_Server",
+   "osType": "Windows",
+   "publisher": "MicrosoftWindowsServer",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/linux-1",
+   "licenseType": null,
+   "osType": "Linux",
+   "publisher": "canonical",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-dev",
+   "licenseType": null,
+   "osType": "Windows",
+   "publisher": "MicrosoftWindowsServer",
+   "subscriptionId": "sub-synth-4"
+  }
+ ],
+ "total_records": 4,
+ "warnings": []
+}

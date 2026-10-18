@@ -95,7 +95,10 @@ def test_removing_primary_rows_does_not_change_other_findings(meta, fn, tmp_path
         full = _run(fn, _load(tmp_path, c["snapshot"], f"full{ci}"))
         if full == "not_assessed" or len(rows) < 2:
             continue
+        ids = [r.get("id") for r in rows]
         for drop in range(len(rows)):
+            if ids.count(ids[drop]) > 1:
+                continue  # expanded rows (one row per AKS pool) share an id; dropping one changes that resource's own findings by design
             snap = copy.deepcopy(c["snapshot"])
             gone = snap[primary]["rows"].pop(drop)["id"]
             part = _run(fn, _load(tmp_path, snap, f"p{ci}_{drop}"))
@@ -157,6 +160,7 @@ def test_every_column_a_check_reads_exists_in_its_kql():
         "cost_management",
         "properties",
         "managedDisk",
+        "vhd",
     }  # not row columns: result key and nested ARM keys read inside dynamic columns
     read = set(re.findall(r'\b(?:r|d|s|n|v|p|c)\.get\("(\w+)"', src)) | set(re.findall(r'\b(?:r|d|s|n|v)\["(\w+)"\]', src))
     assert read, "parser found nothing; test is broken"

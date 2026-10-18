@@ -1,0 +1,25 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "autoScale": true,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.ContainerService/managedClusters/aks-1",
+   "poolMode": "System",
+   "poolName": "system",
+   "priority": null
+  },
+  {
+   "autoScale": true,
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.ContainerService/managedClusters/aks-1",
+   "maxCount": 8,
+   "minCount": 2,
+   "nodeCount": 3,
+   "poolMode": "User",
+   "poolName": "apps",
+   "priority": null,
+   "vmSize": "Standard_D4s_v5"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

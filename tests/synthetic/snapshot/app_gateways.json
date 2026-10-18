@@ -26,8 +26,23 @@
    ],
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-ok",
    "skuName": "Standard_v2"
+  },
+  {
+   "backendPools": [
+    {
+     "properties": {
+      "backendAddresses": [],
+      "backendIPConfigurations": [
+       {}
+      ]
+     }
+    }
+   ],
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/applicationGateways/agw-v1",
+   "skuName": "Standard_Medium",
+   "skuTier": "Standard"
   }
  ],
- "total_records": 2,
+ "total_records": 3,
  "warnings": []
 }

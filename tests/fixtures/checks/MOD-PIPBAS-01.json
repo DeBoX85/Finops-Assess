@@ -1,0 +1,39 @@
+{
+ "cases": [
+  {
+   "name": "basic ip reported",
+   "snapshot": {
+    "public_ips": {
+     "rows": [
+      {
+       "id": "/p/1",
+       "skuName": "Basic",
+       "allocation": "Dynamic"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/p/1"
+   ]
+  },
+  {
+   "name": "standard and unknown not reported",
+   "snapshot": {
+    "public_ips": {
+     "rows": [
+      {
+       "id": "/p/2",
+       "skuName": "Standard"
+      },
+      {
+       "id": "/p/3",
+       "skuName": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

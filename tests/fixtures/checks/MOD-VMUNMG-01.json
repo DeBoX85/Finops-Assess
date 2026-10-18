@@ -1,0 +1,62 @@
+{
+ "cases": [
+  {
+   "name": "os vhd or data vhd reported",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "osDiskVhdUri": "https://sa.blob.core.windows.net/vhds/os.vhd",
+       "dataDisks": []
+      },
+      {
+       "id": "/v/2",
+       "osDiskVhdUri": "",
+       "osDiskId": "/d/1",
+       "dataDisks": [
+        {
+         "vhd": {
+          "uri": "https://sa/x.vhd"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/2"
+   ]
+  },
+  {
+   "name": "managed and unknown not reported",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/3",
+       "osDiskId": "/d/2",
+       "osDiskVhdUri": "",
+       "dataDisks": [
+        {
+         "managedDisk": {
+          "id": "/d/3"
+         }
+        }
+       ]
+      },
+      {
+       "id": "/v/4",
+       "osDiskId": null,
+       "osDiskVhdUri": null,
+       "dataDisks": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

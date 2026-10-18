@@ -60,6 +60,18 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Unattached network interfaces | DONE-OFFLINE | ORPH-NIC-01 | Severity low; NIC has no direct charge (UNVERIFIED) |
 | Empty network security groups | DONE-OFFLINE | ORPH-NSG-01 | Severity low, hygiene |
 
+## Hub queries added in batch 5 (2026-10-18, hub commit f12c29e)
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| Basic load balancers (retired 2025-09-30, Learn) | DONE-OFFLINE | MOD-LBBAS-01 | Hub query BasicLoadBalancers |
+| Basic public IPs (retired 2025-09-30, Learn) | DONE-OFFLINE | MOD-PIPBAS-01 | Hub query BasicPublicIPs; other timelines for IPs on App Gateway v1 or Basic VPN gateways are UNVERIFIED (Q&A only) |
+| Application Gateway v1 (retired 2026-04-28, Learn) | DONE-OFFLINE | MOD-AGWV1-01 | Hub query ClassicAppGateways |
+| Unmanaged disks (retired 2026-03-31, Learn) | DONE-OFFLINE | MOD-VMUNMG-01 | Hub query UnmanagedDisks tests for null; ours needs a positive VHD URI (DIFFERENT on purpose) |
+| Windows VMs and VMSS without Hybrid Benefit | DONE-OFFLINE | LIC-AHBWIN-01 | Hub query VMsWithoutAHB; Dev/Test exclusion broader; no vCPU or saving (needs Compute SKUs call and list price) |
+| SQL Server VMs without Hybrid Benefit | DONE-OFFLINE | LIC-AHBSQL-01 | Hub query SQLVMsWithoutAHB; DR licence type and unknown values are not reported |
+| AKS autoscaling pools not on Spot | DIFFERENT | OPT-AKSSPT-01 | Hub query NonSpotAKSClusters; ours lists user pools only (Spot cannot be system pools, Learn), info severity, a prompt not a finding |
+| Advisor cost recommendations | DONE-OFFLINE | ADV-COST-01 | Hub query AdvisorCost; pass-through, Advisor's own savings figure labelled and never summed |
+
 ## Beyond the workbooks (F-CAT only, today)
 Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
 

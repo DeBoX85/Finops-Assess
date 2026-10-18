@@ -62,4 +62,14 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["ORPH-PDNS-01"] == {"privatelink.unused.example"}
     assert by["ORPH-PE-01"] == {"pe-dead"}
     assert by["ORPH-ASP-01"] == {"asp-empty"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7
+    # batch 5, hand-derived: Basic LB and Basic IP also count under the retirement checks; v1 gateway; VHD-backed VM; Windows and SQL PAYG outside Dev/Test
+    # (win-ahb, sql-ahub, linux-1, win-dev and sql-dev must NOT appear); only the user autoscale pool; only the open Advisor recommendation
+    assert by["MOD-LBBAS-01"] == {"lb-basic"}
+    assert by["MOD-PIPBAS-01"] == {"pip-orphan-2"}
+    assert by["MOD-AGWV1-01"] == {"agw-v1"}
+    assert by["MOD-VMUNMG-01"] == {"vm-unmanaged"}
+    assert by["LIC-AHBWIN-01"] == {"win-payg"}
+    assert by["LIC-AHBSQL-01"] == {"sql-payg"}
+    assert by["OPT-AKSSPT-01"] == {"apps"}
+    assert by["ADV-COST-01"] == {"rec-resize"}
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6

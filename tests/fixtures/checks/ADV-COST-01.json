@@ -1,0 +1,70 @@
+{
+ "cases": [
+  {
+   "name": "open recommendations reported",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "impact": "High",
+       "problem": "Right-size VM",
+       "solution": "Resize",
+       "savingsAmount": 120.5,
+       "savingsCurrency": "USD",
+       "status": "New",
+       "targetResourceId": "/subscriptions/s1/resourcegroups/rg/providers/microsoft.compute/virtualmachines/vm1"
+      },
+      {
+       "id": "/a/2",
+       "impact": "Low",
+       "problem": "x",
+       "status": null,
+       "savingsAmount": null
+      },
+      {
+       "id": "/a/3",
+       "impact": "Medium",
+       "problem": "y",
+       "status": "InProgress",
+       "savingsAmount": "12"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1",
+    "/a/2",
+    "/a/3"
+   ]
+  },
+  {
+   "name": "closed states not reported",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/4",
+       "impact": "High",
+       "problem": "p",
+       "status": "Completed"
+      },
+      {
+       "id": "/a/5",
+       "impact": "High",
+       "problem": "p",
+       "status": "Dismissed"
+      },
+      {
+       "id": "/a/6",
+       "impact": "High",
+       "problem": "p",
+       "status": "Postponed"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

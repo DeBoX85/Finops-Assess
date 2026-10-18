@@ -1,0 +1,26 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/sql-payg",
+   "sqlImageOffer": "SQL2022-WS2022",
+   "sqlImageSku": "Enterprise",
+   "sqlLicenseType": "PAYG",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/sql-ahub",
+   "sqlImageSku": "Enterprise",
+   "sqlLicenseType": "AHUB",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/sql-dev",
+   "sqlImageSku": "Standard",
+   "sqlLicenseType": "PAYG",
+   "subscriptionId": "sub-synth-4"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

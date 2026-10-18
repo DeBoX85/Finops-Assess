@@ -1,0 +1,120 @@
+{
+ "cases": [
+  {
+   "name": "windows without ahb reported incl scale set",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      }
+     ]
+    },
+    "vm_licensing": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "subscriptionId": "s1",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": null,
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/2",
+       "subscriptionId": "S1",
+       "osType": "windows",
+       "publisher": "",
+       "licenseType": "None",
+       "resType": "microsoft.compute/virtualmachinescalesets"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/2"
+   ]
+  },
+  {
+   "name": "ahb, client, desktop image, linux, devtest, unknown os not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s2",
+       "subscriptionId": "s2",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s3",
+       "subscriptionId": "s3",
+       "quotaId": "CSPDevTest_2018-05-01"
+      }
+     ]
+    },
+    "vm_licensing": {
+     "rows": [
+      {
+       "id": "/v/3",
+       "subscriptionId": "s1",
+       "osType": "Windows",
+       "publisher": "x",
+       "licenseType": "Windows_Server"
+      },
+      {
+       "id": "/v/4",
+       "subscriptionId": "s1",
+       "osType": "Windows",
+       "publisher": "x",
+       "licenseType": "Windows_Client"
+      },
+      {
+       "id": "/v/5",
+       "subscriptionId": "s1",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsDesktop",
+       "licenseType": null
+      },
+      {
+       "id": "/v/6",
+       "subscriptionId": "s1",
+       "osType": "Linux",
+       "publisher": "canonical",
+       "licenseType": null
+      },
+      {
+       "id": "/v/7",
+       "subscriptionId": "s2",
+       "osType": "Windows",
+       "publisher": "x",
+       "licenseType": null
+      },
+      {
+       "id": "/v/8",
+       "subscriptionId": "s3",
+       "osType": "Windows",
+       "publisher": "x",
+       "licenseType": null
+      },
+      {
+       "id": "/v/9",
+       "subscriptionId": "s1",
+       "osType": null,
+       "publisher": "x",
+       "licenseType": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

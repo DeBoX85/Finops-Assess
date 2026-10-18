@@ -1,0 +1,47 @@
+{
+ "cases": [
+  {
+   "name": "basic reported, case-insensitive",
+   "snapshot": {
+    "load_balancers": {
+     "rows": [
+      {
+       "id": "/lb/1",
+       "skuName": "Basic"
+      },
+      {
+       "id": "/lb/2",
+       "skuName": "basic"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/lb/1",
+    "/lb/2"
+   ]
+  },
+  {
+   "name": "standard gateway and unknown not reported",
+   "snapshot": {
+    "load_balancers": {
+     "rows": [
+      {
+       "id": "/lb/3",
+       "skuName": "Standard"
+      },
+      {
+       "id": "/lb/4",
+       "skuName": "Gateway"
+      },
+      {
+       "id": "/lb/5",
+       "skuName": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

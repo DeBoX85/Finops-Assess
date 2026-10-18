@@ -1,0 +1,105 @@
+{
+ "cases": [
+  {
+   "name": "payg paid edition reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "sql_vms": {
+     "rows": [
+      {
+       "id": "/q/1",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "PAYG",
+       "sqlImageSku": "Enterprise",
+       "sqlImageOffer": "SQL2022-WS2022"
+      },
+      {
+       "id": "/q/2",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "payg",
+       "sqlImageSku": "Standard"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/q/1",
+    "/q/2"
+   ]
+  },
+  {
+   "name": "ahub, dr, free editions, unknown, devtest not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s2",
+       "subscriptionId": "s2",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "sql_vms": {
+     "rows": [
+      {
+       "id": "/q/3",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "AHUB",
+       "sqlImageSku": "Enterprise"
+      },
+      {
+       "id": "/q/4",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "DR",
+       "sqlImageSku": "Enterprise"
+      },
+      {
+       "id": "/q/5",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "PAYG",
+       "sqlImageSku": "Developer"
+      },
+      {
+       "id": "/q/6",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "PAYG",
+       "sqlImageSku": "Express"
+      },
+      {
+       "id": "/q/7",
+       "subscriptionId": "s1",
+       "sqlLicenseType": "PAYG",
+       "sqlImageSku": null
+      },
+      {
+       "id": "/q/8",
+       "subscriptionId": "s1",
+       "sqlLicenseType": null,
+       "sqlImageSku": "Enterprise"
+      },
+      {
+       "id": "/q/9",
+       "subscriptionId": "s2",
+       "sqlLicenseType": "PAYG",
+       "sqlImageSku": "Enterprise"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

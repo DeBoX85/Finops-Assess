@@ -52,6 +52,10 @@ DOMAIN_NAMES = {
     "monitoring": "Monitoring",
     "compute": "Compute",
     "security": "Security",
+    "modernization": "Retired and legacy SKUs",
+    "licensing": "Licensing",
+    "optimization": "Optimization",
+    "advisor": "Azure Advisor",
 }
 SEV_ORDER = ["high", "medium", "low", "info"]
 
