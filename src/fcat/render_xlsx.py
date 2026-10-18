@@ -55,4 +55,13 @@ def render(path, doc):
             for c in doc["check_catalogue"]
         ],
     )
+    au = doc.get("audit")
+    if au:
+        _sheet(
+            wb,
+            "Audit",
+            ["ID", "Result", "What it verifies", "Violations"],
+            [(i["id"], "pass" if i["passed"] else "FAIL", i["description"], i["violation_count"]) for i in au["invariants"]]
+            + [("", "", "Overall", au["status"]), ("", "", "Report fingerprint", au["report_hash"]), ("", "", "Limits", au["limits"])],
+        )
     wb.save(path)

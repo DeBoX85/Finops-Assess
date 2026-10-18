@@ -3,6 +3,7 @@ Customer data lives here: the snapshot folder is git-ignored (hard rule 2)."""
 
 from __future__ import annotations
 
+import hashlib
 import json
 import pathlib
 
@@ -21,3 +22,8 @@ class Snapshot:
 
     def has(self, name: str) -> bool:
         return (self.root / f"{name}.json").exists()
+
+    def digest(self, name: str):
+        """sha256 prefix of the stored collector file; shows in a report which data a finding came from without exposing it."""
+        p = self.root / f"{name}.json"
+        return hashlib.sha256(p.read_bytes()).hexdigest()[:12] if p.exists() else None

@@ -34,6 +34,19 @@ def render(path, doc):
     )
     sc = m.get("scope", {})
     scope = ", ".join(f"{e(k.replace('_', ' '))}: {'not assessed' if v is None else v}" for k, v in sc.items()) or "not collected"
+    au = doc.get("audit", {})
+    rows_a = "".join(
+        f"<tr><td>{e(i['id'])}</td><td class='s-{'ran' if i['passed'] else 'failed'}'>{'pass' if i['passed'] else 'FAIL'}</td>"
+        f"<td>{e(i['description'])}{(' (' + e(i['violation_count']) + ' violations)') if not i['passed'] else ''}</td></tr>"
+        for i in au.get("invariants", [])
+    )
+    audit_html = (
+        f"<h2>Self-audit: {e(au.get('status', 'not run')).upper()}</h2>"
+        f"<p class='note'>Report fingerprint {e(au.get('report_hash'))}. {e(au.get('limits', ''))}</p>"
+        f"<table><tr><th>Check</th><th>Result</th><th>What it verifies</th></tr>{rows_a}</table>"
+        if au
+        else ""
+    )
     errs = "".join(f"<li>{e(x['collector'])}: {e(x['error'])}</li>" for x in m.get("collector_errors", []))
     out = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>F-CAT assessment report</title><style>{CSS}</style></head><body>
@@ -43,5 +56,6 @@ def render(path, doc):
 <h2>Check coverage</h2><table><tr><th>Check</th><th>Status</th><th>Detail</th><th>Validation</th></tr>{rows_c}</table>
 {("<h2>Collector errors</h2><ul>" + errs + "</ul>") if errs else ""}
 <h2>Findings ({len(doc["findings"])})</h2><table><tr><th>Check</th><th>Severity</th><th>Finding</th><th>Resource</th></tr>{rows_f}</table>
+{audit_html}
 </body></html>"""
     pathlib.Path(path).write_text(out, encoding="utf-8")

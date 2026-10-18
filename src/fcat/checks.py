@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
+import inspect
+import json
 from dataclasses import asdict, dataclass, field
 
 
@@ -27,9 +30,26 @@ class Finding:
     severity: str
     message: str
     details: dict = field(default_factory=dict)
+    evidence: dict = field(default_factory=dict)  # filled by the runner: logic hash, collectors, snapshot digests
+    fingerprint: str = ""  # filled by the runner: sha256 over check, resource and details
 
 
 REGISTRY: list = []
+
+
+def fingerprint(f) -> str:
+    """Stable identity of a finding. Same inputs give the same value on every run."""
+    raw = json.dumps([f.check_id, f.resource_id, f.details], sort_keys=True, default=str)
+    return hashlib.sha256(raw.encode()).hexdigest()[:16]
+
+
+def logic_hash(fn) -> str:
+    """Short hash of the check function source, so a report shows which rule version produced a finding."""
+    try:
+        src = inspect.getsource(fn)
+    except (OSError, TypeError):
+        return "unavailable"
+    return hashlib.sha256(src.encode()).hexdigest()[:12]
 
 
 def load_builtin():
@@ -63,8 +83,17 @@ def run_all(config, snapshot, registry=None):
         except Exception as e:  # noqa: BLE001  one failing check must not stop the run; it is reported as failed
             status.append({"id": meta.id, "status": "failed", "reason": f"{type(e).__name__}: {e}"})
             continue
+        lh = logic_hash(fn)
+        for f in got:
+            f.evidence = {
+                "logic_hash": lh,
+                "collectors": list(meta.collectors),
+                "snapshot_digests": {c: snapshot.digest(c) for c in meta.collectors},
+            }
+            f.fingerprint = fingerprint(f)
         findings.extend(got)
         status.append({"id": meta.id, "status": "ran", "findings": len(got)})
+    findings.sort(key=lambda f: (f.check_id, f.resource_id))  # stable order so reports are reproducible
     return findings, status
 
 

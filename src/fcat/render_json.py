@@ -2,7 +2,7 @@ import json
 import pathlib
 from dataclasses import asdict
 
-from . import SCHEMA_VERSION
+from . import SCHEMA_VERSION, audit
 from .checks import REGISTRY, meta_dict
 
 
@@ -16,5 +16,6 @@ def render(path, manifest, findings):
         "check_catalogue": [meta_dict(m) for m, _ in REGISTRY],
         "findings": [asdict(f) for f in findings],
     }
+    doc["audit"] = audit.build(doc)
     pathlib.Path(path).write_text(json.dumps(doc, indent=1))
     return doc

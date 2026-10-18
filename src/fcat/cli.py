@@ -22,6 +22,8 @@ def _finish(cfg, snap, out, identity, calls, cerrors, started):
     except ImportError:
         print("note: openpyxl not installed, Excel report skipped (pip install 'fcat[excel]')")
     print(f"{len(findings)} findings; checks: " + ", ".join(f"{s['id']}={s['status']}" for s in status))
+    print(f"self-audit: {doc['audit']['status']} (report fingerprint {doc['audit']['report_hash']})")
+    return doc["audit"]["status"] == "pass"
 
 
 def main(argv=None):
@@ -45,9 +47,12 @@ def main(argv=None):
             client = Client(tp)
             cerrors = []
             collectors.collect(client, snap, cfg, cerrors)
-            _finish(cfg, snap, out, tp.identity(), client.calls, cerrors, started)
+            ok = _finish(cfg, snap, out, tp.identity(), client.calls, cerrors, started)
         else:
-            _finish(cfg, snap, out, {}, [], [], started)
+            ok = _finish(cfg, snap, out, {}, [], [], started)
+        if not ok:
+            print("warning: self-audit FAILED, do not use this report; see the Audit section", file=sys.stderr)
+            return 3
     except FcatError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

@@ -2,23 +2,171 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "F-CAT report",
   "type": "object",
-  "required": ["schema_version", "manifest", "check_catalogue", "findings"],
+  "required": [
+    "schema_version",
+    "manifest",
+    "check_catalogue",
+    "findings"
+  ],
   "properties": {
-    "schema_version": {"type": "string"},
+    "schema_version": {
+      "type": "string"
+    },
     "manifest": {
       "type": "object",
-      "required": ["schema_version", "tool_version", "started", "ended", "config", "scope", "checks", "collector_errors", "api_calls"],
+      "required": [
+        "schema_version",
+        "tool_version",
+        "started",
+        "ended",
+        "config",
+        "scope",
+        "checks",
+        "collector_errors",
+        "api_calls"
+      ],
       "properties": {
-        "checks": {"type": "array", "items": {
-          "type": "object", "required": ["id", "status"],
-          "properties": {"id": {"type": "string"}, "status": {"enum": ["ran", "skipped", "not_assessed", "failed"]}, "reason": {"type": "string"}, "findings": {"type": "integer"}},
-          "allOf": [{"if": {"properties": {"status": {"enum": ["skipped", "not_assessed", "failed"]}}}, "then": {"required": ["reason"]}}]
-        }},
-        "scope": {"type": "object", "additionalProperties": {"type": ["integer", "null"]}},
-        "api_calls": {"type": "array", "items": {"type": "object", "required": ["method", "endpoint", "status", "retries"]}}
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "ran",
+                  "skipped",
+                  "not_assessed",
+                  "failed"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              },
+              "findings": {
+                "type": "integer"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "skipped",
+                        "not_assessed",
+                        "failed"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "reason"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "api_calls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "method",
+              "endpoint",
+              "status",
+              "retries"
+            ]
+          }
+        }
       }
     },
-    "check_catalogue": {"type": "array", "items": {"type": "object", "required": ["id", "domain", "title", "collectors", "permissions", "confidence", "savings_basis", "run_cost", "framework", "validation"]}},
-    "findings": {"type": "array", "items": {"type": "object", "required": ["check_id", "resource_id", "severity", "message"]}}
+    "check_catalogue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "domain",
+          "title",
+          "collectors",
+          "permissions",
+          "confidence",
+          "savings_basis",
+          "run_cost",
+          "framework",
+          "validation"
+        ]
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "check_id",
+          "resource_id",
+          "severity",
+          "message"
+        ],
+        "properties": {
+          "fingerprint": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "version",
+        "status",
+        "report_hash",
+        "invariants"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "report_hash": {
+          "type": "string"
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "description",
+              "passed",
+              "violation_count"
+            ]
+          }
+        }
+      }
+    }
   }
 }
