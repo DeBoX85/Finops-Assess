@@ -28,3 +28,4 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 23. ADR 0005 export write mode: finish design after owner decision; implement only after levels 1 and 1.5.
 - 24. Right-sizing/idle checks (R10): peak-aware logic design, fixtures with spiky workloads (low average, high peak must NOT be flagged). Research how Advisor and AOE choose windows and statistics.
 - 25. Live-testing setup decision (before G2): where the tool runs (owner laptop), whether Claude Code runs locally for live sessions, and what customer output may enter a Claude session (confidentiality / NDA check by owner). Write docs/LIVE-TESTING.md after the decision.
+- 26. Cost collectors (item 4) implementation waits for ADR 0006 sign-off. Meanwhile: design collector outputs and FOCUS import (item 19) which need no allowlist change.
