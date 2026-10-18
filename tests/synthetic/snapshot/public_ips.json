@@ -19,11 +19,16 @@
    "skuName": "Standard"
   },
   {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-via-orphan-nic",
+   "ipConfigId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-orphan/ipConfigurations/ip1",
+   "skuName": "Standard"
+  },
+  {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-nat",
    "natGatewayId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/natGateways/nat-1",
    "skuName": "Standard"
   }
  ],
- "total_records": 4,
+ "total_records": 5,
  "warnings": []
 }

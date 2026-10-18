@@ -1,0 +1,47 @@
+{
+ "cases": [
+  {
+   "name": "stopped reported",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "powerState": "PowerState/stopped"
+      },
+      {
+       "id": "/v/2",
+       "powerState": "POWERSTATE/STOPPED"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/2"
+   ]
+  },
+  {
+   "name": "deallocated running and unknown not reported",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/3",
+       "powerState": "PowerState/deallocated"
+      },
+      {
+       "id": "/v/4",
+       "powerState": "PowerState/running"
+      },
+      {
+       "id": "/v/5",
+       "powerState": ""
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

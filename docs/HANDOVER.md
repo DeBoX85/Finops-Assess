@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 14:36 UTC
+Last updated: 2026-10-18 14:37 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 14:36
-Base commit: 7b950f0
+Last checkpoint (UTC): 2026-10-18 14:37
+Base commit: 4b8c378
 Gates: pass
-Files changed in this checkpoint: 1
-narrative_hash: 47bf99c64eee
-stale_count: 1
+Files changed in this checkpoint: 15
+narrative_hash: 9db31d0ae634
+stale_count: 0
 <!-- auto:end -->
 
 ## State
@@ -35,6 +35,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: OWNER AWAY for the next few steps. Work unattended. All pending owner items are parked in docs/DECISIONS-PENDING.md with defaults; follow its rules (do not ask, use defaults marked provisional, no customer use, do not widen the allowlist).
 - 2026-10-18: backlog 19 built: `fcat import-focus <file|folder>` aggregates a FOCUS CSV(.gz) into snapshot cost_focus.json. Refuses mixed currencies and non-FOCUS files, reports missing cost columns. Column names from Learn FOCUS schema page (read 2026-10-18). UNVERIFIED against a real export. Next unattended: item 7 (more orphan/idle checks), then 8 (parity matrix).
 - 2026-10-18: backlog 7 first batch: ORPH-PIP-01, ORPH-NIC-01, ORPH-NSG-01, ORPH-ASP-01 (hybrid: KQL projects raw fields, rules in Python). Property paths from my knowledge of ARM schemas, NOT re-read from the hub query files (clone gone after reset): UNVERIFIED, offline-only. Golden updated (73 findings, diff reviewed by counts). No cost estimates yet. Next: re-fetch hub query files from GitHub to verify predicates, then stopped VMs, backendless LBs/App Gateways, empty elastic pools, idle VNet/NAT gateways; then item 8 parity matrix.
+- 2026-10-18: item 7 second batch. Predicates for PIP, NIC, NSG, ASP re-checked against hub queries at finops-toolkit commit f12c29e (read 2026-10-18); NSG null semantics and PIP-via-orphan-NIC corrected (M-007). Added IDLE-VMSTOP-01 (stopped, not deallocated; predicate from hub query). Golden is 76 findings. All offline-only; whether ARG omits empty arrays and returns instanceView is UNVERIFIED live. Next: backendless LBs/App Gateways, empty elastic pools, idle VNet/NAT gateways (read those query files first), then item 8 parity matrix.
 ## In progress
 Nothing half-done.
 ## Next step

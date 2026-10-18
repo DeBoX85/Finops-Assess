@@ -3,18 +3,22 @@
  "rows": [
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-orphan",
-   "nicCount": 0,
-   "subnetCount": 0
+   "nicRefs": [],
+   "subnetRefs": []
   },
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-subnet",
-   "nicCount": 0,
-   "subnetCount": 2
+   "nicRefs": [],
+   "subnetRefs": [
+    {
+     "id": "subnet-1"
+    }
+   ]
   },
   {
-   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-unknown",
-   "nicCount": null,
-   "subnetCount": null
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-absent",
+   "nicRefs": null,
+   "subnetRefs": null
   }
  ],
  "total_records": 3,

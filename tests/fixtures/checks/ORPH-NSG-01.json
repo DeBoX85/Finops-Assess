@@ -1,36 +1,46 @@
 {
  "cases": [
   {
-   "name": "orphan reported",
+   "name": "empty and absent lists are orphans",
    "snapshot": {
     "nsgs": {
      "rows": [
       {
        "id": "/g/1",
-       "nicCount": 0,
-       "subnetCount": 0
+       "nicRefs": [],
+       "subnetRefs": []
+      },
+      {
+       "id": "/g/5"
       }
      ]
     }
    },
    "expect_resource_ids": [
-    "/g/1"
+    "/g/1",
+    "/g/5"
    ]
   },
   {
-   "name": "in use not reported",
+   "name": "associated not reported",
    "snapshot": {
     "nsgs": {
      "rows": [
       {
        "id": "/g/2",
-       "nicCount": 1,
-       "subnetCount": 0
+       "nicRefs": [
+        {
+         "id": "x"
+        }
+       ]
       },
       {
        "id": "/g/3",
-       "nicCount": null,
-       "subnetCount": null
+       "subnetRefs": [
+        {
+         "id": "s"
+        }
+       ]
       }
      ]
     }

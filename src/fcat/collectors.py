@@ -37,17 +37,26 @@ KQL_PUBLIC_IPS = (
 KQL_NICS = (
     "resources | where type =~ 'microsoft.network/networkinterfaces' "
     "| project id, name, subscriptionId, resourceGroup, location, vmId=tostring(properties.virtualMachine.id), "
-    "privateEndpointId=tostring(properties.privateEndpoint.id), tags | order by id asc"
+    "privateEndpointId=tostring(properties.privateEndpoint.id), "
+    "publicIpIds=pack_array(tostring(properties.ipConfigurations[0].properties.publicIPAddress.id), "
+    "tostring(properties.ipConfigurations[1].properties.publicIPAddress.id)), tags | order by id asc"
 )
 KQL_NSGS = (
     "resources | where type =~ 'microsoft.network/networksecuritygroups' "
-    "| project id, name, subscriptionId, resourceGroup, location, nicCount=array_length(properties.networkInterfaces), "
-    "subnetCount=array_length(properties.subnets), tags | order by id asc"
+    "| project id, name, subscriptionId, resourceGroup, location, nicRefs=properties.networkInterfaces, "
+    "subnetRefs=properties.subnets, tags | order by id asc"
 )
 KQL_APP_SERVICE_PLANS = (
     "resources | where type =~ 'microsoft.web/serverfarms' "
     "| project id, name, subscriptionId, resourceGroup, location, skuName=tostring(sku.name), skuTier=tostring(sku.tier), "
-    "numberOfSites=toint(properties.numberOfSites), tags | order by id asc"
+    "skuCapacity=toint(sku.capacity), numberOfSites=toint(properties.numberOfSites), tags | order by id asc"
+)
+
+KQL_VMS = (
+    "resources | where type =~ 'microsoft.compute/virtualmachines' "
+    "| project id, name, subscriptionId, resourceGroup, location, vmSize=tostring(properties.hardwareProfile.vmSize), "
+    "powerState=tostring(properties.extended.instanceView.powerState.code), "
+    "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), tags | order by id asc"
 )
 
 COLLECTORS = {
@@ -58,6 +67,7 @@ COLLECTORS = {
     "nics": KQL_NICS,
     "nsgs": KQL_NSGS,
     "app_service_plans": KQL_APP_SERVICE_PLANS,
+    "vms": KQL_VMS,
 }
 
 

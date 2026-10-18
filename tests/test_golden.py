@@ -40,8 +40,9 @@ def test_golden_is_correct_by_independent_derivation():
     for f in golden["findings"]:
         by.setdefault(f["check_id"], set()).add(f["resource_id"].rsplit("/", 1)[-1])
     # hand-derived from scripts/make_synthetic.py: attached/used/free-tier/unknown-count rows must NOT appear
-    assert by["ORPH-PIP-01"] == {"pip-orphan-1", "pip-orphan-2"}
+    assert by["ORPH-PIP-01"] == {"pip-orphan-1", "pip-orphan-2", "pip-via-orphan-nic"}
     assert by["ORPH-NIC-01"] == {"nic-orphan"}
-    assert by["ORPH-NSG-01"] == {"nsg-orphan"}
+    assert by["ORPH-NSG-01"] == {"nsg-orphan", "nsg-absent"}
+    assert by["IDLE-VMSTOP-01"] == {"vm-stopped"}
     assert by["ORPH-ASP-01"] == {"asp-empty"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3

@@ -87,13 +87,24 @@ def _blank(v) -> bool:
 
 @check(_meta("ORPH-PIP-01", "Public IP addresses not attached to anything", "public_ips"))
 def unattached_public_ips(snap):
-    """Not attached to an IP configuration, NAT gateway or linked public IP. A reserved (Static) address still bills while unattached;
-    cost by SKU/allocation is UNVERIFIED and not estimated here."""
+    """Not attached to an IP configuration, NAT gateway or linked public IP, or attached only to a NIC that is itself unattached
+    (the second case follows the hub query, read 2026-10-18). Cost by SKU/allocation is UNVERIFIED and not estimated here."""
+    nic_rows = (snap.load("nics") or {}).get("rows", []) if snap.has("nics") else []
+    orphan_nic_pips = {
+        str(p).lower()
+        for n in nic_rows
+        if _blank(n.get("vmId")) and _blank(n.get("privateEndpointId"))
+        for p in (n.get("publicIpIds") or [])
+        if p
+    }
     for r in snap.load("public_ips")["rows"]:
-        if all(_blank(r.get(k)) for k in ("ipConfigId", "natGatewayId", "linkedPublicIpId")):
+        free = all(_blank(r.get(k)) for k in ("ipConfigId", "natGatewayId", "linkedPublicIpId"))
+        via_nic = str(r["id"]).lower() in orphan_nic_pips
+        if free or via_nic:
+            why = "is not attached to any resource" if free else "is attached only to a network interface that is itself unattached"
             yield Finding(
-                "ORPH-PIP-01", r["id"], "medium", f"Public IP ({r.get('skuName')}, {r.get('allocation')}) is not attached to any resource",
-                {k: r.get(k) for k in ("location", "skuName", "allocation")},
+                "ORPH-PIP-01", r["id"], "medium", f"Public IP ({r.get('skuName')}, {r.get('allocation')}) {why}",
+                {"location": r.get("location"), "skuName": r.get("skuName"), "allocation": r.get("allocation"), "via_orphan_nic": via_nic and not free},
             )  # fmt: skip
 
 
@@ -113,12 +124,10 @@ def unattached_nics(snap):
 
 @check(_meta("ORPH-NSG-01", "Network security groups with no subnet or NIC", "nsgs", "medium"))
 def unused_nsgs(snap):
-    """No direct cost (UNVERIFIED); reported as clean-up. Missing counts (null) are treated as unknown, not as zero."""
+    """Same semantics as the finops-toolkit hub query (read 2026-10-18): absent or empty association lists mean no association.
+    UNVERIFIED live whether ARG omits the properties for an unassociated NSG. No direct cost (UNVERIFIED); clean-up only."""
     for r in snap.load("nsgs")["rows"]:
-        nic, sub = r.get("nicCount"), r.get("subnetCount")
-        if nic is None and sub is None:
-            continue  # data absent: cannot tell, so no finding
-        if (nic or 0) == 0 and (sub or 0) == 0:
+        if not r.get("nicRefs") and not r.get("subnetRefs"):
             yield Finding(
                 "ORPH-NSG-01",
                 r["id"],
@@ -138,5 +147,22 @@ def empty_app_service_plans(snap):
             continue
         yield Finding(
             "ORPH-ASP-01", r["id"], "medium", f"App Service plan ({r.get('skuName')}) hosts no apps",
-            {k: r.get(k) for k in ("location", "skuName", "skuTier")},
+            {k: r.get(k) for k in ("location", "skuName", "skuTier", "skuCapacity")},
         )  # fmt: skip
+
+
+@check(
+    CheckMeta(
+        id="IDLE-VMSTOP-01", domain="compute", title="VMs stopped but not deallocated", collectors=("vms",), permissions=("Reader",),
+        savings_basis="none", confidence="medium", framework="Usage Optimization",
+    )
+)  # fmt: skip
+def stopped_not_deallocated(snap):
+    """PowerState/stopped means the guest is off but compute is still allocated and billed; deallocated is the state that stops compute charges.
+    Predicate follows the hub query (read 2026-10-18). UNVERIFIED live: instanceView is only returned when the query asks for it."""
+    for r in snap.load("vms")["rows"]:
+        if str(r.get("powerState") or "").lower() == "powerstate/stopped":
+            yield Finding(
+                "IDLE-VMSTOP-01", r["id"], "medium", f"VM ({r.get('vmSize')}) is stopped but not deallocated, so compute is likely still billed",
+                {"location": r.get("location"), "vmSize": r.get("vmSize"), "powerState": r.get("powerDisplay")},
+            )  # fmt: skip

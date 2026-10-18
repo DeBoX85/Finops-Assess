@@ -4,6 +4,9 @@
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkInterfaces/nic-orphan",
    "privateEndpointId": null,
+   "publicIpIds": [
+    "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-via-orphan-nic"
+   ],
    "vmId": null
   },
   {

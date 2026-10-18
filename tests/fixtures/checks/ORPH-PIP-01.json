@@ -1,39 +1,64 @@
 {
  "cases": [
   {
-   "name": "orphan reported",
+   "name": "free and via orphan nic",
    "snapshot": {
     "public_ips": {
      "rows": [
       {
        "id": "/p/1",
-       "ipConfigId": "",
-       "natGatewayId": null,
-       "linkedPublicIpId": ""
+       "ipConfigId": ""
+      },
+      {
+       "id": "/P/9",
+       "ipConfigId": "/n/o/ipc"
+      },
+      {
+       "id": "/p/2",
+       "ipConfigId": "/n/v/ipc"
+      }
+     ]
+    },
+    "nics": {
+     "rows": [
+      {
+       "id": "/n/o",
+       "vmId": "",
+       "publicIpIds": [
+        "/p/9"
+       ]
+      },
+      {
+       "id": "/n/v",
+       "vmId": "/vm",
+       "publicIpIds": [
+        "/p/2"
+       ]
       }
      ]
     }
    },
    "expect_resource_ids": [
-    "/p/1"
+    "/p/1",
+    "/P/9"
    ]
   },
   {
-   "name": "in use not reported",
+   "name": "attached not reported and nics collector missing is tolerated",
    "snapshot": {
     "public_ips": {
      "rows": [
       {
        "id": "/p/2",
-       "ipConfigId": "/x/ipconfig"
+       "ipConfigId": "/x"
       },
       {
        "id": "/p/3",
-       "natGatewayId": "/nat/1"
+       "natGatewayId": "/nat"
       },
       {
        "id": "/p/4",
-       "linkedPublicIpId": "/l/1"
+       "linkedPublicIpId": "/l"
       }
      ]
     }

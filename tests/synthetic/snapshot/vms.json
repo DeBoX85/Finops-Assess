@@ -1,0 +1,23 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
+   "powerDisplay": "VM stopped",
+   "powerState": "PowerState/stopped",
+   "vmSize": "Standard_D4s_v5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dealloc",
+   "powerState": "PowerState/deallocated",
+   "vmSize": "Standard_D4s_v5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-run",
+   "powerState": "PowerState/running",
+   "vmSize": "Standard_B2s"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

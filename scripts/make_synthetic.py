@@ -75,24 +75,45 @@ def estate():
             "skuName": "Standard",
             "ipConfigId": base + "Network/networkInterfaces/nic-vm/ipConfigurations/ip1",
         },
+        {
+            "id": base + "Network/publicIPAddresses/pip-via-orphan-nic",
+            "skuName": "Standard",
+            "ipConfigId": base + "Network/networkInterfaces/nic-orphan/ipConfigurations/ip1",
+        },
         {"id": base + "Network/publicIPAddresses/pip-nat", "skuName": "Standard", "natGatewayId": base + "Network/natGateways/nat-1"},
     ]
     nics = [
-        {"id": base + "Network/networkInterfaces/nic-orphan", "vmId": None, "privateEndpointId": None},
+        {
+            "id": base + "Network/networkInterfaces/nic-orphan",
+            "vmId": None,
+            "privateEndpointId": None,
+            "publicIpIds": [base + "Network/publicIPAddresses/pip-via-orphan-nic"],
+        },
         {"id": base + "Network/networkInterfaces/nic-vm", "vmId": base + "Compute/virtualMachines/vm-1"},
         {"id": base + "Network/networkInterfaces/nic-pe", "privateEndpointId": base + "Network/privateEndpoints/pe-1"},
     ]
     nsgs = [
-        {"id": base + "Network/networkSecurityGroups/nsg-orphan", "nicCount": 0, "subnetCount": 0},
-        {"id": base + "Network/networkSecurityGroups/nsg-subnet", "nicCount": 0, "subnetCount": 2},
-        {"id": base + "Network/networkSecurityGroups/nsg-unknown", "nicCount": None, "subnetCount": None},
+        {"id": base + "Network/networkSecurityGroups/nsg-orphan", "nicRefs": [], "subnetRefs": []},
+        {"id": base + "Network/networkSecurityGroups/nsg-subnet", "nicRefs": [], "subnetRefs": [{"id": "subnet-1"}]},
+        {"id": base + "Network/networkSecurityGroups/nsg-absent", "nicRefs": None, "subnetRefs": None},
     ]
     asps = [
         {"id": base + "Web/serverFarms/asp-empty", "skuName": "P1v3", "skuTier": "PremiumV3", "numberOfSites": 0},
         {"id": base + "Web/serverFarms/asp-free", "skuName": "F1", "skuTier": "Free", "numberOfSites": 0},
         {"id": base + "Web/serverFarms/asp-used", "skuName": "B1", "skuTier": "Basic", "numberOfSites": 3},
     ]
+    vms = [
+        {
+            "id": base + "Compute/virtualMachines/vm-stopped",
+            "vmSize": "Standard_D4s_v5",
+            "powerState": "PowerState/stopped",
+            "powerDisplay": "VM stopped",
+        },
+        {"id": base + "Compute/virtualMachines/vm-dealloc", "vmSize": "Standard_D4s_v5", "powerState": "PowerState/deallocated"},
+        {"id": base + "Compute/virtualMachines/vm-run", "vmSize": "Standard_B2s", "powerState": "PowerState/running"},
+    ]
     return {
+        "vms": vms,
         "subscriptions": subs,
         "management_groups": mgs,
         "unattached_disks": disks,

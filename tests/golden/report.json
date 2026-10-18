@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "f17e555dbfa3d6bb",
+  "report_hash": "741256b28be3478a",
   "status": "pass",
   "version": "0.1"
  },
@@ -198,6 +198,25 @@
    "savings_basis": "none",
    "title": "App Service plans hosting no apps",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vms"
+   ],
+   "confidence": "medium",
+   "domain": "compute",
+   "framework": "Usage Optimization",
+   "id": "IDLE-VMSTOP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "VMs stopped but not deallocated",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -244,9 +263,31 @@
    "severity": "info"
   },
   {
+   "check_id": "IDLE-VMSTOP-01",
+   "details": {
+    "location": null,
+    "powerState": "VM stopped",
+    "vmSize": "Standard_D4s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "vms"
+    ],
+    "logic_hash": "64384817e502",
+    "snapshot_digests": {
+     "vms": "a2c61b733555"
+    }
+   },
+   "fingerprint": "254e29bb8cd755b9",
+   "message": "VM (Standard_D4s_v5) is stopped but not deallocated, so compute is likely still billed",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
+   "severity": "medium"
+  },
+  {
    "check_id": "ORPH-ASP-01",
    "details": {
     "location": null,
+    "skuCapacity": null,
     "skuName": "P1v3",
     "skuTier": "PremiumV3"
    },
@@ -254,12 +295,12 @@
     "collectors": [
      "app_service_plans"
     ],
-    "logic_hash": "d399f91df117",
+    "logic_hash": "aa9036f5f38b",
     "snapshot_digests": {
      "app_service_plans": "420386ed59f3"
     }
    },
-   "fingerprint": "911983994617f507",
+   "fingerprint": "20ba8f04d94f3c70",
    "message": "App Service plan (P1v3) hosts no apps",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-empty",
    "severity": "medium"
@@ -1793,7 +1834,7 @@
     ],
     "logic_hash": "31759d0f5fd0",
     "snapshot_digests": {
-     "nics": "b57df9e94ec9"
+     "nics": "bca1f6c16f1a"
     }
    },
    "fingerprint": "6882888335bc1b51",
@@ -1810,9 +1851,28 @@
     "collectors": [
      "nsgs"
     ],
-    "logic_hash": "e22a9d2b1ff9",
+    "logic_hash": "9ebf58b3b3bc",
     "snapshot_digests": {
-     "nsgs": "90444beb24b1"
+     "nsgs": "cefe66afd46f"
+    }
+   },
+   "fingerprint": "7e63da3ae9a1415d",
+   "message": "Network security group is associated with no subnet or network interface",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/networkSecurityGroups/nsg-absent",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-NSG-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "nsgs"
+    ],
+    "logic_hash": "9ebf58b3b3bc",
+    "snapshot_digests": {
+     "nsgs": "cefe66afd46f"
     }
    },
    "fingerprint": "d7b0a6dc500501cb",
@@ -1825,18 +1885,19 @@
    "details": {
     "allocation": "Static",
     "location": "westeurope",
-    "skuName": "Standard"
+    "skuName": "Standard",
+    "via_orphan_nic": false
    },
    "evidence": {
     "collectors": [
      "public_ips"
     ],
-    "logic_hash": "2cd49dc18d71",
+    "logic_hash": "eb2b920c90cb",
     "snapshot_digests": {
-     "public_ips": "f6592c16ad1b"
+     "public_ips": "abb04f7d284f"
     }
    },
-   "fingerprint": "f2d80c132e973098",
+   "fingerprint": "e443202acd446660",
    "message": "Public IP (Standard, Static) is not attached to any resource",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-1",
    "severity": "medium"
@@ -1846,20 +1907,43 @@
    "details": {
     "allocation": "Dynamic",
     "location": null,
-    "skuName": "Basic"
+    "skuName": "Basic",
+    "via_orphan_nic": false
    },
    "evidence": {
     "collectors": [
      "public_ips"
     ],
-    "logic_hash": "2cd49dc18d71",
+    "logic_hash": "eb2b920c90cb",
     "snapshot_digests": {
-     "public_ips": "f6592c16ad1b"
+     "public_ips": "abb04f7d284f"
     }
    },
-   "fingerprint": "88a2fe0f7e43c0be",
+   "fingerprint": "760539c14615a0c1",
    "message": "Public IP (Basic, Dynamic) is not attached to any resource",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-orphan-2",
+   "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-PIP-01",
+   "details": {
+    "allocation": null,
+    "location": null,
+    "skuName": "Standard",
+    "via_orphan_nic": true
+   },
+   "evidence": {
+    "collectors": [
+     "public_ips"
+    ],
+    "logic_hash": "eb2b920c90cb",
+    "snapshot_digests": {
+     "public_ips": "abb04f7d284f"
+    }
+   },
+   "fingerprint": "2c0e4e605fa0e294",
+   "message": "Public IP (Standard, None) is attached only to a network interface that is itself unattached",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-via-orphan-nic",
    "severity": "medium"
   }
  ],
@@ -1877,7 +1961,7 @@
     "status": "ran"
    },
    {
-    "findings": 2,
+    "findings": 3,
     "id": "ORPH-PIP-01",
     "status": "ran"
    },
@@ -1887,13 +1971,18 @@
     "status": "ran"
    },
    {
-    "findings": 1,
+    "findings": 2,
     "id": "ORPH-NSG-01",
     "status": "ran"
    },
    {
     "findings": 1,
     "id": "ORPH-ASP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "IDLE-VMSTOP-01",
     "status": "ran"
    }
   ],
