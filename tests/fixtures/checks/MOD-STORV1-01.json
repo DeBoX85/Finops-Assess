@@ -1,0 +1,53 @@
+{
+ "cases": [
+  {
+   "name": "legacy kinds",
+   "snapshot": {
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "kind": "Storage",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/a/2",
+       "kind": "BlobStorage",
+       "skuName": "Standard_GRS"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1",
+    "/a/2"
+   ]
+  },
+  {
+   "name": "v2 or premium legacy not reported",
+   "snapshot": {
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/a/3",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/a/4",
+       "kind": "Storage",
+       "skuName": "Premium_LRS"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

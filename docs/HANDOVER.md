@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:01 UTC
+Last updated: 2026-10-18 15:10 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:01
-Base commit: f625499
+Last checkpoint (UTC): 2026-10-18 15:10
+Base commit: c78cdc5
 Gates: pass
-Files changed in this checkpoint: 19
-narrative_hash: 4115ef29e8bf
+Files changed in this checkpoint: 26
+narrative_hash: 48890a6c41a1
 stale_count: 0
 <!-- auto:end -->
 
@@ -41,6 +41,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: backlog 27, 28, 29, 31 done (tests/test_hardening.py, requirements/runtime.in+txt hash-pinned, manifest.runtime). Behaviour change: CLI now refuses an unignored --out inside a git work tree (override flag). Next: 30 purge+redact, then 9 monitoring/security module design, then 22.
 - 2026-10-18: backlog 30 done: `fcat run|analyze --redact` (src/fcat/redact.py) and `fcat purge --out DIR [--yes]`. Manifest gained "redacted" (golden updated, diff reviewed: only that key). Next: item 9 design for monitoring/security cost module, then 22 extra accuracy tests.
 - 2026-10-18: backlog 9 design written (docs/MODULE-MONITORING-SECURITY.md) with Learn-verified findings: Log Analytics queries use a different host (ADR 0007 draft, parked as pending #10). Tier A built offline: MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (info, low confidence, property names UNVERIFIED live). Golden 86. Next: backlog 22 extra accuracy tests, then 16 tailoring config design, 20 dashboard mock-ups.
+- 2026-10-18: backlog 7 batch 4 done: ORPH-SNAP-01/02/03, MOD-STORV1-01, IDLE-VMDISK-01, ORPH-PDNS-01, ORPH-PE-01. New mechanism: collect() writes snapshot/_meta.json collected_at; age rules use it (checks.collected_at), missing => NotAssessed => "not assessed because X". Golden 93. Predicates from hub queries and Storage/Networking workbooks at f12c29e; UNVERIFIED live. Next: 22 accuracy tests, 14 NOTICE audit, rightsizing design, 16 tailoring design, 20 mock-ups.
 ## In progress
 Nothing half-done.
 ## Next step

@@ -1,0 +1,22 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-src-ok",
+   "sizeGB": 128,
+   "skuName": "Premium_LRS"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/vm-stopped-os",
+   "sizeGB": 128,
+   "skuName": "Premium_LRS"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/vm-dealloc-os",
+   "sizeGB": 64,
+   "skuName": "StandardSSD_LRS"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

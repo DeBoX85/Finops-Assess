@@ -1,0 +1,56 @@
+{
+ "cases": [
+  {
+   "name": "disconnected",
+   "snapshot": {
+    "private_endpoints": {
+     "rows": [
+      {
+       "id": "/pe/1",
+       "connState": "Disconnected"
+      },
+      {
+       "id": "/pe/2",
+       "connState": "DISCONNECTED"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/pe/1",
+    "/pe/2"
+   ]
+  },
+  {
+   "name": "approved pending rejected unknown",
+   "snapshot": {
+    "private_endpoints": {
+     "rows": [
+      {
+       "id": "/pe/3",
+       "connState": "Approved"
+      },
+      {
+       "id": "/pe/4",
+       "connState": "Pending"
+      },
+      {
+       "id": "/pe/5",
+       "connState": "Rejected"
+      },
+      {
+       "id": "/pe/6"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

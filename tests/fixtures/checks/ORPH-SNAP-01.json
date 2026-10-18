@@ -1,0 +1,65 @@
+{
+ "cases": [
+  {
+   "name": "old reported",
+   "snapshot": {
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/1",
+       "timeCreated": "2026-08-01T00:00:00Z"
+      },
+      {
+       "id": "/s/2",
+       "timeCreated": "2026-09-01T00:00:00+00:00"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/s/1"
+   ]
+  },
+  {
+   "name": "recent, exactly 30 days and bad timestamp not reported",
+   "snapshot": {
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/3",
+       "timeCreated": "2026-09-02T00:00:00Z"
+      },
+      {
+       "id": "/s/4",
+       "timeCreated": "garbage"
+      },
+      {
+       "id": "/s/5"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "no collection time is not assessed",
+   "snapshot": {
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/1",
+       "timeCreated": "2020-01-01T00:00:00Z"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

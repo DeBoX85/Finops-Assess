@@ -46,7 +46,10 @@ def test_each_check_has_positive_and_negative_fixture_cases(meta, fn, tmp_path):
         snap = Snapshot(tmp_path / c["name"].replace(" ", "_"))
         for name, data in c["snapshot"].items():
             snap.save(name, data)
-        got = sorted(f.resource_id for f in fn(snap))
+        try:
+            got = sorted(f.resource_id for f in fn(snap))
+        except checks.NotAssessed:
+            got = []  # a check that refuses to decide yields no findings; the runner reports it as not_assessed
         assert got == sorted(c["expect_resource_ids"]), c["name"]
 
 

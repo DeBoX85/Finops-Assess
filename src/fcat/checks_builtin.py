@@ -1,5 +1,5 @@
 from . import billing
-from .checks import CheckMeta, Finding, check
+from .checks import CheckMeta, Finding, check, collected_at
 
 # ADR 0004 (hybrid): KQL narrows to unmanaged-by-VM disks; the rules below live in Python so they are unit tested.
 # Mirrors the finops-toolkit ORPH logic (MIT): skip disks in ActiveSAS state and ASR replica/seed disks.
@@ -356,3 +356,110 @@ def defender_plans_on_devtest(snap):
                 "SEC-DEFDEV-01", r["id"], "info", f"Defender plan {r.get('name')} is on a paid tier in a subscription that looks like Dev/Test: review whether it is needed",
                 {"plan": r.get("name"), "subPlan": r.get("subPlan"), "subscription": dev[sub]},
             )  # fmt: skip
+
+
+OLD_SNAPSHOT_DAYS = 30  # same threshold as the Storage workbook ("Disk Snapshots with + 30 Days")
+
+
+def _parse_ts(v):
+    import datetime as dt  # noqa: PLC0415
+
+    try:
+        return dt.datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+@check(_m("ORPH-SNAP-01", "Managed disk snapshots older than 30 days", "snapshots"))
+def old_snapshots(snap):
+    """Age is measured from the snapshot's collection time. Old does not mean unneeded (backups, legal hold): informational, medium confidence."""
+    ref = collected_at(snap)
+    for r in _rows(snap, "snapshots"):
+        t = _parse_ts(r.get("timeCreated"))
+        if t is not None and (ref - t).days > OLD_SNAPSHOT_DAYS:
+            yield Finding(
+                "ORPH-SNAP-01", r["id"], "low", f"Snapshot ({r.get('sizeGB')} GB, {r.get('skuName')}) is {(ref - t).days} days old",
+                {"location": r.get("location"), "sizeGB": r.get("sizeGB"), "skuName": r.get("skuName"), "age_days": (ref - t).days},
+            )  # fmt: skip
+
+
+@check(_m("ORPH-SNAP-02", "Snapshots stored on Premium SSD", "snapshots"))
+def premium_snapshots(snap):
+    """Hub query tests sku.name Premium_LRS, the workbook tests sku.tier Premium; either counts. Whether Standard is acceptable for the use is a human call."""
+    for r in _rows(snap, "snapshots"):
+        if str(r.get("skuName") or "").lower() == "premium_lrs" or str(r.get("skuTier") or "").lower() == "premium":
+            yield Finding(
+                "ORPH-SNAP-02",
+                r["id"],
+                "low",
+                f"Snapshot ({r.get('sizeGB')} GB) uses Premium storage",
+                {"location": r.get("location"), "skuName": r.get("skuName"), "sizeGB": r.get("sizeGB")},
+            )
+
+
+@check(_m("ORPH-SNAP-03", "Snapshots whose source disk no longer exists", "snapshots", "all_disks", "subscriptions", conf="low"))
+def snapshots_without_source(snap):
+    """Only judged when the source disk lives in a subscription we scanned; a source in a subscription we cannot see is not reported (unknown, not deleted)."""
+    disks = {str(d["id"]).lower() for d in _rows(snap, "all_disks")}
+    scanned = {str(s["id"]).split("/")[-1].lower() for s in _rows(snap, "subscriptions")}
+    for r in _rows(snap, "snapshots"):
+        src = str(r.get("sourceResourceId") or "").lower()
+        parts = src.split("/")
+        if len(parts) > 2 and parts[1] == "subscriptions" and parts[2] in scanned and "/disks/" in src and src not in disks:
+            yield Finding(
+                "ORPH-SNAP-03",
+                r["id"],
+                "low",
+                "Snapshot source disk was not found in the scanned subscriptions",
+                {"location": r.get("location"), "sizeGB": r.get("sizeGB")},
+            )
+
+
+@check(_m("MOD-STORV1-01", "Legacy storage account kinds (Storage, BlobStorage)", "storage_accounts"))
+def legacy_storage_accounts(snap):
+    """Hub query: kind Storage or BlobStorage on a Standard_* SKU. Upgrade to general purpose v2 is the usual path; effect on cost is not computed."""
+    for r in _rows(snap, "storage_accounts"):
+        if str(r.get("kind") or "").lower() in ("storage", "blobstorage") and str(r.get("skuName") or "").lower().startswith("standard_"):
+            yield Finding(
+                "MOD-STORV1-01",
+                r["id"],
+                "low",
+                f"Storage account kind {r.get('kind')} is a legacy kind",
+                {"location": r.get("location"), "kind": r.get("kind"), "skuName": r.get("skuName")},
+            )
+
+
+@check(_m("IDLE-VMDISK-01", "Premium disks on VMs that are stopped or deallocated", "vms", "all_disks"))
+def premium_disks_on_stopped_vms(snap):
+    """Workbook looks at the OS disk only; this also covers data disks. A deallocated VM still pays for its disks. Matching is case-insensitive on disk id."""
+    prem = {
+        str(d["id"]).lower(): d for d in _rows(snap, "all_disks") if str(d.get("skuName") or "").lower() in ("premium_lrs", "premium_zrs")
+    }
+    for v in _rows(snap, "vms"):
+        if str(v.get("powerState") or "").lower() not in ("powerstate/stopped", "powerstate/deallocated"):
+            continue
+        ids = [v.get("osDiskId")] + [((d or {}).get("managedDisk") or {}).get("id") for d in (v.get("dataDisks") or [])]
+        hit = sorted({str(i).lower() for i in ids if i and str(i).lower() in prem})
+        if hit:
+            yield Finding(
+                "IDLE-VMDISK-01", v["id"], "medium", f"VM is {str(v.get('powerState')).split('/')[-1]} but {len(hit)} Premium disk(s) are still billed",
+                {"power_state": v.get("powerState"), "premium_disks": hit},
+            )  # fmt: skip
+
+
+@check(_m("ORPH-PDNS-01", "Private DNS zones linked to no virtual network", "private_dns_zones"))
+def idle_private_dns_zones(snap):
+    """Workbook predicate: numberOfVirtualNetworkLinks == 0. An unknown count (null) is not reported."""
+    for r in _rows(snap, "private_dns_zones"):
+        if r.get("linkCount") == 0:
+            yield Finding(
+                "ORPH-PDNS-01", r["id"], "low", "Private DNS zone has no virtual network link", {"recordSets": r.get("recordSets")}
+            )
+
+
+@check(_m("ORPH-PE-01", "Private endpoints in Disconnected state", "private_endpoints"))
+def disconnected_private_endpoints(snap):
+    """Workbook predicate: first (manual, else automatic) connection has status Disconnected. Rejected or Pending states are deliberately not reported."""
+    for r in _rows(snap, "private_endpoints"):
+        if str(r.get("connState") or "").lower() == "disconnected":
+            yield Finding("ORPH-PE-01", r["id"], "low", "Private endpoint connection is Disconnected", {"location": r.get("location")})

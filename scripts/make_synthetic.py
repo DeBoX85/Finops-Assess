@@ -108,8 +108,15 @@ def estate():
             "vmSize": "Standard_D4s_v5",
             "powerState": "PowerState/stopped",
             "powerDisplay": "VM stopped",
+            "osDiskId": base + "Compute/disks/VM-STOPPED-OS",
+            "dataDisks": [],
         },
-        {"id": base + "Compute/virtualMachines/vm-dealloc", "vmSize": "Standard_D4s_v5", "powerState": "PowerState/deallocated"},
+        {
+            "id": base + "Compute/virtualMachines/vm-dealloc",
+            "vmSize": "Standard_D4s_v5",
+            "powerState": "PowerState/deallocated",
+            "osDiskId": base + "Compute/disks/vm-dealloc-os",
+        },
         {"id": base + "Compute/virtualMachines/vm-run", "vmSize": "Standard_B2s", "powerState": "PowerState/running"},
     ]
     P = lambda ips=0, adr=0: {"properties": {"backendIPConfigurations": [{}] * ips, "backendAddresses": [{}] * adr}}  # noqa: E731
@@ -186,7 +193,51 @@ def estate():
     subs.append(
         {"id": "/subscriptions/sub-synth-4", "name": "Synthetic Dev", "quotaId": "MSDNDevTest_2014-09-01", "mgAncestors": ["mg-synth-root"]}
     )
+    comp = base + "Compute/"
+    batch4 = {
+        "snapshots": [
+            {
+                "id": comp + "snapshots/snap-old",
+                "skuName": "Standard_LRS",
+                "sizeGB": 128,
+                "timeCreated": "2026-06-01T00:00:00Z",
+                "sourceResourceId": comp + "disks/disk-src-ok",
+            },
+            {
+                "id": comp + "snapshots/snap-new-premium",
+                "skuName": "Premium_LRS",
+                "sizeGB": 64,
+                "timeCreated": "2026-09-25T00:00:00Z",
+                "sourceResourceId": comp + "disks/disk-src-ok",
+            },
+            {
+                "id": comp + "snapshots/snap-orphan-src",
+                "skuName": "Standard_LRS",
+                "sizeGB": 32,
+                "timeCreated": "2026-09-30T00:00:00Z",
+                "sourceResourceId": comp + "disks/disk-deleted",
+            },
+        ],
+        "all_disks": [
+            {"id": comp + "disks/disk-src-ok", "skuName": "Premium_LRS", "sizeGB": 128},
+            {"id": comp + "disks/vm-stopped-os", "skuName": "Premium_LRS", "sizeGB": 128},
+            {"id": comp + "disks/vm-dealloc-os", "skuName": "StandardSSD_LRS", "sizeGB": 64},
+        ],
+        "storage_accounts": [
+            {"id": base + "Storage/storageAccounts/stlegacy", "kind": "Storage", "skuName": "Standard_LRS"},
+            {"id": base + "Storage/storageAccounts/stv2", "kind": "StorageV2", "skuName": "Standard_LRS"},
+        ],
+        "private_dns_zones": [
+            {"id": net + "privateDnsZones/privatelink.unused.example", "linkCount": 0, "recordSets": 1},
+            {"id": net + "privateDnsZones/privatelink.used.example", "linkCount": 2},
+        ],
+        "private_endpoints": [
+            {"id": net + "privateEndpoints/pe-dead", "connState": "Disconnected"},
+            {"id": net + "privateEndpoints/pe-ok", "connState": "Approved"},
+        ],
+    }
     return {
+        **batch4,
         **batch3,
         **tier_a,
         "vms": vms,
@@ -202,6 +253,7 @@ def estate():
 
 def write_snapshot():
     SNAP.mkdir(parents=True, exist_ok=True)
+    (SNAP / "_meta.json").write_text(json.dumps({"collected_at": "2026-10-01T00:00:00Z"}, indent=1))
     for name, rows in estate().items():
         (SNAP / f"{name}.json").write_text(
             json.dumps({"rows": rows, "total_records": len(rows), "pages": 1, "warnings": []}, indent=1, sort_keys=True)

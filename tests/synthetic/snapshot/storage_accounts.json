@@ -1,0 +1,17 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stlegacy",
+   "kind": "Storage",
+   "skuName": "Standard_LRS"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stv2",
+   "kind": "StorageV2",
+   "skuName": "Standard_LRS"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

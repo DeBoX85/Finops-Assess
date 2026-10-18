@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "649845dae74237c4",
+  "report_hash": "e50aaa3e35650a2e",
   "status": "pass",
   "version": "0.1"
  },
@@ -410,6 +410,142 @@
    "savings_basis": "none",
    "title": "Defender for Cloud paid plans on Dev/Test-looking subscriptions",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "snapshots"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-SNAP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Managed disk snapshots older than 30 days",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "snapshots"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-SNAP-02",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Snapshots stored on Premium SSD",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "snapshots",
+    "all_disks",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-SNAP-03",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Snapshots whose source disk no longer exists",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "storage_accounts"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "MOD-STORV1-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Legacy storage account kinds (Storage, BlobStorage)",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vms",
+    "all_disks"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "IDLE-VMDISK-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Premium disks on VMs that are stopped or deallocated",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "private_dns_zones"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-PDNS-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Private DNS zones linked to no virtual network",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "private_endpoints"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-PE-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Private endpoints in Disconnected state",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -456,6 +592,30 @@
    "severity": "info"
   },
   {
+   "check_id": "IDLE-VMDISK-01",
+   "details": {
+    "power_state": "PowerState/stopped",
+    "premium_disks": [
+     "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/disks/vm-stopped-os"
+    ]
+   },
+   "evidence": {
+    "collectors": [
+     "vms",
+     "all_disks"
+    ],
+    "logic_hash": "d09be4c0664d",
+    "snapshot_digests": {
+     "all_disks": "ed46c46eaf6f",
+     "vms": "1ababd48ce4b"
+    }
+   },
+   "fingerprint": "6eb830ed1dc2b19a",
+   "message": "VM is stopped but 1 Premium disk(s) are still billed",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
+   "severity": "medium"
+  },
+  {
    "check_id": "IDLE-VMSTOP-01",
    "details": {
     "location": null,
@@ -468,13 +628,34 @@
     ],
     "logic_hash": "64384817e502",
     "snapshot_digests": {
-     "vms": "a2c61b733555"
+     "vms": "1ababd48ce4b"
     }
    },
    "fingerprint": "254e29bb8cd755b9",
    "message": "VM (Standard_D4s_v5) is stopped but not deallocated, so compute is likely still billed",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
    "severity": "medium"
+  },
+  {
+   "check_id": "MOD-STORV1-01",
+   "details": {
+    "kind": "Storage",
+    "location": null,
+    "skuName": "Standard_LRS"
+   },
+   "evidence": {
+    "collectors": [
+     "storage_accounts"
+    ],
+    "logic_hash": "800593d46a0c",
+    "snapshot_digests": {
+     "storage_accounts": "1687ce79e52a"
+    }
+   },
+   "fingerprint": "5b0350f423a1009a",
+   "message": "Storage account kind Storage is a legacy kind",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stlegacy",
+   "severity": "low"
   },
   {
    "check_id": "MON-AICLS-01",
@@ -2237,6 +2418,44 @@
    "severity": "low"
   },
   {
+   "check_id": "ORPH-PDNS-01",
+   "details": {
+    "recordSets": 1
+   },
+   "evidence": {
+    "collectors": [
+     "private_dns_zones"
+    ],
+    "logic_hash": "6d6b2724faac",
+    "snapshot_digests": {
+     "private_dns_zones": "7d49138d5a95"
+    }
+   },
+   "fingerprint": "ddc967104b806919",
+   "message": "Private DNS zone has no virtual network link",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateDnsZones/privatelink.unused.example",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-PE-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "private_endpoints"
+    ],
+    "logic_hash": "43b25a1bc8a5",
+    "snapshot_digests": {
+     "private_endpoints": "fa24fcfee115"
+    }
+   },
+   "fingerprint": "14b5adb2c9f691ea",
+   "message": "Private endpoint connection is Disconnected",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateEndpoints/pe-dead",
+   "severity": "low"
+  },
+  {
    "check_id": "ORPH-PIP-01",
    "details": {
     "allocation": "Static",
@@ -2301,6 +2520,73 @@
    "message": "Public IP (Standard, None) is attached only to a network interface that is itself unattached",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/publicIPAddresses/pip-via-orphan-nic",
    "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-SNAP-01",
+   "details": {
+    "age_days": 122,
+    "location": null,
+    "sizeGB": 128,
+    "skuName": "Standard_LRS"
+   },
+   "evidence": {
+    "collectors": [
+     "snapshots"
+    ],
+    "logic_hash": "8515c045df08",
+    "snapshot_digests": {
+     "snapshots": "44350d1c5690"
+    }
+   },
+   "fingerprint": "8faf78f15876c3a4",
+   "message": "Snapshot (128 GB, Standard_LRS) is 122 days old",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-old",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-SNAP-02",
+   "details": {
+    "location": null,
+    "sizeGB": 64,
+    "skuName": "Premium_LRS"
+   },
+   "evidence": {
+    "collectors": [
+     "snapshots"
+    ],
+    "logic_hash": "186324cd4719",
+    "snapshot_digests": {
+     "snapshots": "44350d1c5690"
+    }
+   },
+   "fingerprint": "26ccc270c6891ed1",
+   "message": "Snapshot (64 GB) uses Premium storage",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-new-premium",
+   "severity": "low"
+  },
+  {
+   "check_id": "ORPH-SNAP-03",
+   "details": {
+    "location": null,
+    "sizeGB": 32
+   },
+   "evidence": {
+    "collectors": [
+     "snapshots",
+     "all_disks",
+     "subscriptions"
+    ],
+    "logic_hash": "baf6e6c66c88",
+    "snapshot_digests": {
+     "all_disks": "ed46c46eaf6f",
+     "snapshots": "44350d1c5690",
+     "subscriptions": "6d3c3a547749"
+    }
+   },
+   "fingerprint": "e2825c0d91fc95ad",
+   "message": "Snapshot source disk was not found in the scanned subscriptions",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-orphan-src",
+   "severity": "low"
   },
   {
    "check_id": "ORPH-VGW-01",
@@ -2434,6 +2720,41 @@
    {
     "findings": 1,
     "id": "SEC-DEFDEV-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-SNAP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-SNAP-02",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-SNAP-03",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "MOD-STORV1-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "IDLE-VMDISK-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-PDNS-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-PE-01",
     "status": "ran"
    }
   ],

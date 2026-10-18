@@ -1,0 +1,47 @@
+{
+ "cases": [
+  {
+   "name": "premium by sku or tier",
+   "snapshot": {
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/1",
+       "skuName": "Premium_LRS"
+      },
+      {
+       "id": "/s/2",
+       "skuName": "Standard_ZRS",
+       "skuTier": "Premium"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/s/1",
+    "/s/2"
+   ]
+  },
+  {
+   "name": "standard",
+   "snapshot": {
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/3",
+       "skuName": "Standard_LRS",
+       "skuTier": "Standard"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

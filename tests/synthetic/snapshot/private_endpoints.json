@@ -1,0 +1,15 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "connState": "Disconnected",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateEndpoints/pe-dead"
+  },
+  {
+   "connState": "Approved",
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateEndpoints/pe-ok"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

@@ -1,0 +1,43 @@
+{
+ "cases": [
+  {
+   "name": "no links",
+   "snapshot": {
+    "private_dns_zones": {
+     "rows": [
+      {
+       "id": "/z/1",
+       "linkCount": 0
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/z/1"
+   ]
+  },
+  {
+   "name": "linked or unknown",
+   "snapshot": {
+    "private_dns_zones": {
+     "rows": [
+      {
+       "id": "/z/2",
+       "linkCount": 2
+      },
+      {
+       "id": "/z/3"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

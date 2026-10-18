@@ -34,6 +34,21 @@ class Finding:
     fingerprint: str = ""  # filled by the runner: sha256 over check, resource and details
 
 
+class NotAssessed(Exception):
+    """Raised by a check that cannot decide with the data it has; the runner reports 'not_assessed' with this reason (hard rule 6)."""
+
+
+def collected_at(snapshot):
+    """Reference time for age rules: when the snapshot was collected, never the wall clock, so offline re-analysis is reproducible."""
+    import datetime as dt  # noqa: PLC0415
+
+    m = snapshot.load("_meta") or {}
+    raw = m.get("collected_at")
+    if not raw:
+        raise NotAssessed("snapshot has no collection time (_meta.json), so age rules cannot be applied")
+    return dt.datetime.fromisoformat(raw.replace("Z", "+00:00"))
+
+
 REGISTRY: list = []
 
 
@@ -80,6 +95,9 @@ def run_all(config, snapshot, registry=None):
             continue
         try:
             got = list(fn(snapshot))
+        except NotAssessed as e:
+            status.append({"id": meta.id, "status": "not_assessed", "reason": str(e)})
+            continue
         except Exception as e:  # noqa: BLE001  one failing check must not stop the run; it is reported as failed
             status.append({"id": meta.id, "status": "failed", "reason": f"{type(e).__name__}: {e}"})
             continue

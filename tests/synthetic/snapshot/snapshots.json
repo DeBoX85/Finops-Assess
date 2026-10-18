@@ -1,0 +1,28 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-old",
+   "sizeGB": 128,
+   "skuName": "Standard_LRS",
+   "sourceResourceId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-src-ok",
+   "timeCreated": "2026-06-01T00:00:00Z"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-new-premium",
+   "sizeGB": 64,
+   "skuName": "Premium_LRS",
+   "sourceResourceId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-src-ok",
+   "timeCreated": "2026-09-25T00:00:00Z"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/snapshots/snap-orphan-src",
+   "sizeGB": 32,
+   "skuName": "Standard_LRS",
+   "sourceResourceId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/disk-deleted",
+   "timeCreated": "2026-09-30T00:00:00Z"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

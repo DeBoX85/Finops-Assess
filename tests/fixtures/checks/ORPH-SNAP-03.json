@@ -1,0 +1,76 @@
+{
+ "cases": [
+  {
+   "name": "source gone in scanned sub",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/AAA"
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/subscriptions/aaa/resourceGroups/r/providers/Microsoft.Compute/disks/d1"
+      }
+     ]
+    },
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/1",
+       "sourceResourceId": "/subscriptions/aaa/resourceGroups/r/providers/Microsoft.Compute/disks/gone"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/s/1"
+   ]
+  },
+  {
+   "name": "source exists (case differs), other sub, empty source not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/AAA"
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/subscriptions/AAA/resourceGroups/r/providers/Microsoft.Compute/disks/D1"
+      }
+     ]
+    },
+    "snapshots": {
+     "rows": [
+      {
+       "id": "/s/2",
+       "sourceResourceId": "/subscriptions/aaa/resourceGroups/r/providers/Microsoft.Compute/disks/d1"
+      },
+      {
+       "id": "/s/3",
+       "sourceResourceId": "/subscriptions/zzz/resourceGroups/r/providers/Microsoft.Compute/disks/x"
+      },
+      {
+       "id": "/s/4",
+       "sourceResourceId": ""
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

@@ -54,5 +54,12 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["MON-LAWCAP-01"] == {"law-nocap"}  # capped and Free skipped
     assert by["MON-AICLS-01"] == {"ai-old"}
     assert by["SEC-DEFDEV-01"] == {"VirtualMachines"}  # only the Standard plan on the DevTest subscription
+    assert by["ORPH-SNAP-01"] == {"snap-old"}  # 122 days old at the fixed collection time; the others are 5 and 1 days
+    assert by["ORPH-SNAP-02"] == {"snap-new-premium"}
+    assert by["ORPH-SNAP-03"] == {"snap-orphan-src"}
+    assert by["MOD-STORV1-01"] == {"stlegacy"}
+    assert by["IDLE-VMDISK-01"] == {"vm-stopped"}  # case-insensitive disk id match; vm-dealloc has a non-premium disk
+    assert by["ORPH-PDNS-01"] == {"privatelink.unused.example"}
+    assert by["ORPH-PE-01"] == {"pe-dead"}
     assert by["ORPH-ASP-01"] == {"asp-empty"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7

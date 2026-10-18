@@ -14,13 +14,13 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Idle VNet gateways | DIFFERENT | ORPH-VGW-01 | Skips point-to-site gateways to avoid false positives; confidence low |
 | Idle NAT gateways | DONE-OFFLINE | ORPH-NAT-01 | |
 | Idle ExpressRoute circuits | DIFFERENT | ORPH-ERC-01 | Hub query checks provisioning state; workbook wording is "idle". Unclear if the workbook checks traffic (UNVERIFIED) |
-| Idle private DNS zones (0 VNet links) | PLANNED | backlog 7 batch 4 | |
-| Idle private endpoints (Disconnected) | PLANNED | backlog 7 batch 4 | |
+| Idle private DNS zones (0 VNet links) | DONE-OFFLINE | ORPH-PDNS-01 | |
+| Idle private endpoints (Disconnected) | DONE-OFFLINE | ORPH-PE-01 | Only Disconnected is reported, as in the workbook |
 | VMs stopped, not deallocated | DONE-OFFLINE | IDLE-VMSTOP-01 | |
 | VMs deallocated, processor type lists | PLANNED | backlog 7 | Inventory style; low value alone |
-| Premium disks on powered-off VMs | PLANNED | backlog 7 batch 4 | Needs VM power state joined to disks |
-| Snapshots older than 30 days / premium / source disk deleted | PLANNED | backlog 7 batch 4 | |
-| Storage accounts not v2 | PLANNED | backlog 7 batch 4 | Hub query LegacyStorageAccounts |
+| Premium disks on powered-off VMs | DONE-OFFLINE | IDLE-VMDISK-01 | Also covers data disks (workbook: OS disk only) |
+| Snapshots older than 30 days / premium / source disk deleted | DONE-OFFLINE | ORPH-SNAP-01, ORPH-SNAP-02, ORPH-SNAP-03 | Age uses the snapshot's collection time; source-deleted only judged for scanned subscriptions |
+| Storage accounts not v2 | DONE-OFFLINE | MOD-STORV1-01 | Hub query LegacyStorageAccounts |
 | Idle backups (last backup > 90 days) | PLANNED | backlog 7 batch 4 | recoveryservicesresources |
 | Recovery vault replication GRS vs LRS | PLANNED | backlog 9 | Judgement call; needs customer context, report as info |
 | Disk last modified date (ARM createdTime/changedTime) | PLANNED | backlog 7 | Needs ARM call beyond ARG |

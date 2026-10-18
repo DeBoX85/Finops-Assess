@@ -1,0 +1,16 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateDnsZones/privatelink.unused.example",
+   "linkCount": 0,
+   "recordSets": 1
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Network/privateDnsZones/privatelink.used.example",
+   "linkCount": 2
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

@@ -1,0 +1,98 @@
+{
+ "cases": [
+  {
+   "name": "os and data premium disks on stopped vms",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "powerState": "PowerState/deallocated",
+       "osDiskId": "/d/OS1",
+       "dataDisks": [
+        {
+         "managedDisk": {
+          "id": "/d/data1"
+         }
+        },
+        {
+         "managedDisk": {
+          "id": "/d/std"
+         }
+        }
+       ]
+      },
+      {
+       "id": "/v/2",
+       "powerState": "PowerState/stopped",
+       "osDiskId": "/d/os2",
+       "dataDisks": null
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/d/os1",
+       "skuName": "Premium_LRS"
+      },
+      {
+       "id": "/d/data1",
+       "skuName": "Premium_ZRS"
+      },
+      {
+       "id": "/d/std",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/d/os2",
+       "skuName": "Premium_LRS"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/2"
+   ]
+  },
+  {
+   "name": "running or standard only not reported",
+   "snapshot": {
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/3",
+       "powerState": "PowerState/running",
+       "osDiskId": "/d/os3"
+      },
+      {
+       "id": "/v/4",
+       "powerState": "PowerState/deallocated",
+       "osDiskId": "/d/std4"
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/d/os3",
+       "skuName": "Premium_LRS"
+      },
+      {
+       "id": "/d/std4",
+       "skuName": "StandardSSD_LRS"
+      }
+     ]
+    },
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

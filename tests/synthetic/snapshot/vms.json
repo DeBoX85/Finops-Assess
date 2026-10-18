@@ -2,13 +2,16 @@
  "pages": 1,
  "rows": [
   {
+   "dataDisks": [],
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
+   "osDiskId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/VM-STOPPED-OS",
    "powerDisplay": "VM stopped",
    "powerState": "PowerState/stopped",
    "vmSize": "Standard_D4s_v5"
   },
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dealloc",
+   "osDiskId": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/vm-dealloc-os",
    "powerState": "PowerState/deallocated",
    "vmSize": "Standard_D4s_v5"
   },

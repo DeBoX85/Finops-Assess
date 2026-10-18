@@ -56,7 +56,8 @@ KQL_VMS = (
     "resources | where type =~ 'microsoft.compute/virtualmachines' "
     "| project id, name, subscriptionId, resourceGroup, location, vmSize=tostring(properties.hardwareProfile.vmSize), "
     "powerState=tostring(properties.extended.instanceView.powerState.code), "
-    "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), tags | order by id asc"
+    "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), "
+    "osDiskId=tostring(properties.storageProfile.osDisk.managedDisk.id), dataDisks=properties.storageProfile.dataDisks, tags | order by id asc"
 )
 
 # Batch 3 (backlog 7). Predicates re-read from the hub queries at finops-toolkit f12c29e on 2026-10-18; UNVERIFIED live.
@@ -107,6 +108,27 @@ KQL_DEFENDER_PRICINGS = (
     "| project id, name, subscriptionId, pricingTier=tostring(properties.pricingTier), subPlan=tostring(properties.subPlan) | order by id asc"
 )
 
+# Batch 4. Predicates from the finops-toolkit hub queries and Storage/Networking workbooks (MIT, commit f12c29e, read 2026-10-18); UNVERIFIED live.
+KQL_SNAPSHOTS = _NET.format(
+    t="microsoft.compute/snapshots",
+    f="skuName=tostring(sku.name), skuTier=tostring(sku.tier), sizeGB=toint(properties.diskSizeGB), "
+    "timeCreated=tostring(properties.timeCreated), sourceResourceId=tostring(properties.creationData.sourceResourceId), ",
+)
+KQL_ALL_DISKS = _NET.format(t="microsoft.compute/disks", f="skuName=tostring(sku.name), sizeGB=toint(properties.diskSizeGB), ")
+KQL_STORAGE_ACCOUNTS = _NET.format(
+    t="microsoft.storage/storageaccounts", f="kind=tostring(kind), skuName=tostring(sku.name), accessTier=tostring(properties.accessTier), "
+)
+KQL_PRIVATE_DNS = _NET.format(
+    t="microsoft.network/privatednszones",
+    f="linkCount=toint(properties.numberOfVirtualNetworkLinks), recordSets=toint(properties.numberOfRecordSets), ",
+)
+KQL_PRIVATE_ENDPOINTS = _NET.format(
+    t="microsoft.network/privateendpoints",
+    f="connState=tostring(iff(array_length(properties.manualPrivateLinkServiceConnections) > 0, "
+    "properties.manualPrivateLinkServiceConnections[0], properties.privateLinkServiceConnections[0])"
+    ".properties.privateLinkServiceConnectionState.status), ",
+)
+
 COLLECTORS = {
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
@@ -128,10 +150,18 @@ COLLECTORS = {
     "la_workspaces": KQL_LA_WORKSPACES,
     "app_insights": KQL_APP_INSIGHTS,
     "defender_pricings": KQL_DEFENDER_PRICINGS,
+    "snapshots": KQL_SNAPSHOTS,
+    "all_disks": KQL_ALL_DISKS,
+    "storage_accounts": KQL_STORAGE_ACCOUNTS,
+    "private_dns_zones": KQL_PRIVATE_DNS,
+    "private_endpoints": KQL_PRIVATE_ENDPOINTS,
 }
 
 
 def collect(client, snapshot, config, errors: list):
+    import datetime as dt  # noqa: PLC0415
+
+    snapshot.save("_meta", {"collected_at": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")})
     for name, kql in COLLECTORS.items():
         try:
             res = arg.query(client, kql, config.subscriptions or None, config.management_groups or None)
