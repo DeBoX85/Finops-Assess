@@ -151,6 +151,24 @@ def test_collect_rightsizing_end_to_end_with_cap_skips_and_get_only(tmp_path):
     assert errors == []
 
 
+def test_points_outside_window_are_ignored():
+    s, _ = metrics.window(REF)
+    d = [
+        {"timeStamp": (s - dt.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ"), "average": 1, "maximum": 2},
+        {"timeStamp": (s + dt.timedelta(hours=720)).strftime("%Y-%m-%dT%H:%M:%SZ"), "average": 1, "maximum": 2},
+        {"timeStamp": (s + dt.timedelta(hours=719)).strftime("%Y-%m-%dT%H:%M:%SZ"), "average": 1, "maximum": 2},
+    ]
+    pts, _err = metrics.parse_cpu_response(_body(d), s)
+    assert [p.hour_index for p in pts] == [719]
+
+
+def test_missing_vm_inventory_is_an_error_not_an_empty_result(tmp_path):
+    snap = Snapshot(tmp_path)
+    errors = []
+    metrics.collect_rightsizing(None, snap, type("C", (), {"rightsizing_max_vms": 5}), errors, REF)
+    assert not snap.has("vm_cpu") and "vms" in errors[0]["error"]
+
+
 def test_sku_failure_is_recorded_and_vms_skipped(tmp_path):
     snap = Snapshot(tmp_path)
     snap.save("vms", {"rows": [_vm("a")]})

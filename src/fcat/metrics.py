@@ -69,8 +69,9 @@ def parse_cpu_response(body, start: dt.datetime):
                 t = dt.datetime.fromisoformat(str(d.get("timeStamp")).replace("Z", "+00:00"))
             except ValueError:
                 continue
-            if ok:
-                pts[int((t - start).total_seconds() // 3600)] = Point(int((t - start).total_seconds() // 3600), float(mx), float(av))
+            idx = int((t - start).total_seconds() // 3600)
+            if ok and 0 <= idx < WINDOW_DAYS * 24:  # points outside the requested window would inflate coverage
+                pts[idx] = Point(idx, float(mx), float(av))
         return [pts[k] for k in sorted(pts)], None
     return [], "CPU metric not present in response"
 
@@ -124,6 +125,11 @@ def _get_pages(client, url, limit=20):
 def collect_rightsizing(client, snapshot, config, errors: list, collected_at: dt.datetime):
     """Writes snapshot 'vm_cpu': {'rows': [...], 'skipped': [{'id','reason'}], 'cap': n, 'considered': n, 'window': {...}}.
     Running VMs only (stopped VMs emit no metrics), at most config.rightsizing_max_vms of them, chosen by id order."""
+    if not snapshot.has("vms"):
+        errors.append(
+            {"collector": "vm_cpu", "error": "VM inventory (vms) is missing, so no VM could be selected; rightsizing not assessed"}
+        )
+        return
     start, end = window(collected_at)
     vms = [v for v in (snapshot.load("vms") or {}).get("rows", []) if str(v.get("powerState") or "").lower() == RUNNING]
     vms.sort(key=lambda v: str(v.get("id")))

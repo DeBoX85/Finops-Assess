@@ -14,3 +14,12 @@
 What happened: ORPH-NSG-01 first treated "both association lists null" as unknown and skipped it. The hub query (microsoft/finops-toolkit commit f12c29e, read 2026-10-18) treats absent as no association, so my version would have missed real orphans. ORPH-PIP-01 also missed public IPs attached only to an unattached NIC.
 Caught by: re-reading the hub query files after the first batch was committed (not pushed to main with the wrong rule).
 Prevention: read the upstream query/ARM schema first, then write the check. Where upstream semantics are UNVERIFIED live (null versus empty array), say so in the docstring.
+
+## M-008 (2026-10-18) Collector wrote an empty-looking result when its input was missing
+What happened: the first rightsizing collector, if the VM inventory (`vms`) had failed to collect, would have saved `vm_cpu` with zero rows, so RIGHT-VMCPU-01 would have reported "ran, 0 findings" instead of "not assessed". Also, metric points outside the requested window were counted toward coverage.
+Caught by: QA read-through after the commit (5c9fa21), before any live use; fixed in the QA commit with two tests.
+Prevention: a collector that depends on another snapshot must record an error and write nothing when that input is absent; an empty result is only valid when the input was present and really empty. Parse functions must clamp to the requested window.
+
+## M-009 (2026-10-18) Smaller slips while adding 14 checks (all caught by tests before commit)
+Check id longer than the 6-character area limit (MOD-LBBASIC-01); a Cosmos fixture with wrong arithmetic; hand-derived finding counts and test counts not updated when the synthetic estate grew; a fixture missing `_meta` for an age rule; mock-up text wrapping on mobile.
+Prevention: keep the id pattern in mind when naming; derive expected numbers by hand before reading the code's output; update the count assertions in the same edit as the estate.
