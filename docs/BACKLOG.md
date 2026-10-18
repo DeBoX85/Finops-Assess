@@ -35,3 +35,4 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 30. (DONE 2026-10-18: `--redact`, `fcat purge`) Redacted export mode and an output purge command (T-07).
 - 31. (DONE 2026-10-18) Dependency pinning and SBOM in the manifest (T-10).
 - 12/13 status: DESIGN DRAFTED 2026-10-18 (docs/DOCTOR.md, docs/THREAT-MODEL.md); nothing built except the xlsx formula-injection fix (T-04).
+- 24. status 2026-10-18: design in docs/RIGHTSIZING.md, pure statistics in src/fcat/rightsize.py (15 tests). Collector (Azure Monitor metrics GET) and the check that calls it are NOT built.

@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:13 UTC
+Last updated: 2026-10-18 15:15 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:13
-Base commit: d3f9697
+Last checkpoint (UTC): 2026-10-18 15:15
+Base commit: 86dd603
 Gates: pass
-Files changed in this checkpoint: 3
-narrative_hash: a96cb6c7d9c3
+Files changed in this checkpoint: 6
+narrative_hash: 9e53698fc169
 stale_count: 0
 <!-- auto:end -->
 
@@ -44,6 +44,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: backlog 7 batch 4 done: ORPH-SNAP-01/02/03, MOD-STORV1-01, IDLE-VMDISK-01, ORPH-PDNS-01, ORPH-PE-01. New mechanism: collect() writes snapshot/_meta.json collected_at; age rules use it (checks.collected_at), missing => NotAssessed => "not assessed because X". Golden 93. Predicates from hub queries and Storage/Networking workbooks at f12c29e; UNVERIFIED live. Next: 22 accuracy tests, 14 NOTICE audit, rightsizing design, 16 tailoring design, 20 mock-ups.
 - 2026-10-18: backlog 22 mostly done: tests/test_accuracy.py applies to every check (fuzz, metamorphic, locality, KQL contract). It found 5 real crashes on malformed rows, now fixed with guards. Next: 14 NOTICE audit, rightsizing design, 16 tailoring design, 20 mock-ups.
 - 2026-10-18: backlog 14 NOTICE audit done: upstream MIT text verified identical (whitespace aside), derived files listed, 15 locked dependencies with declared licences (certifi is MPL-2.0, unmodified), excluded-source name scan clean. Next: rightsizing design, 16 tailoring design, 20 mock-ups.
+- 2026-10-18: rightsizing design done (docs/RIGHTSIZING.md, Learn-verified Advisor/Migrate/metrics facts) and src/fcat/rightsize.py (pure, tested). Thresholds are my PROPOSAL (limit 60% projected P99 of hourly max), echoed in every result. Next: 16 tailoring config design, 20 dashboard mock-ups.
 ## In progress
 Nothing half-done.
 ## Next step
