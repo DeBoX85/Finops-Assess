@@ -21,7 +21,7 @@ Needs the tenant: G2 live gate, canary resources, Reader-only workspace query te
 - 16. Report tailoring config: branding (logo, colours, name, per-run override for external collaborators), module on/off, module weight and ranking. Owner-set only. Affects HTML/Excel/JSON length and style; JSON keeps full data.
 - 17. Auth risk test: AzureCliCredential and MFA/conditional access on CSP and MCA test tenants (claims challenge unsupported). Needs tenant.
 - 18. Billing-type specifics for CSP and MCA (Azure for Startups type): which Cost Management APIs and scopes work. Research first, verify on Learn.
-- 19. FOCUS file import: `fcat import-focus <folder|file>` reads a customer-provided cost export offline (no Azure permissions). Fits the no-write rule. Design first.
+- 19. FOCUS file import (DONE offline 2026-10-18, `fcat import-focus`, src/fcat/focus_import.py; no checks use it yet, not tested on a real export): `fcat import-focus <folder|file>` reads a customer-provided cost export offline (no Azure permissions). Fits the no-write rule. Design first.
 - 20. Dashboard mock-ups (2 to 3 variants) with editable branding/scope/layout config. Owner agreed, taste review after.
 - 21. Maturity questionnaire draft for owner review BEFORE implementation (owner request 2026-10-18).
 - 22. Extra accuracy tests (owner request 2026-10-18): runtime invariants and completeness counters; property-based tests per check; metamorphic tests; cross-source reconciliation (Advisor/azqr/cost totals); schema-drift detection on collector output; recorded-response contract tests (after tenant). Add to AUDIT.md.

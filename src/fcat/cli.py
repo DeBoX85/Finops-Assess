@@ -4,7 +4,7 @@ import argparse
 import pathlib
 import sys
 
-from . import checks, collectors, manifest, render_html, render_json, render_xlsx
+from . import checks, collectors, focus_import, manifest, render_html, render_json, render_xlsx
 from . import config as cfgmod
 from .auth import AzCliTokenProvider
 from .errors import FcatError
@@ -35,7 +35,19 @@ def main(argv=None):
     a = sub.add_parser("analyze", help="re-analyse an existing snapshot offline")
     a.add_argument("--config", required=True)
     a.add_argument("--out", default="output")
+    f = sub.add_parser("import-focus", help="aggregate a customer-provided FOCUS cost file into the snapshot (offline)")
+    f.add_argument("paths", nargs="+")
+    f.add_argument("--out", default="output")
     args = p.parse_args(argv)
+    if args.cmd == "import-focus":
+        try:
+            data = focus_import.import_files(args.paths)
+        except FcatError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 2
+        Snapshot(pathlib.Path(args.out) / "snapshot").save("cost_focus", data)
+        print(f"imported {data['rows']} rows, {data['currency']}, {data['period']['first_day']} to {data['period']['last_day']}")
+        return 0
     cfg = cfgmod.load(args.config)
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

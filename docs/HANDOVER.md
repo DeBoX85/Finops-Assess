@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 14:30 UTC
+Last updated: 2026-10-18 14:32 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 14:30
-Base commit: 08b46d0
+Last checkpoint (UTC): 2026-10-18 14:32
+Base commit: ec11461
 Gates: pass
-Files changed in this checkpoint: 2
-narrative_hash: 412dda62c17f
+Files changed in this checkpoint: 6
+narrative_hash: 2c1ce7d19469
 stale_count: 0
 <!-- auto:end -->
 
@@ -33,6 +33,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - (Earlier checkpoint of this unit pushed to wip/auto only because one test needed a quotaId in its fixture; fixed in the next commit.)
 - 2026-10-18: Backlog 18 research done (KB note 10). Added src/fcat/billing.py, check BILL-OFFER-01, quotaId in subscriptions collector, golden updated (diff reviewed: only BILL additions). Key finding: CSP customers see RETAIL cost only and zero for reservation usage; Sponsorship and classic CSP have no Cost Management data. Open questions for owner in note 10 (not blocking).
 - 2026-10-18: OWNER AWAY for the next few steps. Work unattended. All pending owner items are parked in docs/DECISIONS-PENDING.md with defaults; follow its rules (do not ask, use defaults marked provisional, no customer use, do not widen the allowlist).
+- 2026-10-18: backlog 19 built: `fcat import-focus <file|folder>` aggregates a FOCUS CSV(.gz) into snapshot cost_focus.json. Refuses mixed currencies and non-FOCUS files, reports missing cost columns. Column names from Learn FOCUS schema page (read 2026-10-18). UNVERIFIED against a real export. Next unattended: item 7 (more orphan/idle checks), then 8 (parity matrix).
 ## In progress
 Nothing half-done.
 ## Next step
