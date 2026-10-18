@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:40 UTC
+Last updated: 2026-10-18 15:43 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:40
-Base commit: 0a8fbda
+Last checkpoint (UTC): 2026-10-18 15:43
+Base commit: 5c9fa21
 Gates: pass
-Files changed in this checkpoint: 13
-narrative_hash: a300f1cce900
+Files changed in this checkpoint: 9
+narrative_hash: f2d90ab8203a
 stale_count: 0
 <!-- auto:end -->
 
@@ -50,6 +50,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: parity batch 1 done (8 checks, 32 total, all offline-only): MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01, MOD-VMUNMG-01 (retirement dates from Learn), LIC-AHBWIN-01, LIC-AHBSQL-01 (eligibility unreadable, confidence low, no savings), OPT-AKSSPT-01 (prompt only), ADV-COST-01 (Advisor figure labelled, never summed, period unstated). New collectors vm_licensing, sql_vms, aks_pools, advisor_cost; vms gained osDiskVhdUri. Golden 101 (hand-derived +2 +6). Test change: locality test skips duplicate-id expanded rows. Next: batch 2 (Cosmos, Synapse, Firewall Premium, backups/vault).
 - 2026-10-18: parity batch 2 done (5 checks, 37 total, offline-only): IDLE-BKP-01, OPT-VAULT-01, OPT-COSBKP-01, ORPH-SYN-01, OPT-FWPREM-01. Learn facts used: Cosmos 2 free periodic copies and 7-day continuous tier has no storage charge; Synapse serverless SQL is free until queried (so ORPH-SYN-01 is info); Firewall Premium also has URL filtering and web categories that OPT-FWPREM-01 does not inspect; child firewall policy inherits stricter IDPS mode so child policies are skipped. Golden 106. Next: rightsizing collector and check, FOCUS checks, fcat doctor, dev dependency pins, then independent QA.
 - 2026-10-18: rightsizing collector and RIGHT-VMCPU-01 built (38 checks, offline-only): src/fcat/metrics.py (GET only, allowlist unchanged), Config.rightsizing/rightsizing_max_vms, collectors.REST_COLLECTORS, tests/test_metrics.py with a fake client. Synthetic estate has no vm_cpu so golden shows not_assessed (reason: missing collector data). Next: FOCUS checks, fcat doctor, dev dependency pins, then QA.
+- 2026-10-18: `fcat doctor` built (src/fcat/doctor.py; --needs offline list, online probes, counts only) and dev dependency pins added (requirements/dev.in, dev.txt with hashes, pip-compile 7.6.2, Python 3.13). FOCUS-based checks deliberately NOT built: the import holds aggregates only (no tags, no commitment columns) and what to measure is a product decision. Next: QA pass (task 21), then report to owner.
 ## In progress
 Nothing half-done.
 ## Next step

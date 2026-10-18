@@ -11,7 +11,7 @@ Order is my proposal. [needs you] marks items where a decision from the owner ch
 9. Monitoring/security modules: collectors and checks from note 09 (Log Analytics, App Insights, Sentinel, Defender); check which properties ARG exposes; fixtures.
 10. Maturity rubric draft: finops.org capabilities mapped to evidence, with "needs input" items and questionnaire [needs you to review].
 11. HTML dashboard design (light/dark, print to PDF, per-customer tailoring options like logo, colours, sections) and PDF render check with headless Chromium [needs you for branding/taste].
-12. `fcat doctor` permission probe design; customer-facing "access we need and why" generated from the check catalogue.
+12. (BUILT offline 2026-10-18, see docs/DOCTOR.md) `fcat doctor` permission probe design; customer-facing "access we need and why" generated from the check catalogue.
 13. Threat model and privacy review of the tool (what it collects, where it stores it, retention, handling of outputs).
 14. THIRD_PARTY/NOTICE audit of everything reused.
 15. Remaining research: FOCUS 1.4 changelog, conformance full report, Cost Management api-version status, Copilot in Cost Management status, Reddit sentiment (blocked).

@@ -1,4 +1,5 @@
-# `fcat doctor` design (draft 1, 2026-10-18; not built)
+# `fcat doctor` design (draft 1, 2026-10-18; BUILT offline 2026-10-18: src/fcat/doctor.py, tests/test_doctor.py)
+Built: `fcat doctor --needs` (access-need list, offline) and `fcat doctor [--config F]` (probes: token, identity, subscriptions, resources, management groups, Advisor via ARG; counts only, writes output/doctor.json). NOT built: the role-assignment (write role) warning probe and the billing-offer probe, because their permission behaviour is UNVERIFIED. Probe semantics are UNVERIFIED live (needs gate G2).
 Purpose: before a run, tell the person what the current login can and cannot see, and produce the customer-facing "access we need and why" page from the check catalogue. Read-only like everything else; uses only allowlisted calls.
 
 ## Two outputs

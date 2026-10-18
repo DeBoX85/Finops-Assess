@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
 import sys
 
-from . import checks, collectors, focus_import, manifest, redact, render_html, render_json, render_xlsx
+from . import checks, collectors, doctor, focus_import, manifest, redact, render_html, render_json, render_xlsx
 from . import config as cfgmod
 from .auth import AzCliTokenProvider
 from .errors import FcatError
@@ -29,6 +30,29 @@ def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False):
     print(f"{len(findings)} findings; checks: " + ", ".join(f"{s['id']}={s['status']}" for s in status))
     print(f"self-audit: {doc['audit']['status']} (report fingerprint {doc['audit']['report_hash']})")
     return doc["audit"]["status"] == "pass"
+
+
+def _doctor(args) -> int:
+    if args.needs:
+        print(doctor.needs_markdown())
+        return 0
+    problem = manifest.out_dir_problem(args.out)
+    if problem:
+        print(f"error: {problem}. Use a different --out or add it to .gitignore.", file=sys.stderr)
+        return 2
+    try:
+        cfg = cfgmod.load(args.config) if args.config else None
+        tp = AzCliTokenProvider()
+        client = Client(tp)
+        results = doctor.probe(client, tp, cfg.subscriptions if cfg else None, cfg.management_groups if cfg else None)
+    except (FcatError, OSError, ValueError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+    print(doctor.render_probe_table(results))
+    out = pathlib.Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "doctor.json").write_text(json.dumps({"probes": results, "calls": len(client.calls)}, indent=1))
+    return 0 if all(r["status"] == "pass" for r in results) else 1
 
 
 PURGE_FILES = ("report.json", "report.html", "report.xlsx")
@@ -76,6 +100,10 @@ def main(argv=None):
             action="store_true",
             help="pseudonymise tenant, subscription, resource group and resource names in the reports (snapshot is not redacted)",
         )
+    d = sub.add_parser("doctor", help="list the access the checks need (offline) or probe what the current login can read")
+    d.add_argument("--needs", action="store_true", help="print the access-need list from the check catalogue; no login, no network")
+    d.add_argument("--config", help="optional config: probes are limited to its subscriptions or management groups")
+    d.add_argument("--out", default="output")
     pg = sub.add_parser("purge", help="delete files fcat created in an output folder (dry run unless --yes)")
     pg.add_argument("--out", default="output")
     pg.add_argument("--yes", action="store_true")
@@ -84,6 +112,8 @@ def main(argv=None):
             "--allow-unignored-out", action="store_true", help="write into a git work tree even if git would not ignore the folder"
         )
     args = p.parse_args(argv)
+    if args.cmd == "doctor":
+        return _doctor(args)
     problem = None if args.cmd == "purge" or args.allow_unignored_out else manifest.out_dir_problem(args.out)
     if problem:
         print(f"error: {problem}. Use a different --out, or add it to .gitignore, or pass --allow-unignored-out.", file=sys.stderr)
