@@ -27,7 +27,7 @@ def test_check_metadata_is_complete(meta):
     assert meta.validation in {"offline-only", "live"}
     assert meta.framework and meta.permissions and meta.collectors and meta.title
     for c in meta.collectors:
-        assert c in collectors.COLLECTORS, f"{meta.id} needs unknown collector {c}"
+        assert c in collectors.COLLECTORS or c in collectors.REST_COLLECTORS, f"{meta.id} needs unknown collector {c}"
 
 
 def test_check_ids_unique():

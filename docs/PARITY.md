@@ -82,6 +82,11 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Unused Synapse workspaces | DIFFERENT | ORPH-SYN-01 | Info only: serverless SQL costs nothing until queried (Learn), so zero pools does not mean zero use |
 | Azure Firewall Premium unused features | DIFFERENT | OPT-FWPREM-01 | Checks IDPS and TLS inspection only; URL filtering and web categories are not inspected, so the message says so |
 
+## Added in batch 7 (2026-10-18)
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| VM rightsizing from peak CPU (no workbook equivalent; Advisor has its own) | DONE-OFFLINE | RIGHT-VMCPU-01 | Opt-in (`[run] rightsizing = true`), CPU only, hourly maxima over 30 days, same-family half-size only; built from the documented REST schema, never run live (UNVERIFIED) |
+
 ## Beyond the workbooks (F-CAT only, today)
 Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
 

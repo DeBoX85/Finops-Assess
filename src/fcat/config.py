@@ -107,6 +107,8 @@ class Config:
     subscriptions: list = field(default_factory=list)
     management_groups: list = field(default_factory=list)
     report: ReportOptions = field(default_factory=ReportOptions)
+    rightsizing: bool = False  # opt-in: reads Azure Monitor metrics and compute SKUs (many GET calls); see docs/RIGHTSIZING.md
+    rightsizing_max_vms: int = 50
 
     def as_dict(self):
         return {
@@ -115,6 +117,8 @@ class Config:
             "checks": self.checks,
             "subscriptions_count": len(self.subscriptions),
             "management_groups_count": len(self.management_groups),
+            "rightsizing": self.rightsizing,
+            "rightsizing_max_vms": self.rightsizing_max_vms,
         }
 
     def enabled(self, meta) -> tuple[bool, str]:
@@ -135,4 +139,9 @@ def load(path) -> Config:
     if prof not in PROFILES:
         raise ValueError(f"unknown profile {prof!r}; expected one of {sorted(PROFILES)}")
     rep = parse_report_options(d.get("report", {}), pathlib.Path(path).parent)
-    return Config(prof, d.get("domains", {}), d.get("checks", {}), run.get("subscriptions", []), run.get("management_groups", []), rep)
+    rs, cap = run.get("rightsizing", False), run.get("rightsizing_max_vms", 50)
+    if not isinstance(rs, bool) or not isinstance(cap, int) or isinstance(cap, bool) or not 1 <= cap <= 500:
+        raise ValueError("[run] rightsizing must be true or false and rightsizing_max_vms an integer from 1 to 500")
+    return Config(
+        prof, d.get("domains", {}), d.get("checks", {}), run.get("subscriptions", []), run.get("management_groups", []), rep, rs, cap
+    )

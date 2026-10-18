@@ -1,5 +1,5 @@
-from . import billing
-from .checks import CheckMeta, Finding, check, collected_at
+from . import billing, metrics
+from .checks import CheckMeta, Finding, NotAssessed, check, collected_at
 
 # ADR 0004 (hybrid): KQL narrows to unmanaged-by-VM disks; the rules below live in Python so they are unit tested.
 # Mirrors the finops-toolkit ORPH logic (MIT): skip disks in ActiveSAS state and ASR replica/seed disks.
@@ -812,3 +812,32 @@ def firewall_premium_unused_features(snap):
             "OPT-FWPREM-01", f["id"], "low", "Premium firewall: its policy has no IDPS (Alert or Deny) and no TLS inspection; check URL filtering and web categories before considering Standard",
             {"policy": pol["id"], "idpsMode": pol.get("idpsMode"), "location": f.get("location")},
         )  # fmt: skip
+
+
+@check(
+    _cm(
+        "RIGHT-VMCPU-01",
+        "optimization",
+        "Rate Optimization",
+        "Running VMs whose peak CPU fits a half-size VM",
+        "vm_cpu",
+        conf="medium",
+        basis="none",
+    )
+)
+def vm_cpu_rightsizing(snap):
+    """Opt-in ([run] rightsizing). Uses hourly Maximum CPU over 30 days (RIGHTSIZING.md): candidate when P99 of hourly maxima, scaled by current/target vCPUs, stays at or
+    below 60%. CPU only: memory, disk and network are NOT inspected, so the message says so. No saving is claimed (needs list price). Confidence is never high before live validation."""
+    data = snap.load("vm_cpu") or {}
+    rows, skipped = data.get("rows") or [], data.get("skipped") or []
+    hours = (data.get("window") or {}).get("hours")
+    if not rows and skipped:
+        raise NotAssessed(f"{len(skipped)} running VM(s) could not be assessed (for example: {skipped[0].get('reason')})")
+    for r in rows if isinstance(rows, list) else []:
+        a = metrics.assess_row(r, hours) if isinstance(r, dict) else None
+        if a and a["verdict"] == "candidate":
+            yield Finding(
+                "RIGHT-VMCPU-01", r["id"], "low",
+                f"CPU peaks fit {r['targetSize']} ({a['window_days']} days of data, CPU only; check memory, disk and network before resizing)",
+                {"current": r["vmSize"], "candidate": r["targetSize"], "vcpus": r["vcpus"], "target_vcpus": r["targetVcpus"], "assessment": a},
+            )  # fmt: skip

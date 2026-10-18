@@ -237,6 +237,10 @@ COLLECTORS = {
 }
 
 
+# Collectors that are not ARG queries. They run only when the owner opts in and are never in COLLECTORS (which the KQL tests iterate).
+REST_COLLECTORS = ("vm_cpu",)
+
+
 def collect(client, snapshot, config, errors: list):
     import datetime as dt  # noqa: PLC0415
 
@@ -248,3 +252,12 @@ def collect(client, snapshot, config, errors: list):
             errors.append({"collector": name, "error": f"{type(e).__name__}: {e}"})
             continue
         snapshot.save(name, {"rows": res.rows, "total_records": res.total_records, "pages": res.pages, "warnings": res.warnings})
+    if getattr(config, "rightsizing", False):
+        from . import metrics  # noqa: PLC0415
+
+        try:
+            metrics.collect_rightsizing(
+                client, snapshot, config, errors, dt.datetime.fromisoformat(snapshot.load("_meta")["collected_at"].replace("Z", "+00:00"))
+            )
+        except Exception as e:  # noqa: BLE001
+            errors.append({"collector": "vm_cpu", "error": f"{type(e).__name__}: {e}"})

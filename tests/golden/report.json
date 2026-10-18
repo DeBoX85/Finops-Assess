@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "19ede527b95ddcf2",
+  "report_hash": "8126ff186aa03c69",
   "status": "pass",
   "version": "0.1"
  },
@@ -797,6 +797,25 @@
    "run_cost": "low",
    "savings_basis": "none",
    "title": "Azure Firewall Premium without IDPS or TLS inspection configured",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vm_cpu"
+   ],
+   "confidence": "medium",
+   "domain": "optimization",
+   "framework": "Rate Optimization",
+   "id": "RIGHT-VMCPU-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Running VMs whose peak CPU fits a half-size VM",
    "validation": "offline-only"
   }
  ],
@@ -3360,6 +3379,11 @@
     "findings": 1,
     "id": "OPT-FWPREM-01",
     "status": "ran"
+   },
+   {
+    "id": "RIGHT-VMCPU-01",
+    "reason": "missing collector data: vm_cpu",
+    "status": "not_assessed"
    }
   ],
   "collector_errors": [],
@@ -3368,6 +3392,8 @@
    "domains": {},
    "management_groups_count": 0,
    "profile": "standard",
+   "rightsizing": false,
+   "rightsizing_max_vms": 50,
    "subscriptions_count": 0
   },
   "identity": {},

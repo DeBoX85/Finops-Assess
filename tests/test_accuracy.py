@@ -161,7 +161,14 @@ def test_every_column_a_check_reads_exists_in_its_kql():
         "properties",
         "managedDisk",
         "vhd",
-    }  # not row columns: result key and nested ARM keys read inside dynamic columns
+        "rows",
+        "skipped",
+        "window",
+        "hours",
+        "targetSize",
+        "targetVcpus",
+        "vcpus",
+    }  # keys of the REST-collected vm_cpu snapshot, not ARG columns  # not row columns: result key and nested ARM keys read inside dynamic columns
     read = set(re.findall(r'\b(?:r|d|s|n|v|p|c)\.get\("(\w+)"', src)) | set(re.findall(r'\b(?:r|d|s|n|v)\["(\w+)"\]', src))
     assert read, "parser found nothing; test is broken"
     assert not (read - cols_all), f"checks read columns no collector projects: {sorted(read - cols_all)}"
