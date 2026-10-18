@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-18 15:46 UTC
+Last updated: 2026-10-18 15:51 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-18 15:46
-Base commit: 2f32c8b
+Last checkpoint (UTC): 2026-10-18 15:51
+Base commit: 5d919eb
 Gates: pass
-Files changed in this checkpoint: 5
-narrative_hash: f2d90ab8203a
-stale_count: 1
+Files changed in this checkpoint: 2
+narrative_hash: 1888ce11b7db
+stale_count: 0
 <!-- auto:end -->
 
 ## State
@@ -51,6 +51,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 - 2026-10-18: parity batch 2 done (5 checks, 37 total, offline-only): IDLE-BKP-01, OPT-VAULT-01, OPT-COSBKP-01, ORPH-SYN-01, OPT-FWPREM-01. Learn facts used: Cosmos 2 free periodic copies and 7-day continuous tier has no storage charge; Synapse serverless SQL is free until queried (so ORPH-SYN-01 is info); Firewall Premium also has URL filtering and web categories that OPT-FWPREM-01 does not inspect; child firewall policy inherits stricter IDPS mode so child policies are skipped. Golden 106. Next: rightsizing collector and check, FOCUS checks, fcat doctor, dev dependency pins, then independent QA.
 - 2026-10-18: rightsizing collector and RIGHT-VMCPU-01 built (38 checks, offline-only): src/fcat/metrics.py (GET only, allowlist unchanged), Config.rightsizing/rightsizing_max_vms, collectors.REST_COLLECTORS, tests/test_metrics.py with a fake client. Synthetic estate has no vm_cpu so golden shows not_assessed (reason: missing collector data). Next: FOCUS checks, fcat doctor, dev dependency pins, then QA.
 - 2026-10-18: `fcat doctor` built (src/fcat/doctor.py; --needs offline list, online probes, counts only) and dev dependency pins added (requirements/dev.in, dev.txt with hashes, pip-compile 7.6.2, Python 3.13). FOCUS-based checks deliberately NOT built: the import holds aggregates only (no tags, no commitment columns) and what to measure is a product decision. Next: QA pass (task 21), then report to owner.
+- 2026-10-18: QA done. Mutation test on the 14 newest checks plus RIGHT-VMCPU-01: 75 mutants, 1 real survivor class (NotAssessed path of RIGHT-VMCPU-01 not distinguishable by fixtures), now covered by a direct test; other survivors were a docstring line. Two collector bugs fixed (M-008). Open for owner: confidence 'high' on MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01 pending DECISIONS-PENDING #2. No-input task list exhausted; waiting on DECISIONS-PENDING #1 to #10.
 ## In progress
 Nothing half-done.
 ## Next step

@@ -211,3 +211,24 @@ def test_collect_wires_rightsizing_only_when_enabled(tmp_path, monkeypatch):
     Cfg.rightsizing = True
     collectors.collect(None, Snapshot(tmp_path / "b"), Cfg, [])
     assert called == [1]
+
+
+def test_rightsizing_check_reports_not_assessed_only_when_nothing_was_assessable(tmp_path):
+    import pytest as _pt
+
+    from fcat import checks
+
+    checks.load_builtin()
+    fn = next(f for m, f in checks.REGISTRY if m.id == "RIGHT-VMCPU-01")
+    win = {"hours": 720}
+    s = Snapshot(tmp_path / "a")
+    s.save("vm_cpu", {"rows": [], "skipped": [{"id": "/v/1", "reason": "x"}], "window": win})
+    with _pt.raises(checks.NotAssessed):
+        list(fn(s))
+    s = Snapshot(tmp_path / "b")
+    s.save("vm_cpu", {"rows": [], "skipped": [], "window": win})  # no running VMs: a true empty result
+    assert list(fn(s)) == []
+    row = {"id": "/v/2", "vmSize": "a", "targetSize": "b", "vcpus": 4, "targetVcpus": 2, "points": [[h, 10.0, 2.0] for h in range(720)]}
+    s = Snapshot(tmp_path / "c")
+    s.save("vm_cpu", {"rows": [row], "skipped": [{"id": "/v/1", "reason": "x"}], "window": win})
+    assert [f.resource_id for f in fn(s)] == ["/v/2"]  # partial coverage still reports what it could assess
