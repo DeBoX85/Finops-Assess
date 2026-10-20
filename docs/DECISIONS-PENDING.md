@@ -18,6 +18,7 @@ Owner is away from the next few steps. Rules while items are pending:
 | 8 | Canary test resources | Deferred by owner until something to test on | Deferred | G2 precision/recall tests | None |
 | 9 | Export write mode (ADR 0005) | Rule 1 wording approved; design only for now | Design only; levels 1 and 1.5 first | Level 3 implementation | None |
 | 10 | ADR 0007: allow read-only Log Analytics workspace queries (docs/decisions/0007) | OK to allow POST to api.loganalytics.azure.com `/v1/workspaces/{id}/query` only | NOT allowed; no code uses it | Usage-based monitoring/security checks (tier B in docs/MODULE-MONITORING-SECURITY.md) | None yet |
+| 12 | Governance posture rules (mock-up round 3, docs/COST-GOVERNANCE.md section 12) | Review the proposed rules for Evidenced / Partial / Not evidenced per capability, and agree that checks should also record what they saw working ("pass" records), which is a change to the check interface | Rules as proposed, mock-up only; nothing in the tool computes posture yet | Posture view in the real report; maturity evidence from governance | Medium: touches every check if pass records are added |
 
 ## Closed
 - 2026-10-17: ADR 0004 hybrid (option C). Backlog approved. PLAN v0.1 approved (2026-10-18).

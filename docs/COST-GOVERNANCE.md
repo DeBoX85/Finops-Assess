@@ -106,3 +106,19 @@ Built offline: collector module src/fcat/govcost.py (GET only; budgets, schedule
 - **Privacy**: projection functions in govcost.py keep booleans and counts only. E-mail addresses, contact groups, storage account ids, containers, folders and free text are never stored (tests/test_govcost.py checks this with planted values).
 - **Not built**: BUD-OVER-01 (needs `currentSpend`, presence UNVERIFIED), STR-MG-01, the governance posture view in the dashboard (next step, needs the owner's confidence-label rule to be useful), management group scope collection.
 - Thresholds: none numeric in phase 2. Judgement calls are mine: BUD-ALERT-01 medium, BUD-COVER-01 medium, BUD-FCST-01 and ALR-ANOM-01 and EXP-CFG-01 low confidence.
+
+## 12. Governance posture: proposed rules and what is missing (2026-10-20, mock-up round 3)
+Mock-up: docs/mockups/frontend3/A3-dashboard.html (generator scripts/make_frontend_v3.py). The findings and tag panel in it are real tool output for the synthetic estate. The posture matrix is NOT tool output: the tool emits findings only, and posture needs to know what a control looks like when it works.
+**Gap (owner decision needed, DECISIONS-PENDING #12):** checks must also record positive evidence ("pass" records: the budget that has a working alert, the enforced policy, the export that ran) so that Evidenced can be told apart from "nothing found because nothing was looked at". Until then posture cannot be computed from a real run. The mock-up derives it from the synthetic snapshot and stops generating if its rules and the findings ever disagree.
+Four states, never a score: Evidenced (control seen working at that scope), Partial (seen, with a gap we can name), Not evidenced (we looked and did not find it), Not assessed (we could not look, with the reason, for example `[run] governance_apis` is off).
+Proposed rules per capability, our judgement and open to change:
+| Capability | Evidenced | Partial | Not evidenced |
+|---|---|---|---|
+| Allocation (tags) | scheme tags on at least 75% of resources and no casing or value variants at that scope | between the two, or variants present | scheme tags on under 25%, or no scheme |
+| Policy (tag policy) | enforced tag policy at the scope with few non-compliant resources | enforced but with gaps, or deny-only | none at the scope (management group assignments count for the subscriptions below) |
+| Budgeting | a budget with a working alert and valid dates | budget ended or alerts nobody | no budget visible |
+| Forecasting | an enabled forecast alert | not applicable | none |
+| Anomaly management | an enabled InsightAlert rule | rule exists but disabled | none visible (private rules cannot be seen) |
+| Data ingestion | scheduled export with a good last run | export paused or last run failed | none visible |
+Whole tenant: Evidenced only when every readable subscription is; Not evidenced only when none is; otherwise Partial. Subscriptions that could not be read are excluded and counted.
+Known limits of the mock-up: the synthetic estate has a fourth subscription that appears in other collectors only, so it has no posture column; the 75% and 25% cut-offs are placeholders (TAG-COV-01 uses 25% for a gap; the Evidenced cut-off is new).
