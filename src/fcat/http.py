@@ -20,6 +20,12 @@ ALLOWED_POST = [
     # Azure Resource Graph query (read-only). Source: Learn, Resource Graph REST quickstart (read 2026-10-17)
     re.compile(r"^/providers/Microsoft\.ResourceGraph/resources$", re.I),
 ]
+# ADR 0006 stage 1 (owner approved 2026-10-20): Cost Management Query and Forecast are POSTs that only read. Scope is a subscription, resource group
+# or management group; billing scopes wait for the test-tenant facts. api-version must be a dated, non-preview value. Stage 2 (Cost Details report,
+# blob download) is NOT allowed yet.
+_SCOPE = r"(?:/subscriptions/[^/]+(?:/resourceGroups/[^/]+)?|/providers/Microsoft\.Management/managementGroups/[^/]+)"
+ALLOWED_POST_COST = [re.compile(rf"^{_SCOPE}/providers/Microsoft\.CostManagement/(?:query|forecast)$", re.I)]
+_API_VERSION = re.compile(r"(?:^|&)api-version=\d{4}-\d{2}-\d{2}(?:&|$)")
 _ID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
 
@@ -77,6 +83,8 @@ class Client:
         if method == "GET":
             return
         if method == "POST" and any(p.match(u.path) for p in ALLOWED_POST):
+            return
+        if method == "POST" and any(p.match(u.path) for p in ALLOWED_POST_COST) and _API_VERSION.search(u.query):
             return
         raise BlockedRequest(f"{method} {redact(u.path)} is not on the read-only allowlist")
 

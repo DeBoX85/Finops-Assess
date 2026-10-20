@@ -1,5 +1,9 @@
-# 0006 Allowlist for Cost Management read endpoints (PROPOSED, needs owner OK before code)
-Date 2026-10-18. Status: proposed. Not implemented: src/fcat/http.py still allows POST to Resource Graph only.
+# 0006 Allowlist for Cost Management read endpoints (ACCEPTED IN TWO STAGES 2026-10-20)
+Date 2026-10-18. Status: owner approved a two-stage rollout on 2026-10-20.
+- Stage 1 (implemented in src/fcat/http.py with tests): POST `{scope}/providers/Microsoft.CostManagement/query` and `/forecast`, scope = subscription, resource group or management group (billing scopes later, after the test-tenant facts), dated non-preview api-version required. GET already allowed on management.azure.com, so budgets, exports (list only), dimensions and settings need no change.
+- Stage 2 (NOT allowed yet): generateCostDetailsReport and the blob download. Waits for confirmation in the REST reference that report generation has no side effect beyond a temporary report. Learn (read 2026-10-20) describes it as an asynchronous report-generation call returning 202 with a Location header, polled until a blobLink appears, with the download URL expiring after about an hour; it does not state side effects either way, so this stays UNVERIFIED.
+Original proposal follows.
+
 Why: cost checks need Query, Forecast and Cost Details. These are read operations but use POST (Learn: manage-automation, read 2026-10-18), and Cost Details returns a short-lived blob download link on a different host. Rule 1 stays: nothing changes in the tenant.
 Proposed additions (each a path regex, per method, scope-prefixed, api-version pinned):
 - POST {scope}/providers/Microsoft.CostManagement/query (cost and usage aggregates)

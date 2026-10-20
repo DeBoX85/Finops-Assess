@@ -123,3 +123,49 @@ def test_subscriptions_and_mgs_exclusive():
     c, _, _ = client()
     with pytest.raises(FcatError):
         arg.query(c, "x", ["a"], ["b"])
+
+
+COST = "https://management.azure.com/subscriptions/s1/providers/Microsoft.CostManagement"
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        f"{COST}/query?api-version=2025-03-01",
+        f"{COST}/forecast?api-version=2025-03-01",
+        "https://management.azure.com/subscriptions/s1/resourceGroups/rg/providers/Microsoft.CostManagement/query?api-version=2025-03-01",
+        "https://management.azure.com/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.CostManagement/query?api-version=2025-03-01",
+    ],
+)
+def test_adr0006_stage1_cost_reads_allowed(url):
+    c, f, _ = client(Response(200, {}, {}))
+    c.request("POST", url)
+    assert len(f.sent) == 1
+
+
+@pytest.mark.parametrize(
+    ("method", "url"),
+    [
+        ("POST", f"{COST}/query"),  # no api-version
+        ("POST", f"{COST}/query?api-version=2025-03-01-preview"),  # preview refused
+        ("POST", f"{COST}/query?x=1&api-version=latest"),
+        ("POST", f"{COST}/queryx?api-version=2025-03-01"),  # near miss
+        ("POST", f"{COST}/forecast/extra?api-version=2025-03-01"),
+        ("POST", f"{COST}/generateCostDetailsReport?api-version=2025-03-01"),  # stage 2, not allowed yet
+        ("POST", f"{COST}/exports/e1/run?api-version=2025-03-01"),
+        (
+            "POST",
+            "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/b1/providers/Microsoft.CostManagement/query?api-version=2025-03-01",
+        ),
+        ("POST", "https://management.azure.com/providers/Microsoft.CostManagement/query?api-version=2025-03-01"),
+        ("PUT", f"{COST}/query?api-version=2025-03-01"),
+        ("PATCH", f"{COST}/query?api-version=2025-03-01"),
+        ("DELETE", f"{COST}/query?api-version=2025-03-01"),
+        ("POST", "https://evil.example.com/subscriptions/s1/providers/Microsoft.CostManagement/query?api-version=2025-03-01"),
+    ],
+)
+def test_adr0006_stage1_near_misses_and_writes_refused(method, url):
+    c, f, _ = client(Response(200, {}, {}))
+    with pytest.raises(BlockedRequest):
+        c.request(method, url)
+    assert f.sent == []
