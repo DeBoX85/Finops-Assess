@@ -1,0 +1,62 @@
+{
+ "cases": [
+  {
+   "name": "two casings",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "Env": "a"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "b"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "tag:env"
+   ]
+  },
+  {
+   "name": "one casing",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "a"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "b"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

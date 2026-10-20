@@ -1,0 +1,74 @@
+{
+ "cases": [
+  {
+   "name": "no tag policy among other assignments",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000000000",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "policy:tags"
+   ]
+  },
+  {
+   "name": "only audit mode is info",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "DoNotEnforce",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "policy:tags"
+   ]
+  },
+  {
+   "name": "enforced tag policy",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "cases": [
+  {
+   "name": "deny only",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "policy:tags"
+   ]
+  },
+  {
+   "name": "deny plus inherit",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a2",
+       "name": "a2",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/cd3aa116-8754-49c9-a813-ad46512ece54",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "not enforced is out of scope",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "DoNotEnforce",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

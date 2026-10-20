@@ -85,7 +85,7 @@ def test_hiding_sections_keeps_findings_audit_result_and_a_coverage_statement(tm
     rc, out = _run(tmp_path, '[report]\nhide=["coverage","collector_errors","audit_detail"]\n')
     h = (out / "report.html").read_text()
     assert rc == 0 and "<th>Validation</th>" not in h and "What it verifies" not in h
-    assert "Self-audit: PASS" in h and "Findings (106)" in h
+    assert "Self-audit: PASS" in h and "Findings (114)" in h
     assert "checks:" in h and "ran" in h  # one-line coverage statement replaces the table
     ro = json.loads((out / "report.json").read_text())["manifest"]["report_options"]
     assert ro["hidden_sections"] == ["audit_detail", "collector_errors", "coverage"]

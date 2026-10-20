@@ -1,0 +1,33 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth",
+   "name": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "owner": "team-a"
+   },
+   "type": "microsoft.resources/subscriptions/resourcegroups"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth",
+   "name": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.resources/subscriptions/resourcegroups"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth",
+   "name": "rg-synth",
+   "subscriptionId": "sub-synth-3",
+   "tags": null,
+   "type": "microsoft.resources/subscriptions/resourcegroups"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

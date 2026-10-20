@@ -1,0 +1,312 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x01",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x02",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x03",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x04",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x05",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x06",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x07",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x08",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x09",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x10",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "costcenter": "100",
+    "env": "prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x11",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "Env": "Prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x12",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "Env": "Prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x13",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "Env": "Prod",
+    "owner": "team-a"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x14",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x15",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x16",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x17",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x18",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x19",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg1x20",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-1",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x01",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x02",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x03",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x04",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x05",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x06",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x07",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x08",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x09",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg2x10",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-2",
+   "tags": null,
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg3x01",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg3x02",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg3x03",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  },
+  {
+   "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/tg3x04",
+   "resourceGroup": "rg-synth",
+   "subscriptionId": "sub-synth-3",
+   "tags": {
+    "env": "dev"
+   },
+   "type": "microsoft.storage/storageaccounts"
+  }
+ ],
+ "total_records": 34,
+ "warnings": []
+}

@@ -1,0 +1,104 @@
+{
+ "cases": [
+  {
+   "name": "some resources non-compliant",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    },
+    "policy_states": {
+     "rows": [
+      {
+       "assignmentId": "/subscriptions/s1/providers/microsoft.authorization/policyassignments/a1",
+       "state": "NonCompliant",
+       "n": 3
+      },
+      {
+       "assignmentId": "/subscriptions/s1/providers/microsoft.authorization/policyassignments/a1",
+       "state": "Compliant",
+       "n": 1
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1"
+   ]
+  },
+  {
+   "name": "all compliant",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    },
+    "policy_states": {
+     "rows": [
+      {
+       "assignmentId": "/subscriptions/s1/providers/microsoft.authorization/policyassignments/a1",
+       "state": "Compliant",
+       "n": 4
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "non-tag assignment ignored",
+   "snapshot": {
+    "policy_assignments": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Authorization/policyAssignments/a1",
+       "name": "a1",
+       "scope": "/subscriptions/s1",
+       "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000000000",
+       "enforcementMode": "Default",
+       "parameters": {
+        "tagName": {
+         "value": "env"
+        }
+       }
+      }
+     ]
+    },
+    "policy_states": {
+     "rows": [
+      {
+       "assignmentId": "/subscriptions/s1/providers/microsoft.authorization/policyassignments/a1",
+       "state": "NonCompliant",
+       "n": 3
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

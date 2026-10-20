@@ -43,3 +43,8 @@ Branding text, accent and logo come from the owner's own config, not from the te
 29. Hostile-string test for HTML (T-05).
 30. Redacted export mode and purge command (T-07).
 31. Dependency pinning and SBOM in manifest (T-10).
+
+## Added 2026-10-20: tag values are stored (cost governance phase 1)
+- Owner decision: ALL tag values are stored in the snapshot (collector `tag_inventory`, `container_tags`). Tag values are plain text and can hold people's names or e-mail addresses (Learn tag-resources page, read 2026-10-20: do not put sensitive data in tags). The snapshot and any unredacted report are therefore customer data. They stay in the ignored output folder (hard rule 2).
+- `--redact` replaces tag values in finding details (`variants`) with case-sensitive pseudonyms (`val-xxxxxxxx`, per-run salt). Case-sensitive on purpose: `Prod` and `prod` must stay distinguishable, because that difference is the finding. Counts and key names are not masked. Tag KEY names can still appear in messages (for example `Tag name 'env' is written 2 ways`); a key that itself contains customer data would not be masked. Not assessed as a risk beyond this note.
+- Policy assignment parameters are stored (they hold tag names). Budget and alert e-mail addresses and storage account ids are NOT stored (phase 2 will project them away).

@@ -1,4 +1,4 @@
-# Cost governance layer and tag hygiene: design (DRAFT v0.1, 2026-10-20, awaiting owner scope decision)
+# Cost governance layer and tag hygiene: design (v0.2, 2026-10-20, owner decided scope: see section 9)
 Evidence base: docs/KB/notes/11-cost-governance-azure.md (every fact tagged VERIFIED or UNVERIFIED with source and date). Nothing here is built yet. Everything built from this design stays `offline-only` until gate G2 passes on a real tenant.
 
 ## 1. What the owner asked for (2026-10-20)
@@ -91,3 +91,9 @@ Per-check fixtures with a positive and a negative case; synthetic estate gains t
 3. Privacy: store tag values only for low-cardinality keys, never emails or storage ids. Agree?
 4. First build: phase 1 only, or phases 1 and 2 together (both are Reader-only, GET and ARG)?
 5. Phase 3 (cost-weighted tag coverage) is the more meaningful measure for a CIO, since it asks how much money is unallocated, but it needs Cost Management Reader and a verified request shape. Plan it now or later?
+
+## 9. Owner decisions (2026-10-20)
+1. Findings plus posture view. 2. Tag standard precedence policy, then config, then inferred. 3. Phase 1 only first. 4. Store ALL tag values (owner overrode my recommendation to keep values only for low-cardinality keys). Consequences: `tag_values` has no distinct-value cap; the snapshot and any report showing values are customer data; `--redact` must mask tag values; findings may show value variants. Emails and storage ids in phase 2 payloads are still not stored.
+
+## 10. Build status (2026-10-20)
+Phase 1 built offline: TAG-DISC-01, TAG-COV-01, TAG-CASE-01, TAG-VAL-01, TAG-RG-01, POL-TAG-01, POL-TAGMOD-01 (renamed from POL-TAGMODE-01, id pattern), POL-COMPL-01. All `offline-only`, never run on a real tenant. Differences from the design: (1) the `[tags] required` config override is NOT built, so scheme precedence is policy, then inferred; (2) `tag_values` is folded into `tag_inventory` (all values stored); (3) POL-EXEMPT-01 and POL-GUARD-01 not built. Thresholds in src/fcat/tags.py (50 percent scheme share, 25 percent gap, 10 resource minimum, resource group 3 and 50 percent) are our proposals and are echoed in findings. See ADR 0008 and the THREAT-MODEL entry for tag values.

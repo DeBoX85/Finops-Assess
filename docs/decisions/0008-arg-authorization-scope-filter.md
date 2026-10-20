@@ -1,0 +1,5 @@
+# ADR 0008: ARG authorizationScopeFilter for policy assignments (2026-10-20)
+Status: accepted (owner approved cost governance phase 1). Allowlist impact: none (body option on the already allowed ARG POST).
+Decision: the `policy_assignments` collector sends `options.authorizationScopeFilter = AtScopeAboveAndBelow`. Without it ARG `PolicyResources` returns assignments at and below the queried scope only, so assignments made at a management group above the subscription would be missed and POL-TAG-01 would report a false gap.
+Source: Microsoft Learn, Azure Resource Graph query options and PolicyResources notes, read 2026-10-20 (see docs/KB/notes/11-cost-governance-azure.md). VERIFIED that the option exists and its four values; UNVERIFIED live that Reader sees management group assignments with it. The tool uses api-version 2022-10-01 (option needs 2021-06-01-preview or later).
+Consequence: if a live run shows no inherited assignments, the check reports less than it should. Checks stay `offline-only` until gate G2.

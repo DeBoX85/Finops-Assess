@@ -389,7 +389,78 @@ def estate():
             {"id": net + "firewallPolicies/pol-alert", "skuTier": "Premium", "idpsMode": "Alert", "tlsSecretId": None},
         ],
     }
+
+    # Cost governance phase 1 (hand-derived expectations are in tests/test_golden.py).
+    def tres(sub, rg, i, tags):
+        return {
+            "id": f"/subscriptions/sub-synth-{sub}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/tg{sub}x{i:02d}",
+            "type": "microsoft.storage/storageaccounts",
+            "subscriptionId": f"sub-synth-{sub}",
+            "resourceGroup": rg,
+            "tags": tags,
+        }
+
+    full = {"env": "prod", "owner": "team-a", "costcenter": "100"}
+    inv = (
+        [tres(1, "rg-synth", i, dict(full)) for i in range(1, 11)]  # 10 carry env, owner, costcenter
+        + [tres(1, "rg-synth", i, {"Env": "Prod", "owner": "team-a"}) for i in range(11, 14)]  # capital E and capital P
+        + [tres(1, "rg-synth", i, {"env": "dev"}) for i in range(14, 17)]
+        + [tres(1, "rg-synth", i, None) for i in range(17, 21)]  # 4 untagged
+        + [tres(2, "rg-synth", i, {"env": "dev"} if i <= 2 else None) for i in range(1, 11)]  # 8 of 10 untagged
+        + [tres(3, "rg-synth", i, {"env": "dev"}) for i in range(1, 5)]  # fewer than 10 resources: not judged by TAG-COV-01
+    )
+    rgs = [
+        {
+            "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth",
+            "type": "microsoft.resources/subscriptions/resourcegroups",
+            "subscriptionId": "sub-synth-1",
+            "name": "rg-synth",
+            "tags": {"costcenter": "100", "owner": "team-a"},
+        },
+        {
+            "id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth",
+            "type": "microsoft.resources/subscriptions/resourcegroups",
+            "subscriptionId": "sub-synth-2",
+            "name": "rg-synth",
+            "tags": {"env": "dev"},
+        },
+        {
+            "id": "/subscriptions/sub-synth-3/resourceGroups/rg-synth",
+            "type": "microsoft.resources/subscriptions/resourcegroups",
+            "subscriptionId": "sub-synth-3",
+            "name": "rg-synth",
+            "tags": None,
+        },
+    ]
+    pa = "/subscriptions/sub-synth-1/providers/Microsoft.Authorization/policyAssignments/"
+    gov = {
+        "tag_inventory": inv,
+        "container_tags": rgs,
+        "policy_assignments": [
+            {
+                "id": pa + "require-env",
+                "name": "require-env",
+                "scope": "/subscriptions/sub-synth-1",
+                "enforcementMode": "Default",
+                "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+                "parameters": {"tagName": {"value": "env"}},
+            },
+            {
+                "id": pa + "custom-initiative",
+                "name": "custom-initiative",
+                "scope": "/subscriptions/sub-synth-1",
+                "enforcementMode": "Default",
+                "definitionId": "/providers/Microsoft.Authorization/policySetDefinitions/00000000-0000-0000-0000-000000000000",
+                "parameters": None,
+            },
+        ],
+        "policy_states": [
+            {"assignmentId": (pa + "require-env").lower(), "state": "NonCompliant", "n": 15},
+            {"assignmentId": (pa + "require-env").lower(), "state": "Compliant", "n": 19},
+        ],
+    }
     return {
+        **gov,
         **batch6,
         **batch5,
         **batch4,

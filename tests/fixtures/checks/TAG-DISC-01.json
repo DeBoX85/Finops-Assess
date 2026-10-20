@@ -1,0 +1,46 @@
+{
+ "cases": [
+  {
+   "name": "no tags at all",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x0",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "tags:scheme"
+   ]
+  },
+  {
+   "name": "empty inventory is not assessed",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": []
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

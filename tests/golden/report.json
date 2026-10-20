@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "8126ff186aa03c69",
+  "report_hash": "0dba4e1251dfcfa1",
   "status": "pass",
   "version": "0.1"
  },
@@ -816,6 +816,160 @@
    "run_cost": "low",
    "savings_basis": "none",
    "title": "Running VMs whose peak CPU fits a half-size VM",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "tag_inventory"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Allocation",
+   "id": "TAG-DISC-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Tagging scheme found in the environment",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "tag_inventory"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Allocation",
+   "id": "TAG-COV-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Subscriptions where many resources lack the tagging scheme keys",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "tag_inventory"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Allocation",
+   "id": "TAG-CASE-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Same tag name written with different capitalisation",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "tag_inventory"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Allocation",
+   "id": "TAG-VAL-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Same tag value written in different ways",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "tag_inventory",
+    "container_tags"
+   ],
+   "confidence": "low",
+   "domain": "governance",
+   "framework": "Allocation",
+   "id": "TAG-RG-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Resource groups whose tags are missing on most resources inside",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "policy_assignments"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Policy and governance",
+   "id": "POL-TAG-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "No enforced tag policy found",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "policy_assignments"
+   ],
+   "confidence": "low",
+   "domain": "governance",
+   "framework": "Policy and governance",
+   "id": "POL-TAGMOD-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Tag policies only block, nothing fills in missing tags",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "policy_assignments",
+    "policy_states"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Policy and governance",
+   "id": "POL-COMPL-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Tag policy non-compliance",
    "validation": "offline-only"
   }
  ],
@@ -3169,6 +3323,56 @@
    "severity": "medium"
   },
   {
+   "check_id": "POL-COMPL-01",
+   "details": {
+    "enforced": true,
+    "kind": "require",
+    "percent_noncompliant": 44.1,
+    "states": {
+     "compliant": 19,
+     "noncompliant": 15
+    },
+    "tag": "env"
+   },
+   "evidence": {
+    "collectors": [
+     "policy_assignments",
+     "policy_states"
+    ],
+    "logic_hash": "a87b3cfc00ff",
+    "snapshot_digests": {
+     "policy_assignments": "ac2ee98b11da",
+     "policy_states": "97563b9c28a4"
+    }
+   },
+   "fingerprint": "f28a9bbc13fd8b06",
+   "message": "Tag policy has 15 of 34 evaluated resources non-compliant (44%)",
+   "resource_id": "/subscriptions/sub-synth-1/providers/Microsoft.Authorization/policyAssignments/require-env",
+   "severity": "low"
+  },
+  {
+   "check_id": "POL-TAGMOD-01",
+   "details": {
+    "kinds": [
+     "require"
+    ],
+    "tag_policies": 1
+   },
+   "evidence": {
+    "collectors": [
+     "policy_assignments"
+    ],
+    "logic_hash": "89dc764a1945",
+    "snapshot_digests": {
+     "policy_assignments": "ac2ee98b11da"
+    }
+   },
+   "fingerprint": "d94c454e9ba4d375",
+   "message": "Only deny-type tag policies are enforced; no policy adds or inherits tags on existing resources",
+   "resource_id": "policy:tags",
+   "severity": "info"
+  },
+  {
    "check_id": "SEC-DEFDEV-01",
    "details": {
     "plan": "VirtualMachines",
@@ -3190,6 +3394,212 @@
    "message": "Defender plan VirtualMachines is on a paid tier in a subscription that looks like Dev/Test: review whether it is needed",
    "resource_id": "/subscriptions/sub-synth-4/providers/Microsoft.Security/pricings/VirtualMachines",
    "severity": "info"
+  },
+  {
+   "check_id": "TAG-CASE-01",
+   "details": {
+    "casings": {
+     "Env": 3,
+     "env": 19
+    },
+    "resources": 22
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory"
+    ],
+    "logic_hash": "89263e5db934",
+    "snapshot_digests": {
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "a3a3332af1229480",
+   "message": "Tag name 'env' is written 2 ways, which may split cost reports",
+   "resource_id": "tag:env",
+   "severity": "low"
+  },
+  {
+   "check_id": "TAG-COV-01",
+   "details": {
+    "caveat": "some resource types do not support tags; the type list is not applied yet",
+    "missing_any_scheme_key": 8,
+    "per_key_coverage_percent": {
+     "env": 20.0
+    },
+    "percent_missing": 80.0,
+    "resources": 10,
+    "rule": "reported when at least 25% of resources lack a scheme key and the subscription has at least 10 resources (our proposal)",
+    "scheme_keys": [
+     "env"
+    ],
+    "scheme_source": "policy",
+    "top_types_lacking": {
+     "microsoft.storage/storageaccounts": 8
+    }
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory"
+    ],
+    "logic_hash": "4aae6342cf66",
+    "snapshot_digests": {
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "1e22d014b84a0172",
+   "message": "8 of 10 resources lack at least one scheme tag (80%)",
+   "resource_id": "/subscriptions/sub-synth-2",
+   "severity": "medium"
+  },
+  {
+   "check_id": "TAG-DISC-01",
+   "details": {
+    "declared_by_policy": [
+     "env"
+    ],
+    "distinct_keys": 3,
+    "inference_rule": "a key is in the inferred scheme when at least 50% of resources carry it (our proposal)",
+    "inferred_keys": [
+     "env"
+    ],
+    "policy_data": "collected",
+    "resources": 34,
+    "resources_with_any_tag": 22,
+    "scheme_keys": [
+     "env"
+    ],
+    "scheme_source": "policy",
+    "top_keys": {
+     "costcenter": {
+      "casings": [
+       "costcenter"
+      ],
+      "percent": 29.4,
+      "resources": 10
+     },
+     "env": {
+      "casings": [
+       "Env",
+       "env"
+      ],
+      "percent": 64.7,
+      "resources": 22
+     },
+     "owner": {
+      "casings": [
+       "owner"
+      ],
+      "percent": 38.2,
+      "resources": 13
+     }
+    }
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory"
+    ],
+    "logic_hash": "b981d6870e56",
+    "snapshot_digests": {
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "ffef0b09be20929d",
+   "message": "Tagging scheme found (policy): env",
+   "resource_id": "tags:scheme",
+   "severity": "info"
+  },
+  {
+   "check_id": "TAG-RG-01",
+   "details": {
+    "cost_management_inheritance": "not assessed, because the setting is not yet readable by this tool",
+    "group_tags": [
+     "costcenter",
+     "owner"
+    ],
+    "inheritance_policy_seen": false,
+    "resources_in_group": 20,
+    "resources_lacking_each": {
+     "costcenter": 10
+    },
+    "rule": "reported when at least 50% of at least 3 resources lack a group tag (our proposal)"
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory",
+     "container_tags"
+    ],
+    "logic_hash": "f233879d7e17",
+    "snapshot_digests": {
+     "container_tags": "cb2ceb862e2b",
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "af81bd68c3b99249",
+   "message": "Resource group carries tag(s) costcenter that many of its 20 resources do not",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth",
+   "severity": "low"
+  },
+  {
+   "check_id": "TAG-RG-01",
+   "details": {
+    "cost_management_inheritance": "not assessed, because the setting is not yet readable by this tool",
+    "group_tags": [
+     "env"
+    ],
+    "inheritance_policy_seen": false,
+    "resources_in_group": 10,
+    "resources_lacking_each": {
+     "env": 8
+    },
+    "rule": "reported when at least 50% of at least 3 resources lack a group tag (our proposal)"
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory",
+     "container_tags"
+    ],
+    "logic_hash": "f233879d7e17",
+    "snapshot_digests": {
+     "container_tags": "cb2ceb862e2b",
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "2ad22ae5e82c4b40",
+   "message": "Resource group carries tag(s) env that many of its 10 resources do not",
+   "resource_id": "/subscriptions/sub-synth-2/resourceGroups/rg-synth",
+   "severity": "low"
+  },
+  {
+   "check_id": "TAG-VAL-01",
+   "details": {
+    "distinct_values": 3,
+    "folding_rule": "lower case, trimmed, runs of space/underscore/hyphen/dot equal",
+    "variants": [
+     [
+      {
+       "count": 10,
+       "value": "prod"
+      },
+      {
+       "count": 3,
+       "value": "Prod"
+      }
+     ]
+    ]
+   },
+   "evidence": {
+    "collectors": [
+     "tag_inventory"
+    ],
+    "logic_hash": "5c7a647ed70a",
+    "snapshot_digests": {
+     "tag_inventory": "5888919cc1fd"
+    }
+   },
+   "fingerprint": "c31fc258c197ec3b",
+   "message": "Tag 'env' has 1 value(s) written more than one way",
+   "resource_id": "tag:env",
+   "severity": "low"
   }
  ],
  "manifest": {
@@ -3384,6 +3794,46 @@
     "id": "RIGHT-VMCPU-01",
     "reason": "missing collector data: vm_cpu",
     "status": "not_assessed"
+   },
+   {
+    "findings": 1,
+    "id": "TAG-DISC-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "TAG-COV-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "TAG-CASE-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "TAG-VAL-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "TAG-RG-01",
+    "status": "ran"
+   },
+   {
+    "findings": 0,
+    "id": "POL-TAG-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "POL-TAGMOD-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "POL-COMPL-01",
+    "status": "ran"
    }
   ],
   "collector_errors": [],

@@ -19,6 +19,11 @@ def _p(prefix: str, value: str, salt: str) -> str:
     return f"{prefix}-{hashlib.sha256((salt + value.lower()).encode()).hexdigest()[:8]}"
 
 
+def _pv(value: str, salt: str) -> str:
+    """Case-sensitive pseudonym for a tag value: 'Prod' and 'prod' must stay distinguishable, because that difference is the finding."""
+    return f"val-{hashlib.sha256((salt + value).encode()).hexdigest()[:8]}"
+
+
 def resource_id(rid: str, salt: str, names: dict | None = None) -> str:
     """Pseudonymise subscription, resource group and resource names; keep provider and type so the report stays readable."""
     parts = rid.split("/")
@@ -71,6 +76,28 @@ def _ireplace(text: str, old: str, new: str) -> str:
         i = j + len(old)
 
 
+TAG_VALUE_KEYS = ("variants",)  # details keys that hold customer tag values (owner chose to store values, 2026-10-20)
+
+
+def _mask_values(details, salt: str):
+    """Replace tag values under TAG_VALUE_KEYS with short stable pseudonyms; keys, counts and structure stay."""
+    if not isinstance(details, dict):
+        return details
+    out = dict(details)
+    for k in TAG_VALUE_KEYS:
+        if k in out:
+            out[k] = _mask_any(out[k], salt)
+    return out
+
+
+def _mask_any(v, salt: str):
+    if isinstance(v, dict):
+        return {kk: (_pv(vv, salt) if kk == "value" and isinstance(vv, str) else _mask_any(vv, salt)) for kk, vv in v.items()}
+    if isinstance(v, list):
+        return [_mask_any(x, salt) for x in v]
+    return v
+
+
 def findings(fs, salt: str):
     """Returns new redacted findings with recomputed fingerprints, sorted like the runner sorts them."""
     import copy  # noqa: PLC0415
@@ -81,7 +108,7 @@ def findings(fs, salt: str):
         g = copy.deepcopy(f)
         g.resource_id = resource_id(f.resource_id, salt, names)
         g.message = _scrub(g.message, names)
-        g.details = _scrub(g.details, names)
+        g.details = _mask_values(_scrub(g.details, names), salt)
         g.fingerprint = fingerprint(g)
         out.append(g)
     out.sort(key=lambda x: (x.check_id, x.resource_id))

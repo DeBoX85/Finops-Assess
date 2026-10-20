@@ -1,0 +1,17 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "assignmentId": "/subscriptions/sub-synth-1/providers/microsoft.authorization/policyassignments/require-env",
+   "n": 15,
+   "state": "NonCompliant"
+  },
+  {
+   "assignmentId": "/subscriptions/sub-synth-1/providers/microsoft.authorization/policyassignments/require-env",
+   "n": 19,
+   "state": "Compliant"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

@@ -1,0 +1,27 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "definitionId": "/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b590-94f262ecfa99",
+   "enforcementMode": "Default",
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.Authorization/policyAssignments/require-env",
+   "name": "require-env",
+   "parameters": {
+    "tagName": {
+     "value": "env"
+    }
+   },
+   "scope": "/subscriptions/sub-synth-1"
+  },
+  {
+   "definitionId": "/providers/Microsoft.Authorization/policySetDefinitions/00000000-0000-0000-0000-000000000000",
+   "enforcementMode": "Default",
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.Authorization/policyAssignments/custom-initiative",
+   "name": "custom-initiative",
+   "parameters": null,
+   "scope": "/subscriptions/sub-synth-1"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

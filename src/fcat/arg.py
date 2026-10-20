@@ -21,7 +21,12 @@ class QueryResult:
 
 
 def query(
-    client, kql: str, subscriptions: list[str] | None = None, management_groups: list[str] | None = None, page_size: int = 1000
+    client,
+    kql: str,
+    subscriptions: list[str] | None = None,
+    management_groups: list[str] | None = None,
+    page_size: int = 1000,
+    authorization_scope_filter: str | None = None,
 ) -> QueryResult:
     if subscriptions and management_groups:
         raise FcatError("subscriptions and managementGroups cannot be combined")
@@ -31,6 +36,10 @@ def query(
     rows, skip, pages, total = [], None, 0, None
     while True:
         body = {"query": kql, "options": {"$top": page_size}}
+        if authorization_scope_filter:
+            body["options"]["authorizationScopeFilter"] = (
+                authorization_scope_filter  # PolicyResources and AuthorizationResources only (Learn, read 2026-10-20)
+            )
         if skip:
             body["options"]["$skipToken"] = skip
         if subscriptions:

@@ -197,7 +197,31 @@ KQL_FIREWALL_POLICIES = _NET.format(
     "basePolicyId=tostring(properties.basePolicy.id), ",
 )
 
+# Cost governance, phase 1 (docs/COST-GOVERNANCE.md). Whole-estate tag inventory, container tags, policy assignments and state counts.
+# Property names for policy are UNVERIFIED live. Policy assignments are read with AuthorizationScopeFilter=AtScopeAboveAndBelow so assignments
+# made at management group or tenant root level are included (Learn query-language page, read 2026-10-20).
+KQL_TAG_INVENTORY = "resources | project id, type, subscriptionId, resourceGroup, tags | order by id asc"
+KQL_CONTAINER_TAGS = (
+    "resourcecontainers | where type in~ ('microsoft.resources/subscriptions/resourcegroups', 'microsoft.resources/subscriptions') "
+    "| project id, type, subscriptionId, name, tags | order by id asc"
+)
+KQL_POLICY_ASSIGNMENTS = (
+    "policyresources | where type =~ 'microsoft.authorization/policyassignments' "
+    "| project id, name, scope=tostring(properties.scope), definitionId=tostring(properties.policyDefinitionId), "
+    "enforcementMode=tostring(properties.enforcementMode), parameters=properties.parameters | order by id asc"
+)
+KQL_POLICY_STATES = (
+    "policyresources | where type =~ 'microsoft.policyinsights/policystates' "
+    "| summarize n=count() by assignmentId=tostring(properties.policyAssignmentId), state=tostring(properties.complianceState) "
+    "| order by assignmentId asc"
+)
+COLLECTOR_OPTIONS = {"policy_assignments": {"authorization_scope_filter": "AtScopeAboveAndBelow"}}
+
 COLLECTORS = {
+    "tag_inventory": KQL_TAG_INVENTORY,
+    "container_tags": KQL_CONTAINER_TAGS,
+    "policy_assignments": KQL_POLICY_ASSIGNMENTS,
+    "policy_states": KQL_POLICY_STATES,
     "subscriptions": KQL_SUBSCRIPTIONS,
     "management_groups": KQL_MANAGEMENT_GROUPS,
     "unattached_disks": KQL_UNATTACHED_DISKS,
@@ -247,7 +271,7 @@ def collect(client, snapshot, config, errors: list):
     snapshot.save("_meta", {"collected_at": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")})
     for name, kql in COLLECTORS.items():
         try:
-            res = arg.query(client, kql, config.subscriptions or None, config.management_groups or None)
+            res = arg.query(client, kql, config.subscriptions or None, config.management_groups or None, **COLLECTOR_OPTIONS.get(name, {}))
         except Exception as e:  # noqa: BLE001  a failing collector is recorded in the manifest, not hidden
             errors.append({"collector": name, "error": f"{type(e).__name__}: {e}"})
             continue

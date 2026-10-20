@@ -79,4 +79,26 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["OPT-COSBKP-01"] == {"cosmos-many-copies"}
     assert by["ORPH-SYN-01"] == {"syn-empty"}
     assert by["OPT-FWPREM-01"] == {"fw-premium-idle"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8
+
+
+def test_tag_governance_findings_match_hand_derivation():
+    """Derived by hand from scripts/make_synthetic.py (tag_inventory, container_tags, policy_assignments, policy_states)."""
+    golden = json.loads(ms.GOLDEN.read_text())
+    got = {}
+    for f in golden["findings"]:
+        got.setdefault(f["check_id"], {})[f["resource_id"]] = f
+    assert set(got["TAG-DISC-01"]) == {"tags:scheme"} and "(policy): env" in got["TAG-DISC-01"]["tags:scheme"]["message"]
+    # sub 2: 8 of 10 lack env (80 percent). Sub 1 is 4 of 20 (20 percent, under the 25 percent gap). Sub 3 has 4 resources (under the minimum).
+    assert (
+        set(got["TAG-COV-01"]) == {"/subscriptions/sub-synth-2"} and "8 of 10" in got["TAG-COV-01"]["/subscriptions/sub-synth-2"]["message"]
+    )
+    assert set(got["TAG-CASE-01"]) == {"tag:env"} and set(got["TAG-VAL-01"]) == {"tag:env"}
+    assert set(got["TAG-RG-01"]) == {
+        "/subscriptions/sub-synth-1/resourceGroups/rg-synth",
+        "/subscriptions/sub-synth-2/resourceGroups/rg-synth",
+    }
+    assert "POL-TAG-01" not in got  # an enforced require-tag assignment exists
+    assert set(got["POL-TAGMOD-01"]) == {"policy:tags"}
+    (compl,) = got["POL-COMPL-01"].values()
+    assert "15 of 34" in compl["message"] and "44%" in compl["message"]

@@ -1,0 +1,71 @@
+{
+ "cases": [
+  {
+   "name": "same value two ways",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "Prod"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "prod "
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x3",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "dev"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "tag:env"
+   ]
+  },
+  {
+   "name": "distinct values only",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "prod"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg",
+       "tags": {
+        "env": "dev"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

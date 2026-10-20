@@ -87,6 +87,18 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 |---|---|---|---|
 | VM rightsizing from peak CPU (no workbook equivalent; Advisor has its own) | DONE-OFFLINE | RIGHT-VMCPU-01 | Opt-in (`[run] rightsizing = true`), CPU only, hourly maxima over 30 days, same-family half-size only; built from the documented REST schema, never run live (UNVERIFIED) |
 
+## Added in batch 8 (2026-10-20): cost governance, tag hygiene phase 1
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| Tagging scheme discovered from the customer (policy, else inferred, else none) | DONE-OFFLINE | TAG-DISC-01 | No hard-coded required tags. Config override (`[tags] required`) is NOT built |
+| Tag coverage gap per subscription | DONE-OFFLINE | TAG-COV-01 | Thresholds (25 percent gap, 10 resources minimum) are our proposals, echoed in the finding |
+| Tag name casing variants | DONE-OFFLINE | TAG-CASE-01 | Wording "may split cost reports": merging behaviour in Cost Management is UNVERIFIED |
+| Tag value variants (case, space, separators) | DONE-OFFLINE | TAG-VAL-01 | Synonyms are not inferred. Values are customer data, masked by `--redact` |
+| Resource group tags not carried by resources | DONE-OFFLINE | TAG-RG-01 | Cost Management tag inheritance setting not readable yet, so not assessed |
+| Tag policy presence and enforcement | DONE-OFFLINE | POL-TAG-01 | Audit-only is reported as partial, not a defect (FinOps guidance) |
+| Tag policies without modify or inherit | DONE-OFFLINE | POL-TAGMOD-01 | Parameter names verified only for the require-tag built-in |
+| Tag policy non-compliance share | DONE-OFFLINE | POL-COMPL-01 | Counts from ARG policy states; compliance timing UNVERIFIED live |
+
 ## Beyond the workbooks (F-CAT only, today)
 Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
 

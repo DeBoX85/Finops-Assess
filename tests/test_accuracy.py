@@ -87,8 +87,15 @@ def test_row_order_and_extra_columns_do_not_change_findings(meta, fn, tmp_path):
 
 
 # ---- 3. locality ----
+# Estate-level checks judge shares and totals, so removing one row legitimately changes their message or numbers. They are covered by
+# tests/test_tags.py (order independence, casing relabel, scale) instead.
+AGGREGATE = {"TAG-DISC-01", "TAG-COV-01", "TAG-CASE-01", "TAG-VAL-01", "TAG-RG-01", "POL-TAG-01", "POL-TAGMOD-01"}
+
+
 @pytest.mark.parametrize(("meta", "fn"), PARAMS)
 def test_removing_primary_rows_does_not_change_other_findings(meta, fn, tmp_path):
+    if meta.id in AGGREGATE:
+        pytest.skip("estate-level check, see tests/test_tags.py")
     primary = meta.collectors[0]
     for ci, c in enumerate(_cases(meta)):
         rows = (c["snapshot"].get(primary) or {}).get("rows", [])
@@ -107,7 +114,12 @@ def test_removing_primary_rows_does_not_change_other_findings(meta, fn, tmp_path
 
 # ---- 4. contract: fixtures and synthetic estate only use projected columns ----
 def projected_columns(kql: str) -> set[str]:
-    clause = re.search(r"\|\s*project\s+(.*?)(?:\|\s*order by|$)", kql, re.S | re.I).group(1)
+    m = re.search(r"\|\s*project\s+(.*?)(?:\|\s*order by|$)", kql, re.S | re.I)
+    if m is None:  # summarize form: names are the aggregate aliases and the by-columns
+        m = re.search(r"\|\s*summarize\s+(.*?)(?:\|\s*order by|$)", kql, re.S | re.I)
+        clause = re.sub(r"\s+by\s+", ", ", m.group(1))
+    else:
+        clause = m.group(1)
     parts, depth, cur = [], 0, ""
     for ch in clause:
         depth += ch in "(["
@@ -152,7 +164,7 @@ def test_columns_in_fixtures_are_projected_by_the_collector(name):
 
 def test_every_column_a_check_reads_exists_in_its_kql():
     """Static: r.get('x') / r['x'] literals in checks_builtin.py must be projected by at least one collector the check declares."""
-    src = (ROOT / "src" / "fcat" / "checks_builtin.py").read_text()
+    src = (ROOT / "src" / "fcat" / "checks_builtin.py").read_text() + (ROOT / "src" / "fcat" / "checks_governance.py").read_text()
     cols_all = set()
     for kql in collectors.COLLECTORS.values():
         cols_all |= projected_columns(kql)

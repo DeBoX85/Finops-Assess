@@ -1,0 +1,153 @@
+{
+ "cases": [
+  {
+   "name": "group tag absent on its resources",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x0",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x3",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      }
+     ]
+    },
+    "container_tags": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1",
+       "type": "microsoft.resources/subscriptions/resourcegroups",
+       "subscriptionId": "s1",
+       "name": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1/resourceGroups/rg1"
+   ]
+  },
+  {
+   "name": "resources carry the group tag",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x0",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x2",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x3",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      }
+     ]
+    },
+    "container_tags": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1",
+       "type": "microsoft.resources/subscriptions/resourcegroups",
+       "subscriptionId": "s1",
+       "name": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "too few resources",
+   "snapshot": {
+    "tag_inventory": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x0",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      },
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1/providers/Microsoft.Compute/Disks/x1",
+       "type": "microsoft.compute/disks",
+       "subscriptionId": "s1",
+       "resourceGroup": "rg1",
+       "tags": null
+      }
+     ]
+    },
+    "container_tags": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/resourceGroups/rg1",
+       "type": "microsoft.resources/subscriptions/resourcegroups",
+       "subscriptionId": "s1",
+       "name": "rg1",
+       "tags": {
+        "costcenter": "1"
+       }
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}
