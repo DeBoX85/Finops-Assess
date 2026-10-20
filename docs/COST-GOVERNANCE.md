@@ -97,3 +97,12 @@ Per-check fixtures with a positive and a negative case; synthetic estate gains t
 
 ## 10. Build status (2026-10-20)
 Phase 1 built offline: TAG-DISC-01, TAG-COV-01, TAG-CASE-01, TAG-VAL-01, TAG-RG-01, POL-TAG-01, POL-TAGMOD-01 (renamed from POL-TAGMODE-01, id pattern), POL-COMPL-01. All `offline-only`, never run on a real tenant. Differences from the design: (1) the `[tags] required` config override is NOT built, so scheme precedence is policy, then inferred; (2) `tag_values` is folded into `tag_inventory` (all values stored); (3) POL-EXEMPT-01 and POL-GUARD-01 not built. Thresholds in src/fcat/tags.py (50 percent scheme share, 25 percent gap, 10 resource minimum, resource group 3 and 50 percent) are our proposals and are echoed in findings. See ADR 0008 and the THREAT-MODEL entry for tag values.
+
+## 11. Phase 2 build status (2026-10-20)
+Built offline: collector module src/fcat/govcost.py (GET only; budgets, scheduled actions, exports per ENABLED subscription) and checks BUD-COVER-01, BUD-ALERT-01, BUD-FCST-01, BUD-EXP-01, ALR-ANOM-01, EXP-CFG-01. All `offline-only`, never run on a real tenant.
+- **Opt-in**: `[run] governance_apis = true` (default false). Reason: 3 GET calls per subscription, and Cost Management throttling at scale is UNVERIFIED. This default is my judgement, change it if you want the layer on by default. Without it these checks report "not assessed, because the collector produced no data".
+- **Scope**: subscriptions only. Management group budgets and exports, billing account scopes, and resource group budgets are not collected, so messages say "visible at subscription scope".
+- **Per-subscription failures** (403, 404) are recorded in the manifest as collector errors and the subscription is skipped; if every call fails nothing is written and the checks say "not assessed".
+- **Privacy**: projection functions in govcost.py keep booleans and counts only. E-mail addresses, contact groups, storage account ids, containers, folders and free text are never stored (tests/test_govcost.py checks this with planted values).
+- **Not built**: BUD-OVER-01 (needs `currentSpend`, presence UNVERIFIED), STR-MG-01, the governance posture view in the dashboard (next step, needs the owner's confidence-label rule to be useful), management group scope collection.
+- Thresholds: none numeric in phase 2. Judgement calls are mine: BUD-ALERT-01 medium, BUD-COVER-01 medium, BUD-FCST-01 and ALR-ANOM-01 and EXP-CFG-01 low confidence.

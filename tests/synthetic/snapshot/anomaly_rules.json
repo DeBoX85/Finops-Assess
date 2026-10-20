@@ -1,0 +1,44 @@
+{
+ "api_version": "2026-06-01",
+ "pages": 1,
+ "rows": [
+  {
+   "endDate": null,
+   "frequency": "Daily",
+   "hasRecipient": true,
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.CostManagement/scheduledActions/anomaly",
+   "kind": "InsightAlert",
+   "name": "anomaly",
+   "status": "Enabled",
+   "subscriptionId": "sub-synth-1",
+   "viewId": null
+  },
+  {
+   "endDate": null,
+   "frequency": "Daily",
+   "hasRecipient": true,
+   "id": "/subscriptions/sub-synth-3/providers/Microsoft.CostManagement/scheduledActions/anomaly",
+   "kind": "InsightAlert",
+   "name": "anomaly",
+   "status": "Disabled",
+   "subscriptionId": "sub-synth-3",
+   "viewId": null
+  }
+ ],
+ "scopes": [
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-2"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-3"
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

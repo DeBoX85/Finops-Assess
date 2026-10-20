@@ -1,0 +1,118 @@
+{
+ "cases": [
+  {
+   "name": "s2 has no budget, s3 unreadable",
+   "snapshot": {
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1",
+       "subscriptionId": "s1",
+       "name": "b1",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s2",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s3",
+       "status": "HTTP 403"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s2"
+   ]
+  },
+  {
+   "name": "every readable subscription has a budget",
+   "snapshot": {
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1",
+       "subscriptionId": "s1",
+       "name": "b1",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s2/providers/Microsoft.Consumption/budgets/b2",
+       "subscriptionId": "s2",
+       "name": "b2",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s2",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

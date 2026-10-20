@@ -79,7 +79,7 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["OPT-COSBKP-01"] == {"cosmos-many-copies"}
     assert by["ORPH-SYN-01"] == {"syn-empty"}
     assert by["OPT-FWPREM-01"] == {"fw-premium-idle"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7
 
 
 def test_tag_governance_findings_match_hand_derivation():
@@ -102,3 +102,18 @@ def test_tag_governance_findings_match_hand_derivation():
     assert set(got["POL-TAGMOD-01"]) == {"policy:tags"}
     (compl,) = got["POL-COMPL-01"].values()
     assert "15 of 34" in compl["message"] and "44%" in compl["message"]
+
+
+def test_budget_anomaly_export_findings_match_hand_derivation():
+    """Derived by hand from scripts/make_synthetic.py (budgets, anomaly_rules, cost_exports; collected_at 2026-10-01)."""
+    golden = json.loads(ms.GOLDEN.read_text())
+    got = {}
+    for f in golden["findings"]:
+        got.setdefault(f["check_id"], set()).add(f["resource_id"])
+    s = "/subscriptions/sub-synth-"
+    assert got["BUD-COVER-01"] == {s + "3"}  # subs 1 and 2 have budgets
+    assert got["BUD-ALERT-01"] == {s + "1/providers/Microsoft.Consumption/budgets/b-old"}  # enabled notification without a recipient
+    assert got["BUD-EXP-01"] == {s + "1/providers/Microsoft.Consumption/budgets/b-old"}  # ended 2026-06-30, before 2026-10-01
+    assert got["BUD-FCST-01"] == {s + "2"}  # sub 1 has a forecast alert on b-main; sub 3 has no budget so it is not judged here
+    assert got["ALR-ANOM-01"] == {s + "2", s + "3"}  # sub 1 enabled; sub 2 none; sub 3 disabled
+    assert got["EXP-CFG-01"] == {s + "1/providers/Microsoft.CostManagement/exports/daily-actual"}  # last run Failed

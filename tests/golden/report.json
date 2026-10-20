@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "0dba4e1251dfcfa1",
+  "report_hash": "233316760e16fa52",
   "status": "pass",
   "version": "0.1"
  },
@@ -971,6 +971,120 @@
    "savings_basis": "none",
    "title": "Tag policy non-compliance",
    "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "budgets"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Budgeting",
+   "id": "BUD-COVER-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Subscriptions with no budget visible at subscription scope",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "budgets"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Budgeting",
+   "id": "BUD-ALERT-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Budgets that cannot alert anyone",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "budgets"
+   ],
+   "confidence": "low",
+   "domain": "governance",
+   "framework": "Forecasting",
+   "id": "BUD-FCST-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Subscriptions whose budgets alert on actual spend only",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "budgets"
+   ],
+   "confidence": "medium",
+   "domain": "governance",
+   "framework": "Budgeting",
+   "id": "BUD-EXP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Budgets whose end date has passed",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "anomaly_rules"
+   ],
+   "confidence": "low",
+   "domain": "governance",
+   "framework": "Anomaly Management",
+   "id": "ALR-ANOM-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Subscriptions with no anomaly alert rule visible",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "cost_exports"
+   ],
+   "confidence": "low",
+   "domain": "governance",
+   "framework": "Data Ingestion",
+   "id": "EXP-CFG-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Cost data exports missing, paused or failing",
+   "validation": "offline-only"
   }
  ],
  "findings": [
@@ -999,6 +1113,46 @@
    "message": "Advisor: Right-size or shutdown underutilized virtual machines",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-resize",
    "severity": "medium"
+  },
+  {
+   "check_id": "ALR-ANOM-01",
+   "details": {
+    "caveat": "public cloud only; Learn limits a subscription to five rules",
+    "rules_visible": 0
+   },
+   "evidence": {
+    "collectors": [
+     "anomaly_rules"
+    ],
+    "logic_hash": "d60fc5d6d9ff",
+    "snapshot_digests": {
+     "anomaly_rules": "fca9acdfd303"
+    }
+   },
+   "fingerprint": "cbf9244dbd4314a4",
+   "message": "No anomaly alert rule is visible to this identity (shared rules only; private rules cannot be seen)",
+   "resource_id": "/subscriptions/sub-synth-2",
+   "severity": "low"
+  },
+  {
+   "check_id": "ALR-ANOM-01",
+   "details": {
+    "caveat": "public cloud only; Learn limits a subscription to five rules",
+    "rules_visible": 1
+   },
+   "evidence": {
+    "collectors": [
+     "anomaly_rules"
+    ],
+    "logic_hash": "d60fc5d6d9ff",
+    "snapshot_digests": {
+     "anomaly_rules": "fca9acdfd303"
+    }
+   },
+   "fingerprint": "d6c5b7daed8abf95",
+   "message": "An anomaly alert rule exists but is not enabled (Disabled)",
+   "resource_id": "/subscriptions/sub-synth-3",
+   "severity": "low"
   },
   {
    "check_id": "BILL-OFFER-01",
@@ -1041,6 +1195,111 @@
    "message": "Cost Management holds no cost data for this subscription offer; cost-based checks cannot be assessed for it",
    "resource_id": "/subscriptions/sub-synth-3",
    "severity": "info"
+  },
+  {
+   "check_id": "BUD-ALERT-01",
+   "details": {
+    "amount": 5000,
+    "enabled": 1,
+    "name": "b-old",
+    "notifications_configured": 1,
+    "timeGrain": "Monthly"
+   },
+   "evidence": {
+    "collectors": [
+     "budgets"
+    ],
+    "logic_hash": "e573d6a626f4",
+    "snapshot_digests": {
+     "budgets": "4a552b10a3e7"
+    }
+   },
+   "fingerprint": "f0ab9764cbf66827",
+   "message": "Budget has enabled notifications but none names a recipient (e-mail, role or action group)",
+   "resource_id": "/subscriptions/sub-synth-1/providers/Microsoft.Consumption/budgets/b-old",
+   "severity": "medium"
+  },
+  {
+   "check_id": "BUD-COVER-01",
+   "details": {
+    "scope_collected": "subscription scope only; management group and billing account scopes were not collected",
+    "subscriptions_not_readable": 0
+   },
+   "evidence": {
+    "collectors": [
+     "budgets"
+    ],
+    "logic_hash": "7261744bbb0f",
+    "snapshot_digests": {
+     "budgets": "4a552b10a3e7"
+    }
+   },
+   "fingerprint": "aabe668a4be45b47",
+   "message": "No budget is visible at subscription scope",
+   "resource_id": "/subscriptions/sub-synth-3",
+   "severity": "medium"
+  },
+  {
+   "check_id": "BUD-EXP-01",
+   "details": {
+    "collected_at": "2026-10-01T00:00:00+00:00",
+    "endDate": "2026-06-30T00:00:00Z",
+    "name": "b-old"
+   },
+   "evidence": {
+    "collectors": [
+     "budgets"
+    ],
+    "logic_hash": "39294c83aea6",
+    "snapshot_digests": {
+     "budgets": "4a552b10a3e7"
+    }
+   },
+   "fingerprint": "fcee63ee67a2aa38",
+   "message": "Budget ended on 2026-06-30, so it no longer monitors spend",
+   "resource_id": "/subscriptions/sub-synth-1/providers/Microsoft.Consumption/budgets/b-old",
+   "severity": "medium"
+  },
+  {
+   "check_id": "BUD-FCST-01",
+   "details": {
+    "budgets": 1,
+    "scope_collected": "subscription scope only; management group and billing account scopes were not collected"
+   },
+   "evidence": {
+    "collectors": [
+     "budgets"
+    ],
+    "logic_hash": "a573703de130",
+    "snapshot_digests": {
+     "budgets": "4a552b10a3e7"
+    }
+   },
+   "fingerprint": "b4aa5714284c707b",
+   "message": "No budget has an enabled forecast alert, so overspend is only flagged after it happens",
+   "resource_id": "/subscriptions/sub-synth-2",
+   "severity": "low"
+  },
+  {
+   "check_id": "EXP-CFG-01",
+   "details": {
+    "errorCode": null,
+    "lastRunEnd": "2026-09-30T00:00:00Z",
+    "name": "daily-actual"
+   },
+   "evidence": {
+    "collectors": [
+     "cost_exports"
+    ],
+    "logic_hash": "75c2065e58b8",
+    "snapshot_digests": {
+     "cost_exports": "3eaeba2695fe"
+    }
+   },
+   "fingerprint": "7fd3f127e8852e42",
+   "message": "Last cost export run ended with status Failed",
+   "resource_id": "/subscriptions/sub-synth-1/providers/Microsoft.CostManagement/exports/daily-actual",
+   "severity": "medium"
   },
   {
    "check_id": "IDLE-BKP-01",
@@ -3834,12 +4093,43 @@
     "findings": 1,
     "id": "POL-COMPL-01",
     "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "BUD-COVER-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "BUD-ALERT-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "BUD-FCST-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "BUD-EXP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "ALR-ANOM-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "EXP-CFG-01",
+    "status": "ran"
    }
   ],
   "collector_errors": [],
   "config": {
    "checks": {},
    "domains": {},
+   "governance_apis": false,
    "management_groups_count": 0,
    "profile": "standard",
    "rightsizing": false,

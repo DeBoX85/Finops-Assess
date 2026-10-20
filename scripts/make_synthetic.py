@@ -459,8 +459,59 @@ def estate():
             {"assignmentId": (pa + "require-env").lower(), "state": "Compliant", "n": 19},
         ],
     }
+
+    # Cost governance phase 2 (budgets, anomaly rules, exports). Rows have the shape fcat.govcost projects; no e-mail addresses exist here.
+    def note(typ, enabled=True, email=True):
+        return {
+            "enabled": enabled,
+            "operator": "GreaterThan",
+            "threshold": 80,
+            "thresholdType": typ,
+            "hasEmail": email,
+            "hasRole": False,
+            "hasGroup": False,
+        }
+
+    def budget(sub, name, notes, end):
+        return {
+            "id": f"/subscriptions/sub-synth-{sub}/providers/Microsoft.Consumption/budgets/{name}", "subscriptionId": f"sub-synth-{sub}", "name": name,
+            "level": "subscription", "amount": 5000, "category": "Cost", "timeGrain": "Monthly", "startDate": "2026-01-01T00:00:00Z",
+            "endDate": end, "currentSpend": None, "notifications": notes,
+        }  # fmt: skip
+
+    def rule(sub, status):
+        return {
+            "id": f"/subscriptions/sub-synth-{sub}/providers/Microsoft.CostManagement/scheduledActions/anomaly", "subscriptionId": f"sub-synth-{sub}",
+            "name": "anomaly", "kind": "InsightAlert", "status": status, "viewId": None, "frequency": "Daily", "endDate": None, "hasRecipient": True,
+        }  # fmt: skip
+
+    gov2 = {
+        "budgets": [
+            budget(1, "b-main", [note("Actual"), note("Forecasted")], "2027-12-31T00:00:00Z"),
+            budget(1, "b-old", [note("Actual", email=False)], "2026-06-30T00:00:00Z"),  # ended, and its notification names nobody
+            budget(2, "b-actual-only", [note("Actual")], None),
+        ],
+        "anomaly_rules": [rule(1, "Enabled"), rule(3, "Disabled")],
+        "cost_exports": [
+            {
+                "id": "/subscriptions/sub-synth-1/providers/Microsoft.CostManagement/exports/daily-actual",
+                "subscriptionId": "sub-synth-1",
+                "name": "daily-actual",
+                "exportType": "ActualCost",
+                "format": "Csv",
+                "hasSchedule": True,
+                "scheduleStatus": "Active",
+                "recurrence": "Daily",
+                "runHistoryReturned": True,
+                "lastRunStatus": "Failed",
+                "lastRunEnd": "2026-09-30T00:00:00Z",
+                "lastRunErrorCode": None,
+            }
+        ],
+    }
     return {
         **gov,
+        **gov2,
         **batch6,
         **batch5,
         **batch4,
@@ -480,10 +531,13 @@ def estate():
 def write_snapshot():
     SNAP.mkdir(parents=True, exist_ok=True)
     (SNAP / "_meta.json").write_text(json.dumps({"collected_at": "2026-10-01T00:00:00Z"}, indent=1))
+    rest = {"budgets", "anomaly_rules", "cost_exports"}  # REST collectors: rows plus a per-subscription 'scopes' list (fcat.govcost)
     for name, rows in estate().items():
-        (SNAP / f"{name}.json").write_text(
-            json.dumps({"rows": rows, "total_records": len(rows), "pages": 1, "warnings": []}, indent=1, sort_keys=True)
-        )
+        body = {"rows": rows, "total_records": len(rows), "pages": 1, "warnings": []}
+        if name in rest:
+            body["scopes"] = [{"subscriptionId": f"sub-synth-{i}", "status": "ok"} for i in (1, 2, 3)]
+            body["api_version"] = "2026-06-01"
+        (SNAP / f"{name}.json").write_text(json.dumps(body, indent=1, sort_keys=True))
 
 
 def normalised_report(workdir):

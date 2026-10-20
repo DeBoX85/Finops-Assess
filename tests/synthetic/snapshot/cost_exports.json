@@ -1,0 +1,36 @@
+{
+ "api_version": "2026-06-01",
+ "pages": 1,
+ "rows": [
+  {
+   "exportType": "ActualCost",
+   "format": "Csv",
+   "hasSchedule": true,
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.CostManagement/exports/daily-actual",
+   "lastRunEnd": "2026-09-30T00:00:00Z",
+   "lastRunErrorCode": null,
+   "lastRunStatus": "Failed",
+   "name": "daily-actual",
+   "recurrence": "Daily",
+   "runHistoryReturned": true,
+   "scheduleStatus": "Active",
+   "subscriptionId": "sub-synth-1"
+  }
+ ],
+ "scopes": [
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-2"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-3"
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

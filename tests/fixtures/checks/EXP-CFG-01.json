@@ -1,0 +1,133 @@
+{
+ "cases": [
+  {
+   "name": "no exports at all",
+   "snapshot": {
+    "cost_exports": {
+     "rows": [],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s2",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "exports:estate"
+   ]
+  },
+  {
+   "name": "paused, failing, healthy and one-time",
+   "snapshot": {
+    "cost_exports": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e1",
+       "subscriptionId": "s1",
+       "name": "e1",
+       "exportType": "ActualCost",
+       "format": "Csv",
+       "hasSchedule": true,
+       "scheduleStatus": "Active",
+       "recurrence": "Daily",
+       "runHistoryReturned": true,
+       "lastRunStatus": "Completed",
+       "lastRunEnd": "2026-10-19T00:00:00Z",
+       "lastRunErrorCode": null
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e2",
+       "subscriptionId": "s1",
+       "name": "e2",
+       "exportType": "ActualCost",
+       "format": "Csv",
+       "hasSchedule": true,
+       "scheduleStatus": "Inactive",
+       "recurrence": "Daily",
+       "runHistoryReturned": true,
+       "lastRunStatus": "Completed",
+       "lastRunEnd": "2026-10-19T00:00:00Z",
+       "lastRunErrorCode": null
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e3",
+       "subscriptionId": "s1",
+       "name": "e3",
+       "exportType": "ActualCost",
+       "format": "Csv",
+       "hasSchedule": true,
+       "scheduleStatus": "Active",
+       "recurrence": "Daily",
+       "runHistoryReturned": true,
+       "lastRunStatus": "Failed",
+       "lastRunEnd": "2026-10-19T00:00:00Z",
+       "lastRunErrorCode": null
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e4",
+       "subscriptionId": "s1",
+       "name": "e4",
+       "exportType": "ActualCost",
+       "format": "Csv",
+       "hasSchedule": false,
+       "scheduleStatus": null,
+       "recurrence": null,
+       "runHistoryReturned": true,
+       "lastRunStatus": "Completed",
+       "lastRunEnd": "2026-10-19T00:00:00Z",
+       "lastRunErrorCode": null
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e2",
+    "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e3"
+   ]
+  },
+  {
+   "name": "all healthy",
+   "snapshot": {
+    "cost_exports": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/exports/e1",
+       "subscriptionId": "s1",
+       "name": "e1",
+       "exportType": "ActualCost",
+       "format": "Csv",
+       "hasSchedule": true,
+       "scheduleStatus": "Active",
+       "recurrence": "Daily",
+       "runHistoryReturned": true,
+       "lastRunStatus": "Completed",
+       "lastRunEnd": "2026-10-19T00:00:00Z",
+       "lastRunErrorCode": null
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

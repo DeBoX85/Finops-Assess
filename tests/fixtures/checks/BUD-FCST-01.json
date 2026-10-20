@@ -1,0 +1,146 @@
+{
+ "cases": [
+  {
+   "name": "s2 actual only, s3 forecast disabled",
+   "snapshot": {
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1",
+       "subscriptionId": "s1",
+       "name": "b1",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        },
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Forecasted",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s2/providers/Microsoft.Consumption/budgets/b2",
+       "subscriptionId": "s2",
+       "name": "b2",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s3/providers/Microsoft.Consumption/budgets/b3",
+       "subscriptionId": "s3",
+       "name": "b3",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": false,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Forecasted",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s2",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s3",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s2",
+    "/subscriptions/s3"
+   ]
+  },
+  {
+   "name": "forecast alert present",
+   "snapshot": {
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1",
+       "subscriptionId": "s1",
+       "name": "b1",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Forecasted",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

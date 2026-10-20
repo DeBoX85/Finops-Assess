@@ -262,7 +262,7 @@ COLLECTORS = {
 
 
 # Collectors that are not ARG queries. They run only when the owner opts in and are never in COLLECTORS (which the KQL tests iterate).
-REST_COLLECTORS = ("vm_cpu",)
+REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports")
 
 
 def collect(client, snapshot, config, errors: list):
@@ -276,6 +276,13 @@ def collect(client, snapshot, config, errors: list):
             errors.append({"collector": name, "error": f"{type(e).__name__}: {e}"})
             continue
         snapshot.save(name, {"rows": res.rows, "total_records": res.total_records, "pages": res.pages, "warnings": res.warnings})
+    if getattr(config, "governance_apis", False):
+        from . import govcost  # noqa: PLC0415
+
+        try:
+            govcost.collect_governance(client, snapshot, config, errors)
+        except Exception as e:  # noqa: BLE001
+            errors.append({"collector": "governance_apis", "error": f"{type(e).__name__}: {e}"})
     if getattr(config, "rightsizing", False):
         from . import metrics  # noqa: PLC0415
 

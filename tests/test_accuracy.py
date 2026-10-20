@@ -89,7 +89,19 @@ def test_row_order_and_extra_columns_do_not_change_findings(meta, fn, tmp_path):
 # ---- 3. locality ----
 # Estate-level checks judge shares and totals, so removing one row legitimately changes their message or numbers. They are covered by
 # tests/test_tags.py (order independence, casing relabel, scale) instead.
-AGGREGATE = {"TAG-DISC-01", "TAG-COV-01", "TAG-CASE-01", "TAG-VAL-01", "TAG-RG-01", "POL-TAG-01", "POL-TAGMOD-01"}
+AGGREGATE = {
+    "TAG-DISC-01",
+    "TAG-COV-01",
+    "TAG-CASE-01",
+    "TAG-VAL-01",
+    "TAG-RG-01",
+    "POL-TAG-01",
+    "POL-TAGMOD-01",
+    "BUD-COVER-01",
+    "BUD-FCST-01",
+    "ALR-ANOM-01",
+    "EXP-CFG-01",
+}
 
 
 @pytest.mark.parametrize(("meta", "fn"), PARAMS)

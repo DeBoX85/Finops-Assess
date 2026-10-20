@@ -1,0 +1,100 @@
+{
+ "api_version": "2026-06-01",
+ "pages": 1,
+ "rows": [
+  {
+   "amount": 5000,
+   "category": "Cost",
+   "currentSpend": null,
+   "endDate": "2027-12-31T00:00:00Z",
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.Consumption/budgets/b-main",
+   "level": "subscription",
+   "name": "b-main",
+   "notifications": [
+    {
+     "enabled": true,
+     "hasEmail": true,
+     "hasGroup": false,
+     "hasRole": false,
+     "operator": "GreaterThan",
+     "threshold": 80,
+     "thresholdType": "Actual"
+    },
+    {
+     "enabled": true,
+     "hasEmail": true,
+     "hasGroup": false,
+     "hasRole": false,
+     "operator": "GreaterThan",
+     "threshold": 80,
+     "thresholdType": "Forecasted"
+    }
+   ],
+   "startDate": "2026-01-01T00:00:00Z",
+   "subscriptionId": "sub-synth-1",
+   "timeGrain": "Monthly"
+  },
+  {
+   "amount": 5000,
+   "category": "Cost",
+   "currentSpend": null,
+   "endDate": "2026-06-30T00:00:00Z",
+   "id": "/subscriptions/sub-synth-1/providers/Microsoft.Consumption/budgets/b-old",
+   "level": "subscription",
+   "name": "b-old",
+   "notifications": [
+    {
+     "enabled": true,
+     "hasEmail": false,
+     "hasGroup": false,
+     "hasRole": false,
+     "operator": "GreaterThan",
+     "threshold": 80,
+     "thresholdType": "Actual"
+    }
+   ],
+   "startDate": "2026-01-01T00:00:00Z",
+   "subscriptionId": "sub-synth-1",
+   "timeGrain": "Monthly"
+  },
+  {
+   "amount": 5000,
+   "category": "Cost",
+   "currentSpend": null,
+   "endDate": null,
+   "id": "/subscriptions/sub-synth-2/providers/Microsoft.Consumption/budgets/b-actual-only",
+   "level": "subscription",
+   "name": "b-actual-only",
+   "notifications": [
+    {
+     "enabled": true,
+     "hasEmail": true,
+     "hasGroup": false,
+     "hasRole": false,
+     "operator": "GreaterThan",
+     "threshold": 80,
+     "thresholdType": "Actual"
+    }
+   ],
+   "startDate": "2026-01-01T00:00:00Z",
+   "subscriptionId": "sub-synth-2",
+   "timeGrain": "Monthly"
+  }
+ ],
+ "scopes": [
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-2"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-3"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

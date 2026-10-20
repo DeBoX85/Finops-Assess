@@ -1,14 +1,15 @@
-"""Cost governance checks, phase 1 (tags and tag policy). Design: docs/COST-GOVERNANCE.md. Evidence: docs/KB/notes/11-cost-governance-azure.md.
+"""Cost governance checks, phase 1 (tags and tag policy) and phase 2 (budgets, anomaly alert rules, cost exports; bottom of file). Design: docs/COST-GOVERNANCE.md. Evidence: docs/KB/notes/11-cost-governance-azure.md.
 Everything here is offline-only (UNVERIFIED live): ARG property names for policy assignments, null versus empty tags, and compliance
 data timing. Thresholds are our proposals and are echoed in the finding details. Tag values appear only under the details keys named in
 redact.TAG_VALUE_KEYS so that --redact can mask them."""
 
 from __future__ import annotations
 
+import datetime as dt
 from collections import Counter
 
 from . import tags as T
-from .checks import CheckMeta, Finding, NotAssessed, check
+from .checks import CheckMeta, Finding, NotAssessed, check, collected_at
 
 
 def _g(id_, framework, title, *collectors, conf="medium"):
@@ -257,3 +258,160 @@ def tag_policy_compliance(snap):
             f"Tag policy has {bad} of {total} evaluated resources non-compliant ({pct:.0f}%)",
             {"kind": p["kind"], "tag": p["tag"], "enforced": p["enforced"], "states": dict(cnt), "percent_noncompliant": round(pct, 1)},
         )  # fmt: skip
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Phase 2: budgets, anomaly alert rules, cost exports. Collector: govcost.py (opt-in [run] governance_apis). All offline-only, UNVERIFIED live.
+# Scope covered: subscriptions only. Management group and billing account budgets or exports are NOT collected, so every message says
+# "visible at subscription scope" and never claims there is no control anywhere.
+
+SUB_ONLY = "subscription scope only; management group and billing account scopes were not collected"
+
+
+def _rest(snap, name):
+    """Rows plus the sets of subscriptions whose call worked or failed. Raises NotAssessed when the collector did not run or all calls failed."""
+    if not snap.has(name):
+        raise NotAssessed(
+            f"the {name} collector produced no data (it needs [run] governance_apis = true, and at least one successful call)"
+        )
+    data = snap.load(name) or {}
+    scopes = [x for x in data.get("scopes") or [] if isinstance(x, dict)] if isinstance(data.get("scopes"), list) else []
+    ok = {str(x.get("subscriptionId")) for x in scopes if x.get("status") == "ok"}
+    if not ok:
+        raise NotAssessed(f"no subscription could be read for {name}")
+    failed = sorted({str(x.get("subscriptionId")) for x in scopes if x.get("status") != "ok"})
+    rows = [x for x in data.get("rows") or [] if isinstance(x, dict)] if isinstance(data.get("rows"), list) else []
+    return rows, ok, failed
+
+
+def _date(v):
+    try:
+        d = dt.datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return d if d.tzinfo else d.replace(tzinfo=dt.UTC)
+
+
+def _notes(bud):
+    return [x for x in bud.get("notifications") or [] if isinstance(x, dict)] if isinstance(bud.get("notifications"), list) else []
+
+
+def _by_sub(rows):
+    out: dict = {}
+    for item in rows:
+        out.setdefault(str(item.get("subscriptionId")), []).append(item)
+    return out
+
+
+@check(_g("BUD-COVER-01", "Budgeting", "Subscriptions with no budget visible at subscription scope", "budgets"))
+def budget_coverage(snap):
+    """CAF: apply a budget and alerts to each subscription. A management group budget may cover a subscription too; whether it does is UNVERIFIED
+    and the management group scope is not collected, so the message says what was and was not looked at."""
+    rows, ok, failed = _rest(snap, "budgets")
+    have = _by_sub(rows)
+    for sub in sorted(ok):
+        if not have.get(sub):
+            yield Finding(
+                "BUD-COVER-01", f"/subscriptions/{sub}", "medium", "No budget is visible at subscription scope",
+                {"scope_collected": SUB_ONLY, "subscriptions_not_readable": len(failed)},
+            )  # fmt: skip
+
+
+@check(_g("BUD-ALERT-01", "Budgeting", "Budgets that cannot alert anyone", "budgets"))
+def budget_alerts(snap):
+    """A budget without an enabled notification, or whose enabled notifications name no e-mail address, role or group, raises no alert a person sees.
+    Addresses are never stored, only whether any exist. Confidence is capped at medium until a live response confirms the notification shape."""
+    rows, _ok, _failed = _rest(snap, "budgets")
+    for bud in rows:
+        notes = _notes(bud)
+        enabled = [x for x in notes if x.get("enabled") is True]
+        reach = [x for x in enabled if x.get("hasEmail") or x.get("hasRole") or x.get("hasGroup")]
+        if reach:
+            continue
+        why = (
+            "has no enabled notification"
+            if not enabled
+            else "has enabled notifications but none names a recipient (e-mail, role or action group)"
+        )
+        yield Finding(
+            "BUD-ALERT-01", str(bud.get("id")), "medium", f"Budget {why}",
+            {"name": bud.get("name"), "amount": bud.get("amount"), "timeGrain": bud.get("timeGrain"), "notifications_configured": len(notes), "enabled": len(enabled)},
+        )  # fmt: skip
+
+
+@check(_g("BUD-FCST-01", "Forecasting", "Subscriptions whose budgets alert on actual spend only", "budgets", conf="low"))
+def budget_forecast_alerts(snap):
+    """FinOps budgeting guidance: alert on actual and forecasted cost. Only subscriptions that already have a budget are judged
+    (BUD-COVER-01 covers the rest). A forecast alert counts when an enabled notification has thresholdType Forecasted."""
+    rows, ok, _failed = _rest(snap, "budgets")
+    for sub, buds in sorted(_by_sub(rows).items()):
+        if sub not in ok:
+            continue
+        has = any(x.get("enabled") is True and x.get("thresholdType") == "Forecasted" for b in buds for x in _notes(b))
+        if not has:
+            yield Finding(
+                "BUD-FCST-01", f"/subscriptions/{sub}", "low", "No budget has an enabled forecast alert, so overspend is only flagged after it happens",
+                {"budgets": len(buds), "scope_collected": SUB_ONLY},
+            )  # fmt: skip
+
+
+@check(_g("BUD-EXP-01", "Budgeting", "Budgets whose end date has passed", "budgets"))
+def budget_expired(snap):
+    """Learn: a budget monitors and alerts only while its time period is valid. Judged against the snapshot collection time, never the wall clock."""
+    rows, _ok, _failed = _rest(snap, "budgets")
+    now = collected_at(snap)
+    for bud in rows:
+        end = _date(bud.get("endDate"))
+        if end is not None and end < now:
+            yield Finding(
+                "BUD-EXP-01", str(bud.get("id")), "medium", f"Budget ended on {end.date().isoformat()}, so it no longer monitors spend",
+                {"name": bud.get("name"), "endDate": bud.get("endDate"), "collected_at": now.isoformat()},
+            )  # fmt: skip
+
+
+@check(_g("ALR-ANOM-01", "Anomaly Management", "Subscriptions with no anomaly alert rule visible", "anomaly_rules", conf="low"))
+def anomaly_alert_rules(snap):
+    """Anomaly alert rules are scheduled actions of kind InsightAlert at subscription scope (Learn). The API lists SHARED scheduled actions; whether a
+    rule created in the portal is shared or private is UNVERIFIED, so a missing rule is worded 'not visible to this identity', never 'absent'."""
+    rows, ok, _failed = _rest(snap, "anomaly_rules")
+    for sub in sorted(ok):
+        rules = [r for r in _by_sub(rows).get(sub, []) if r.get("kind") == "InsightAlert"]
+        live = [r for r in rules if r.get("status") == "Enabled"]
+        if live:
+            continue
+        msg = (
+            "An anomaly alert rule exists but is not enabled (" + ", ".join(sorted({str(r.get("status")) for r in rules})) + ")"
+            if rules
+            else "No anomaly alert rule is visible to this identity (shared rules only; private rules cannot be seen)"
+        )
+        yield Finding(
+            "ALR-ANOM-01", f"/subscriptions/{sub}", "low", msg,
+            {"rules_visible": len(rules), "caveat": "public cloud only; Learn limits a subscription to five rules"},
+        )  # fmt: skip
+
+
+BAD_RUNS = {"Failed", "Timeout", "DataNotAvailable"}
+
+
+@check(_g("EXP-CFG-01", "Data Ingestion", "Cost data exports missing, paused or failing", "cost_exports", conf="low"))
+def export_config(snap):
+    """FinOps data ingestion: scheduled exports to storage. Reports (1) no export visible at any subscription scope, (2) an export whose schedule
+    is Inactive, (3) an export whose last run failed. Run history is requested with $expand=runHistory (last run of each export)."""
+    rows, ok, _failed = _rest(snap, "cost_exports")
+    if not rows:
+        yield Finding(
+            "EXP-CFG-01", "exports:estate", "low", "No cost export is visible at any subscription scope that was read",
+            {"subscriptions_read": len(ok), "scope_collected": SUB_ONLY},
+        )  # fmt: skip
+        return
+    for exp in rows:
+        if exp.get("hasSchedule") and exp.get("scheduleStatus") == "Inactive":
+            yield Finding(
+                "EXP-CFG-01", str(exp.get("id")), "low", "Cost export schedule is Inactive, so no new data is delivered",
+                {"name": exp.get("name"), "exportType": exp.get("exportType"), "recurrence": exp.get("recurrence")},
+            )  # fmt: skip
+        elif isinstance(exp.get("lastRunStatus"), str) and exp["lastRunStatus"] in BAD_RUNS:
+            yield Finding(
+                "EXP-CFG-01", str(exp.get("id")), "medium", f"Last cost export run ended with status {exp.get('lastRunStatus')}",
+                {"name": exp.get("name"), "lastRunEnd": exp.get("lastRunEnd"), "errorCode": exp.get("lastRunErrorCode")},
+            )  # fmt: skip

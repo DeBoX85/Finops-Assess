@@ -99,6 +99,16 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Tag policies without modify or inherit | DONE-OFFLINE | POL-TAGMOD-01 | Parameter names verified only for the require-tag built-in |
 | Tag policy non-compliance share | DONE-OFFLINE | POL-COMPL-01 | Counts from ARG policy states; compliance timing UNVERIFIED live |
 
+## Added in batch 9 (2026-10-20): cost governance phase 2, budgets, anomaly alerts, exports
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| Subscriptions without a budget | DONE-OFFLINE | BUD-COVER-01 | Subscription scope only; management group budgets not collected, so wording is "visible at subscription scope". Needs `[run] governance_apis = true` |
+| Budgets that cannot alert anyone | DONE-OFFLINE | BUD-ALERT-01 | E-mail addresses are never stored, only whether any exist |
+| No forecast alert on budgets | DONE-OFFLINE | BUD-FCST-01 | FinOps budgeting guidance (actual and forecast); confidence low |
+| Budgets past their end date | DONE-OFFLINE | BUD-EXP-01 | Judged against collection time, not the wall clock |
+| Anomaly alert rule visibility | DONE-OFFLINE | ALR-ANOM-01 | Shared vs private rules UNVERIFIED, so a miss is "not visible to this identity" |
+| Cost export missing, paused or failing | DONE-OFFLINE | EXP-CFG-01 | Storage ids, containers and folders are never stored |
+
 ## Beyond the workbooks (F-CAT only, today)
 Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-01, MON-AICLS-01, SEC-DEFDEV-01 (all informational, confidence low). Billing-offer awareness (BILL-OFFER-01), self-audit of every report, evidence and fingerprint per finding, confidence per check, "not assessed because X" reporting, maturity questionnaire (design v0.2).
 

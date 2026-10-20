@@ -23,3 +23,7 @@ Prevention: a collector that depends on another snapshot must record an error an
 ## M-009 (2026-10-18) Smaller slips while adding 14 checks (all caught by tests before commit)
 Check id longer than the 6-character area limit (MOD-LBBASIC-01); a Cosmos fixture with wrong arithmetic; hand-derived finding counts and test counts not updated when the synthetic estate grew; a fixture missing `_meta` for an age rule; mock-up text wrapping on mobile.
 Prevention: keep the id pattern in mind when naming; derive expected numbers by hand before reading the code's output; update the count assertions in the same edit as the estate.
+
+## M-010 (2026-10-20) Governance phase 1 and 2 slips (all caught before commit or push)
+(1) A check used `x in BAD_RUNS` on a value that could be a list, which crashed under the fuzz test (unhashable); guard with an isinstance check. (2) A paging test handler matched on the URL fragment 'budgets' first and never served the next page; test bug, not code. (3) The customer data guard blocked the public Microsoft policy ids; resolved by ADR 0009. (4) Reformatting source after approving the golden file changed the logic hash and invalidated the golden; approve the golden last, after ruff format.
+Prevention: run `ruff format` before `make_synthetic.py --approve`; type-guard before set or dict membership on snapshot values.

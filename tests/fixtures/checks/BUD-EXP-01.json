@@ -1,0 +1,156 @@
+{
+ "cases": [
+  {
+   "name": "ended budget only",
+   "snapshot": {
+    "_meta": {
+     "collected_at": "2026-10-20T00:00:00Z"
+    },
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1",
+       "subscriptionId": "s1",
+       "name": "b1",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": "2026-10-01T00:00:00Z",
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b2",
+       "subscriptionId": "s1",
+       "name": "b2",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": "2027-01-01T00:00:00Z",
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b3",
+       "subscriptionId": "s1",
+       "name": "b3",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": "x",
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      },
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b4",
+       "subscriptionId": "s1",
+       "name": "b4",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": null,
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b1"
+   ]
+  },
+  {
+   "name": "all valid",
+   "snapshot": {
+    "_meta": {
+     "collected_at": "2026-10-20T00:00:00Z"
+    },
+    "budgets": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.Consumption/budgets/b2",
+       "subscriptionId": "s1",
+       "name": "b2",
+       "level": "subscription",
+       "amount": 1000,
+       "category": "Cost",
+       "timeGrain": "Monthly",
+       "startDate": "2026-01-01T00:00:00Z",
+       "endDate": "2027-01-01T00:00:00Z",
+       "notifications": [
+        {
+         "enabled": true,
+         "operator": "GreaterThan",
+         "threshold": 80,
+         "thresholdType": "Actual",
+         "hasEmail": true,
+         "hasRole": false,
+         "hasGroup": false
+        }
+       ]
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

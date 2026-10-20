@@ -109,6 +109,7 @@ class Config:
     report: ReportOptions = field(default_factory=ReportOptions)
     rightsizing: bool = False  # opt-in: reads Azure Monitor metrics and compute SKUs (many GET calls); see docs/RIGHTSIZING.md
     rightsizing_max_vms: int = 50
+    governance_apis: bool = False  # opt-in: 3 GET calls per subscription (budgets, anomaly rules, exports); see docs/COST-GOVERNANCE.md
 
     def as_dict(self):
         return {
@@ -119,6 +120,7 @@ class Config:
             "management_groups_count": len(self.management_groups),
             "rightsizing": self.rightsizing,
             "rightsizing_max_vms": self.rightsizing_max_vms,
+            "governance_apis": self.governance_apis,
         }
 
     def enabled(self, meta) -> tuple[bool, str]:
@@ -142,6 +144,9 @@ def load(path) -> Config:
     rs, cap = run.get("rightsizing", False), run.get("rightsizing_max_vms", 50)
     if not isinstance(rs, bool) or not isinstance(cap, int) or isinstance(cap, bool) or not 1 <= cap <= 500:
         raise ValueError("[run] rightsizing must be true or false and rightsizing_max_vms an integer from 1 to 500")
+    gov = run.get("governance_apis", False)
+    if not isinstance(gov, bool):
+        raise ValueError("[run] governance_apis must be true or false")
     return Config(
-        prof, d.get("domains", {}), d.get("checks", {}), run.get("subscriptions", []), run.get("management_groups", []), rep, rs, cap
+        prof, d.get("domains", {}), d.get("checks", {}), run.get("subscriptions", []), run.get("management_groups", []), rep, rs, cap, gov
     )

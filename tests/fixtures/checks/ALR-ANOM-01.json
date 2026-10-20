@@ -1,0 +1,97 @@
+{
+ "cases": [
+  {
+   "name": "s2 only e-mail report, s3 disabled, s4 unreadable",
+   "snapshot": {
+    "anomaly_rules": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/scheduledActions/a",
+       "subscriptionId": "s1",
+       "name": "a",
+       "kind": "InsightAlert",
+       "status": "Enabled",
+       "viewId": null,
+       "frequency": "Daily",
+       "endDate": null,
+       "hasRecipient": true
+      },
+      {
+       "id": "/subscriptions/s2/providers/Microsoft.CostManagement/scheduledActions/m",
+       "subscriptionId": "s2",
+       "name": "m",
+       "kind": "Email",
+       "status": "Enabled",
+       "viewId": null,
+       "frequency": "Daily",
+       "endDate": null,
+       "hasRecipient": true
+      },
+      {
+       "id": "/subscriptions/s3/providers/Microsoft.CostManagement/scheduledActions/a",
+       "subscriptionId": "s3",
+       "name": "a",
+       "kind": "InsightAlert",
+       "status": "Disabled",
+       "viewId": null,
+       "frequency": "Daily",
+       "endDate": null,
+       "hasRecipient": true
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s2",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s3",
+       "status": "ok"
+      },
+      {
+       "subscriptionId": "s4",
+       "status": "HTTP 403"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s2",
+    "/subscriptions/s3"
+   ]
+  },
+  {
+   "name": "enabled rule present",
+   "snapshot": {
+    "anomaly_rules": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1/providers/Microsoft.CostManagement/scheduledActions/a",
+       "subscriptionId": "s1",
+       "name": "a",
+       "kind": "InsightAlert",
+       "status": "Enabled",
+       "viewId": null,
+       "frequency": "Daily",
+       "endDate": null,
+       "hasRecipient": true
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok"
+      }
+     ],
+     "api_version": "2026-06-01"
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}
