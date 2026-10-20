@@ -18,6 +18,7 @@ Owner is away from the next few steps. Rules while items are pending:
 | 8 | Canary test resources | Deferred by owner until something to test on | Deferred | G2 precision/recall tests | None |
 | 9 | Export write mode (ADR 0005) | Rule 1 wording approved; design only for now | Design only; levels 1 and 1.5 first | Level 3 implementation | None |
 | 10 | ADR 0007: allow read-only Log Analytics workspace queries (docs/decisions/0007) | OK to allow POST to api.loganalytics.azure.com `/v1/workspaces/{id}/query` only | NOT allowed; no code uses it | Usage-based monitoring/security checks (tier B in docs/MODULE-MONITORING-SECURITY.md) | None yet |
+| 11 | Cost governance layer scope (docs/COST-GOVERNANCE.md section 8) | Answers to 5 questions: layer shape, tag standard precedence, privacy rule, first build phases, cost-weighted coverage timing | Phase 1 only (tag discovery and policy tag checks), findings plus posture view, values stored for low-cardinality keys only | Building any TAG, POL, BUD, ALR, EXP check | Low: all Reader-only, cheap to reshape |
 
 ## Closed
 - 2026-10-17: ADR 0004 hybrid (option C). Backlog approved. PLAN v0.1 approved (2026-10-18).

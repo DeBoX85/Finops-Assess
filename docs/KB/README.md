@@ -15,6 +15,8 @@ Rule used throughout: every fact carries its source; "OPENED" means the page was
 | notes/08-language-and-licence.md | Language and licence evidence and preliminary recommendation (reddit sentiment could not be reached) |
 | notes/09-monitoring-and-security-cost-assessment.md | Sentinel, Defender, App Insights, Log Analytics: verified facts, source reliability, proposed check catalogue |
 | notes/07-hub-recommendation-queries.md | Inventory of the 23 hub ARG recommendation queries (20 default, 3 optional; count reconciled against Learn page and source) |
+| notes/10-cost-api-and-billing-types.md | Cost Management data by billing type, APIs, limits |
+| notes/11-cost-governance-azure.md | Cost governance on Azure: CAF, WAF, FinOps, Policy, tags, budgets, anomaly alerts, exports; what a Reader can see (2026-10-20) |
 | sources/url-register.csv | One row per URL: status, reliability, note |
 | sources/workbook-queries-raw.json | 467 raw workbook query rows |
 | sources/hub-recommendation-queries/ | 23 hub query JSONs (MIT, Microsoft; attribution needed) |
