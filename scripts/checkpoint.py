@@ -19,10 +19,22 @@ import docs_check  # noqa: E402
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
 SECRET = re.compile(r"eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}|(?i:client_secret|accountkey|sharedaccesskey)\s*[=:]\s*\S{8,}")
 SCAN_EXCLUDE = ("docs/KB/", "tests/", "NOTICE.md")
+# ADR 0009: Microsoft built-in tag policy definition ids are public, not customer data. Exempt ONLY lines of the exact table shape
+# `    "<guid>": "require|modify|inherit|append",` in ONE file. Everything else in that file, and every other file, is still scanned.
+# tests/test_render_scripts.py pins the exact set of ids in that table, so a swapped-in id fails the tests.
+PUBLIC_GUID_FILE = "src/fcat/tags.py"
+PUBLIC_GUID_ROW = re.compile(r'^    "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}": "(?:require|modify|inherit|append)",$')
 
 
 def sh(*a, check=False):
     return subprocess.run(a, cwd=ROOT, capture_output=True, text=True, check=check)
+
+
+def line_hit(path, text):
+    """True when an added line (text without the leading '+') must block the commit."""
+    if path == PUBLIC_GUID_FILE and PUBLIC_GUID_ROW.match(text):
+        return bool(SECRET.search(text))
+    return bool(SECRET.search(text) or GUID.search(text))
 
 
 def scan_staged():
@@ -32,7 +44,7 @@ def scan_staged():
         if line.startswith("+++ b/"):
             cur = line[6:]
         elif line.startswith("+") and not line.startswith("+++") and cur and not cur.startswith(SCAN_EXCLUDE):
-            if SECRET.search(line) or GUID.search(line):
+            if line_hit(cur, line[1:]):
                 hits.append(f"{cur}: {line[1:80]}")
     return hits
 

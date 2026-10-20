@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-20 15:01 UTC
+Last updated: 2026-10-20 15:19 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-20 15:01
-Base commit: acc0abd
+Last checkpoint (UTC): 2026-10-20 15:19
+Base commit: 8d001f0
 Gates: pass
-Files changed in this checkpoint: 33
-narrative_hash: 40547eb2243a
+Files changed in this checkpoint: 7
+narrative_hash: 8f719cca0dc3
 stale_count: 0
 <!-- auto:end -->
 
@@ -61,7 +61,7 @@ Nothing half-done. Cost governance phase 1 is built offline (docs/COST-GOVERNANC
 ## Next step
 Ask the owner whether to start cost governance phase 2 (budgets, anomaly rules, exports, posture view) and whether to build the `[tags] required` config override. Older next steps: Owner review of maturity questionnaire and confidence-label rule (reminder due next stopping point). Backlog item 2 Layer A part 1 DONE; items 2, 3, 18 DONE; next 4 (cost collectors + allowlist ADR), 5, 7, 8. Old text: output audit Layer A (finding fingerprints/evidence, invariants checker, Audit section), then synthetic estate + golden report, cost collectors research. Add branding/module-weighting config to the plan.
 ## Open questions for the user
-Audit sample size and confidence thresholds (explained in chat, awaiting agreement); maturity scope wording; Approve PLAN v0.1 formally.
+Resolved 2026-10-20: GUID guard exemption for public tag policy ids, owner chose option 1 (ADR 0009). Audit sample size and confidence thresholds (explained in chat, awaiting agreement); maturity scope wording; Approve PLAN v0.1 formally.
 ## Blockers
 Test tenant not guaranteed early, so initial checks are fixture-based and untested.
 ## Resume: read CLAUDE.md, this file, docs/PLAN.md, newest docs/log entry, docs/MISTAKES.md

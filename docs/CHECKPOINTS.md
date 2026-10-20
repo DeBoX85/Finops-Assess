@@ -3,7 +3,7 @@ Goal: no more than one work unit of progress can be lost when a chat ends, GitHu
 
 ## What a checkpoint is
 `python scripts/checkpoint.py -m "<what changed>" --log "<one line>" [--session-url URL]`
-It: runs the tests; rewrites the auto block in docs/HANDOVER.md (time, base commit, tests, files changed, stale counter); appends to today's docs/log; runs scripts/docs_check.py; scans staged changes for GUIDs and secrets (customer data guard, rule 2) and BLOCKS the commit if it finds any; commits; pushes. Pushes go to wip/auto always and to main only when gates pass. If the push fails it writes a git bundle next to the repo and exits 3: tell the user, never claim it is saved.
+It: runs the tests; rewrites the auto block in docs/HANDOVER.md (time, base commit, tests, files changed, stale counter); appends to today's docs/log; runs scripts/docs_check.py; scans staged changes for GUIDs and secrets (customer data guard, rule 2) and BLOCKS the commit if it finds any (one narrow exemption: the public tag policy id table in src/fcat/tags.py, ADR 0009); commits; pushes. Pushes go to wip/auto always and to main only when gates pass. If the push fails it writes a git bundle next to the repo and exits 3: tell the user, never claim it is saved.
 
 ## Triggers (event-based, because timers cannot help when the chat itself ends)
 1. After every work unit (a coherent change that leaves the repo working). Not "at the end".
