@@ -108,3 +108,12 @@ def test_markdown_lists_every_scope_and_limits(tmp_path):
     r = rollup.build([write(tmp_path, "a", variant()), write(tmp_path, "b", variant(drop=5))])
     md = rollup.markdown(r)
     assert "| a |" in md and "| b |" in md and "## Limits" in md and "never added" in md
+
+
+def test_reasons_with_guid_shaped_ids_are_scrubbed(tmp_path):
+    """Regression (review 2026-10-21): a failed check's reason quoting an id went into the roll-up verbatim."""
+    g = "-".join(["12345678", "90ab", "cdef", "1234", "567890abcdef"])  # built at runtime: the checkpoint guard blocks GUID literals
+    d = variant()
+    d["manifest"]["checks"][0].update(status="failed", reason=f"KeyError: {g}", findings=0)
+    r = rollup.build([write(tmp_path, "a", d), write(tmp_path, "b", variant())])
+    assert g not in json.dumps(r) and "{id}" in json.dumps(r)

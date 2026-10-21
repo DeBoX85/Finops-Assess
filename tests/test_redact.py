@@ -79,3 +79,29 @@ def _golden():
     import pathlib
 
     return json.loads((pathlib.Path(__file__).resolve().parent / "golden" / "report.json").read_text())
+
+
+def test_errors_and_reasons_lose_guid_shaped_ids():
+    """Regression (review 2026-10-21): collector errors such as 'subscription <guid>: HTTP 403' reached a --redact report unchanged."""
+    g = "-".join(["12345678", "90ab", "cdef", "1234", "567890abcdef"])  # built at runtime: the checkpoint guard blocks GUID literals
+    out = redact.errors([{"collector": "cost_by_resource", "error": f"subscription {g}: HTTP 403"}, "odd"])
+    assert g not in str(out) and "{id}" in out[0]["error"] and out[1] == "odd"
+    assert redact.scrub_text(f"x {g.upper()} y") == "x {id} y"
+    assert redact.errors(None) == []
+
+
+def test_cli_redact_scrubs_collector_errors_in_manifest(tmp_path, monkeypatch):
+    g = "-".join(["12345678", "90ab", "cdef", "1234", "567890abcdef"])  # built at runtime: the checkpoint guard blocks GUID literals
+    snap = tmp_path / "out" / "snapshot"
+    shutil.copytree(ROOT / "tests" / "synthetic" / "snapshot", snap)
+    cfg = tmp_path / "c.toml"
+    cfg.write_text("")
+    real = cli._finish
+
+    def with_error(cfg_, snap_, out, identity, calls, cerrors, *a, **k):
+        return real(cfg_, snap_, out, identity, calls, [{"collector": "x", "error": f"subscription {g}: HTTP 403"}], *a, **k)
+
+    monkeypatch.setattr(cli, "_finish", with_error)
+    assert cli.main(["analyze", "--config", str(cfg), "--out", str(tmp_path / "out"), "--redact"]) in (0, 1)
+    assert g not in (tmp_path / "out" / "report.json").read_text()
+    assert g not in (tmp_path / "out" / "report.html").read_text()

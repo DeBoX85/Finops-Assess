@@ -50,12 +50,14 @@ def project_rows(sub, props):
         return [], f"unexpected columns {[n for n in names if isinstance(n, str)][:8]}"
     res_at = names.index(RESOURCE_COLUMN)
     cur_at = names.index(CURRENCY_COLUMN) if CURRENCY_COLUMN in names else None
-    out = []
+    out, bad = [], 0
     for r in rows:
         if not isinstance(r, list) or len(r) <= max(cost_at, res_at):
+            bad += 1
             continue
         cost = r[cost_at]
         if isinstance(cost, bool) or not isinstance(cost, (int, float)):
+            bad += 1
             continue
         rid = r[res_at]
         cur = r[cur_at] if cur_at is not None and len(r) > cur_at else None
@@ -67,6 +69,8 @@ def project_rows(sub, props):
                 "currency": cur if isinstance(cur, str) else None,
             }
         )
+    if bad:  # dropping rows would understate the subscription total and skew every share built on it
+        return [], f"{bad} of {len(rows)} rows had an unexpected shape or a non-numeric cost, so the subscription total cannot be trusted"
     return out, None
 
 

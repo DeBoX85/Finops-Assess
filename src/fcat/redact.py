@@ -6,6 +6,7 @@ Limit: free text a check copies from customer data into a message would only be 
 from __future__ import annotations
 
 import hashlib
+import re
 import secrets
 
 from .checks import fingerprint
@@ -130,3 +131,17 @@ def identity(ident: dict, salt: str) -> dict:
     if d.get("tenant_id"):
         d["tenant_id"] = _p("tenant", str(d["tenant_id"]), salt)
     return d
+
+
+_GUID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+
+
+def scrub_text(text) -> str:
+    """Blanks GUID-shaped values (tenant, subscription, object ids) in free text such as collector errors and not-assessed reasons.
+    Names (resource groups, resources) cannot be recognised in free text, so those are only handled where the id structure is known."""
+    return _GUID.sub("{id}", str(text))
+
+
+def errors(items):
+    """Returns collector error dicts with every string value scrubbed by scrub_text."""
+    return [{k: (scrub_text(v) if isinstance(v, str) else v) for k, v in e.items()} if isinstance(e, dict) else e for e in items or []]

@@ -85,11 +85,20 @@ def test_unknown_columns_are_an_error_not_a_zero():
     assert rows == [] and "unexpected columns" in err
 
 
-def test_cost_column_may_be_named_cost_and_bad_rows_are_skipped():
+def test_cost_column_may_be_named_cost():
     cols = [{"name": "Cost", "type": "Number"}, {"name": "ResourceId", "type": "String"}]
-    c, _ = client(page([[5, "/A"], ["nan", "/b"], [True, "/c"], "junk", [1]], cols=cols))
+    c, _ = client(page([[5, "/A"]], cols=cols))
     rows, _, err = costdata._query_sub(c, "sub1", "TheLastMonth")
     assert err is None and [(r["resourceId"], r["cost"], r["currency"]) for r in rows] == [("/a", 5.0, None)]
+
+
+def test_any_malformed_row_fails_the_subscription_instead_of_understating_it():
+    """Regression (review 2026-10-21): bad rows used to be dropped silently, so totals and shares were computed on partial data."""
+    cols = [{"name": "Cost", "type": "Number"}, {"name": "ResourceId", "type": "String"}]
+    for bad in (["nan", "/b"], [True, "/c"], "junk", [1]):
+        c, _ = client(page([[5, "/A"], bad], cols=cols))
+        rows, _, err = costdata._query_sub(c, "sub1", "TheLastMonth")
+        assert rows == [] and err and "cannot be trusted" in err, bad
 
 
 def test_204_and_http_errors():

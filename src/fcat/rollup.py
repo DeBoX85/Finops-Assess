@@ -18,6 +18,7 @@ from typing import Any
 
 from .compare import CompareError, load
 from .errors import FcatError
+from .redact import scrub_text
 
 VERSION = "0.1"
 SEVERITIES = ("high", "medium", "low", "info")
@@ -61,7 +62,7 @@ def build(paths, labels=None) -> dict:
         reasons: dict = {}
         for c in st.values():
             if c.get("status") != "ran":
-                key = f"{c.get('status')}: {str(c.get('reason') or '')[:120]}"
+                key = f"{c.get('status')}: {scrub_text(c.get('reason') or '')[:120]}"  # reasons can quote exception text with ids
                 reasons[key] = reasons.get(key, 0) + 1
         logic = {}
         for f in doc["findings"]:

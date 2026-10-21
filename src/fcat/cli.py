@@ -32,6 +32,8 @@ def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False, p
     if redacted:
         salt = redact.new_salt()
         findings, identity = redact.findings(findings, salt), redact.identity(identity, salt)
+        status = [{**x, "reason": redact.scrub_text(x["reason"])} if "reason" in x else x for x in status]
+        cerrors = redact.errors(cerrors)  # error text can carry subscription ids (regression: review 2026-10-21)
     m = manifest.build(cfg, identity, calls, status, cerrors, started, manifest.now(), manifest.scope_summary(snap))
     m["redacted"] = redacted
     m["report_options"] = cfg.report.manifest_view()
