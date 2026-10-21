@@ -23,3 +23,11 @@ Trigger: owner asked whether licences (Entra, M365) and Copilot costs can be add
 3. Per-user data (UPNs, sign-in dates, Copilot activity per person) is personal data. Default must be aggregate counts only; per-user detail opt-in, masked by `--redact`, and never in the customer file unless the owner decides.
 4. Possible checks (all `offline-only` until G2): purchased vs assigned units; licensed accounts that are disabled; licensed users with no sign-in for N days (needs P1/P2); Copilot seats with no activity in 30 or 90 days; overlapping SKUs (needs the service plan reference, https://learn.microsoft.com/entra/identity/users/licensing-service-plan-reference); Copilot pay-as-you-go spend present or absent.
 5. A live test needs a tenant with M365 licences. DON'T KNOW whether a developer tenant is available to the owner.
+
+## Clarification from owner (2026-10-21)
+The Copilot goal is: extract and assess the RUNNING COST when a customer has Copilot enabled (not only seat utilisation). Cost layers, by how F-CAT could see them:
+1. Seats (Microsoft 365 Copilot licence): count readable from /subscribedSkus; price NOT readable (owner or agreement input); utilisation from the Copilot usage report.
+2. Pay-as-you-go consumption (Copilot Chat agents, SharePoint agents, Studio messages): billed to an Azure subscription, readable in Cost Management by meter or by the Power Platform account resource. Learn lists the Copilot Studio meter at $0.01 per message and the Retrieval API preview at $0.10 per call (read 2026-10-21; prices change, do not hard-code).
+3. Not visible via Azure: prepaid Capacity packs, Copilot Cowork, Work IQ API (Microsoft admin center). DON'T KNOW if an API exists.
+4. Detecting "enabled": Copilot SKU in subscribedSkus (Graph); a pay-as-you-go billing plan shows as a Power Platform account resource in the Azure subscription (Learn, power-platform/admin/pay-as-you-go-usage-costs). The exact ARG resource type name is UNVERIFIED.
+Open: which Copilot products are in scope (M365 Copilot, Copilot Chat PAYG, Copilot Studio, GitHub Copilot, which is billed outside Azure as far as I know: UNVERIFIED).
