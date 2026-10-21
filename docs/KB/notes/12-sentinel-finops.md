@@ -61,3 +61,49 @@ Sources: billing-reduce-costs, billing-monitor-costs, log-plans (all under https
 
 Charbel Nemnom, Decryption Digest, CyberOne, VirtualMetric, North Peak Cloud, Ciphers Security, Reveal Compliance blog
 results from search were not opened. Treat as leads only.
+
+## 6. Round 2 (2026-10-21): owner sources, GitHub projects, first party
+
+Owner direction: goal is "cost proof" for customers, both internal and customer-facing use, multi-tenant allowed but
+scoped, cost optimisation without losing monitoring coverage, plus an inventory of "what is being stored and watched"
+for customers who lost control. SOC effectiveness is a nice to have.
+
+### 6.1 Owner-listed sources: what could and could not be read
+- NOT READ (fetch failed or robots disallowed): both charbelnemnom.com articles, both LinkedIn articles (Sami Lamppu,
+  the 4662 DCR case), the techcommunity cost estimator link (returned an unrelated Teams forum post), What's New.
+  Claims attributed to them in the owner's table (6:1 compression, $5K/month saving) are UNVERIFIED by me.
+- Read, low authority: securesky blog (claims "up to 60%", no method, no sources: do not cite as evidence);
+  underdefense pricing page (vendor, internally consistent, publish and read dates disagree, list prices only:
+  UNVERIFIED against the Retail Prices API); Microsoft Q&A 5548004 (generic compute cost thread, not about Sentinel).
+- Read, first party: billing-monitor-costs, soc-optimization-api, log-plans, billing-reduce-costs (see sections 1-3).
+
+### 6.2 Similar projects (read via WebFetch summaries and search; repo metadata via gh was NOT available this session)
+| Project | What it does | Licence (as read) | Reuse |
+|---|---|---|---|
+| lnfernux/log-horizon | PowerShell. Per table cost tier vs detection tier (enabled analytics rules, Defender custom detections), 344-entry connector knowledge base, SOC optimization recs, DCR transform discovery, noisiness score. Needs Log Analytics Reader, Sentinel Reader, Monitoring Reader (DCRs). | GPL-3.0 | Closest prior art. Do NOT copy code or its knowledge base. Learn the approach only. It WRITES (PATCH table plan and retention): ours never would. |
+| madsenco/sentinel-usage-workbook | Workbook deployed into the tenant: PAYG vs commitment tier what-if, live Retail Prices API, per table top lists, 20 percent indicative reduction. Simplified billing only, classic rejected. | MIT | Deploys a resource, so conflicts with "nothing deployed". Useful for the tier what-if logic and the caveats (31-day lock, below-commitment no saving). Needs NOTICE if reused. |
+| TheCloudScout/sentinel-pricing | PowerShell, average daily ingestion vs hardcoded tier thresholds (list prices, Feb 2022, West Europe), CSV out. | NOT DETERMINED | Stale thresholds: a warning against hardcoding prices. |
+| mathijsvermaat/DefenderIngestToSentinel | Estimates Defender XDR table volume if routed to Sentinel, samples rows via Advanced Hunting. Needs an app registration with AdvancedHunting.Read.All. | NOT DETERMINED | Different access model (Graph app permission). Out of default scope. |
+| ninjapaw/sentinel-optimizer | Client-side estimator and SIEM comparison from exported ingestion JSON. No Azure connection. | MIT | Not a collector. |
+| rohit8096-ag/Sentinel-Assessment-Tool | Page summary described a MITRE coverage analyser (SentinelMITREAnalyzer) and itself noted a repo URL mismatch. | MIT per summary | UNRELIABLE summary, re-check before citing. Coverage mapping only. |
+| Azure/Azure-Sentinel (Microsoft) | Hosts Workspace Usage Report and Optimization workbooks, Send-IngestionCostAlert playbook. | not checked | Not opened this session. Open before design. |
+
+Gap in the field (my reading, UNVERIFIED as a market claim): the tools above are single workspace, interactive, PowerShell,
+and none is known to combine ingestion cost with actual (discounted) billing, multi-scope runs and an Excel/HTML
+deliverable. Log Horizon is the exception on depth of table-to-detection mapping.
+
+### 6.3 Cost visibility facts that shape the design (VERIFIED, Learn, 2026-10-21)
+- Table plan, retention and total retention are readable: GET .../workspaces/{ws}/tables/{table} returns plan
+  (Analytics, Basic, Auxiliary), retentionInDays, totalRetentionInDays, archiveRetentionInDays, lastPlanModifiedDate
+  (azure-monitor/logs/manage-logs-tables). The same URL with PATCH changes it: never call.
+- Basic and Auxiliary plans are not available on legacy pricing tiers (data-platform-logs).
+- 31 days of analytics retention are included in ingestion price, so lowering retention below 31 days saves nothing
+  (data-retention-configure).
+- LAQueryLogs must be enabled (diagnostic setting) and only records Logs-blade queries; it excludes scheduled analytics
+  rules, Hunting and Advanced hunting, so zero hits do not prove a table is unused (sentinel/audit-sentinel-data).
+- Querying logs: Log Analytics Reader (or any role with */read such as Reader) grants query rights over ALL log tables
+  in the workspace, not just Usage. Table-level limits need granular RBAC, protected tables, or the legacy method
+  (azure-monitor/logs/manage-access, manage-table-access). Protected tables and DataActionsOnly mode can make Reader
+  return empty results without an error.
+- nviso blog tag "cost" (June and July 2026) describes Summary Rules plus Auxiliary or lake for firewall logs. Posts
+  themselves not opened.
