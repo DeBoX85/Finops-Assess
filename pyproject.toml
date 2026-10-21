@@ -7,7 +7,7 @@ dependencies = []
 [project.optional-dependencies]
 azure = ["azure-identity"]
 excel = ["openpyxl"]
-dev = ["pytest", "pytest-cov", "openpyxl", "jsonschema", "ruff"]
+dev = ["pytest", "pytest-cov", "openpyxl", "jsonschema", "ruff", "hypothesis", "mypy", "pytest-randomly"]
 [project.scripts]
 fcat = "fcat.cli:main"
 [build-system]
@@ -34,3 +34,13 @@ ignore = ["E501", "S101"]
 source = ["src/fcat"]
 [tool.coverage.report]
 fail_under = 85
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src/fcat"]
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*", "azure", "azure.*"]
+ignore_missing_imports = true

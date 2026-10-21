@@ -4,8 +4,8 @@ Status: v0.1, 2026-10-17. Principle: automate what can be automated, but a green
 ## 1. Gates
 | Gate | When | Content | Automated |
 |---|---|---|---|
-| G0 fast | every checkpoint, pre-push | ruff lint (E,F,I,B,UP,S,BLE), ruff format check, documentation check, customer-data/secret scan on staged changes | yes (scripts/gates.py, scripts/checkpoint.py) |
-| G1 offline | every checkpoint | all offline tests, coverage threshold 85% (started at 68%; now ~92%), architecture rules, schema contract, per-check fixtures | yes |
+| G0 fast | every checkpoint, pre-push | ruff lint (E,F,I,B,UP,S,BLE), ruff format check, mypy (check_untyped_defs), documentation check, customer-data/secret scan on staged changes | yes (scripts/gates.py, scripts/checkpoint.py) |
+| G1 offline | every checkpoint | all offline tests (incl. Hypothesis property tests and headless-browser dashboard tests), coverage threshold 85% (now ~97%), architecture rules, schema contract, per-check fixtures; with `--full`: pip-audit on the runtime lock and axe-core on both dashboards (light and dark) | yes; the `--full` parts report "NOT RUN, because X" without network or browser, never a pass |
 | G2 live | before any check is marked `validation=live`, before every release, after any change to a collector, KQL or API version | read-only smoke tests against the test tenant: every KQL accepted by ARG, canary resources found, reconciliations (section 3) | partly (pytest -m live, FCAT_LIVE=1); needs tenant and owner-created canaries |
 | G3 release | before a tag | G0 to G2 pass; verification debt reviewed with the user; independent review of new checks and any savings logic by a reviewer that did not write them; sample report read by a human; CHANGELOG; no unverified claim in customer-facing text | partly (checklist) |
 Branch rule: checkpoints always push to `wip/auto`; they push to `main` only if G0 and G1 pass, so main always works.
@@ -42,4 +42,6 @@ Hand-computed golden cases written before the code; invariants (never negative, 
 - Tests written by the same author as the code share its blind spots. The independent review step in G3 and the user's review are the mitigation.
 
 ## 7. Running
-`python scripts/gates.py` (full) or `--fast`; `pytest -m live` with FCAT_LIVE=1 after `az login`; `python scripts/mutation_smoke.py`.
+`python scripts/gates.py` (full), `--fast`, or `--full` (adds dependency audit and accessibility; CI runs this, .github/workflows/ci.yml); `pytest -m live` with FCAT_LIVE=1 after `az login`; `python scripts/mutation_smoke.py`.
+Random test order: pytest-randomly is on by default (a failure prints its seed; reproduce with `pytest --randomly-seed=N`; turn off with `-p no:randomly`). Mutation smoke: 0 of the hand-picked mutants survive (2026-10-21). Why mutmut was rejected and what each tool found: docs/KB/notes/16-quality-practices-research.md.
+CI limits (honest): the workflow is untested until it first runs on GitHub; playwright and pip-audit are version-pinned but not hash-pinned; axe-core finds only a share of accessibility problems (its README says about 57% on average), so a human check stays in G3.

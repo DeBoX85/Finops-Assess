@@ -24,7 +24,7 @@ PAGE_LIMIT = 20
 
 
 def _get_pages(client, url, limit=PAGE_LIMIT):
-    pages = []
+    pages: list = []
     while url and len(pages) < limit:
         r = client.request("GET", url)
         if r.status != 200:

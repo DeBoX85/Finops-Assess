@@ -227,3 +227,26 @@ def test_tag_values_with_hostile_text_stay_inert(tmp_path):
             f["details"]["variants"] = [[{"value": evil, "count": 1}]]
     page = _page(tmp_path, "operator", doc)
     assert page.count("</script>") == 1 and "<img src=x" not in page
+
+
+def test_changes_section_survives_reports_without_a_start_time(tmp_path):
+    """Found by the accessibility gate: golden reports have no manifest 'started'; the page must still render."""
+    older = json.loads(json.dumps(GOLDEN))
+    older["findings"] = older["findings"][1:]
+    ch = compare.compare(older, GOLDEN)
+    assert ch["older"]["started"] is None
+    page = _page(tmp_path, "customer", GOLDEN, changes=ch)
+    d = _data(page)
+    assert d["changes"]["older"]["started"] is None
+    node = shutil.which("node")
+    if node:
+        js = re.search(r"<script>(.*)</script>", page, re.S).group(1)
+        stub = (
+            "const mk=()=>new Proxy(function(){},{get:(t,k)=>k==='nodeType'?1:mk(),apply:()=>mk()});"
+            "globalThis.document={createElement:()=>({append(){},setAttribute(){},addEventListener(){},style:{},classList:{toggle(){},add(){}}}),"
+            "createTextNode:()=>({nodeType:3}),querySelector:()=>({replaceChildren(){},focus(){},setSelectionRange(){}}),documentElement:{dataset:{}},activeElement:null};"
+            "globalThis.window={scrollY:0,scrollTo(){}};globalThis.localStorage={getItem(){return null},setItem(){}};"
+            "globalThis.matchMedia=()=>({matches:false});globalThis.print=()=>{};"
+        )
+        r = subprocess.run([node, "-e", stub + js], capture_output=True, text=True, timeout=30)  # noqa: S603
+        assert r.returncode == 0, r.stderr[-400:]

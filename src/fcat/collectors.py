@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from . import arg
 
 KQL_SUBSCRIPTIONS = (
@@ -231,7 +233,7 @@ KQL_POLICY_STATES = (
     "| summarize n=count() by assignmentId=tostring(properties.policyAssignmentId), state=tostring(properties.complianceState) "
     "| order by assignmentId asc"
 )
-COLLECTOR_OPTIONS = {"policy_assignments": {"authorization_scope_filter": "AtScopeAboveAndBelow"}}
+COLLECTOR_OPTIONS: dict[str, dict[str, Any]] = {"policy_assignments": {"authorization_scope_filter": "AtScopeAboveAndBelow"}}
 
 COLLECTORS = {
     "tag_inventory": KQL_TAG_INVENTORY,

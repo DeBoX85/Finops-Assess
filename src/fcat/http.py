@@ -11,6 +11,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
+from typing import Any
 from urllib.parse import urlparse
 
 from .errors import BlockedRequest
@@ -70,15 +71,22 @@ def redact(path: str) -> str:
 
 @dataclass
 class Client:
-    token_provider: object
-    transport: object = field(default_factory=UrllibTransport)
-    sleep: object = time.sleep
+    token_provider: Any
+    transport: Any = field(default_factory=UrllibTransport)
+    sleep: Any = time.sleep
     max_retries: int = 5
     calls: list = field(default_factory=list)
 
     def _check(self, method, url):
         u = urlparse(url)
-        if u.scheme != "https" or u.hostname not in ALLOWED_HOSTS:
+        # The network location must be EXACTLY an allowed host (optionally :443). Anything else (user info, other ports, backslashes, control
+        # characters) is refused, because urlparse and urllib.request can read such URLs differently (found by tests/test_properties.py).
+        if (
+            u.scheme != "https"
+            or u.hostname not in ALLOWED_HOSTS
+            or u.netloc.lower() not in ALLOWED_HOSTS | {f"{h}:443" for h in ALLOWED_HOSTS}
+            or any(ch == "\\" or ord(ch) < 33 or ord(ch) == 127 for ch in url)
+        ):
             raise BlockedRequest(f"host not allowed: {u.hostname}")
         if method == "GET":
             return

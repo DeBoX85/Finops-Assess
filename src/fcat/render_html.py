@@ -63,7 +63,7 @@ def render(path, doc, opts=None):
     )
     head_extra = (f"<p>{e(o.subtitle)}</p>" if o.subtitle else "") + (f"<p class='note'>{e(meta)}</p>" if meta else "")
     foot = f"<hr><p class='note'>{e(o.footer)}</p>" if o.footer else ""
-    counts = {}
+    counts: dict = {}
     for c in m["checks"]:
         counts[c["status"]] = counts.get(c["status"], 0) + 1
     summary = f"{len(m['checks'])} checks: " + ", ".join(f"{n} {k.replace('_', ' ')}" for k, n in sorted(counts.items())) + "."

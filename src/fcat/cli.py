@@ -228,7 +228,7 @@ def main(argv=None):
         if args.cmd == "run":
             tp = AzCliTokenProvider()
             client = Client(tp)
-            cerrors = []
+            cerrors: list = []
             collectors.collect(client, snap, cfg, cerrors)
             ok = _finish(cfg, snap, out, tp.identity(), client.calls, cerrors, started, args.redact, previous, mat)
         else:

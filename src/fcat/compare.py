@@ -99,14 +99,16 @@ def compare(old: dict, new: dict) -> dict:
         if cid not in both_ran:
             continue
         a, b = fo.get(key), fn.get(key)
+        assert a or b  # every key comes from one of the two maps
         rule_changed = bool(lo.get(cid) and ln.get(cid) and lo[cid] != ln[cid])
         if a and not b:
             state, sev, msg = "no_longer_reported", a["severity"], a["message"]
         elif b and not a:
             state, sev, msg = "new", b["severity"], b["message"]
-        elif a["fingerprint"] == b["fingerprint"] and a["severity"] == b["severity"]:
+        elif a and b and a["fingerprint"] == b["fingerprint"] and a["severity"] == b["severity"]:
             state, sev, msg = "unchanged", b["severity"], b["message"]
         else:
+            assert a and b  # both sides exist here
             so_, sn_ = SEVERITY_ORDER.get(a["severity"], 0), SEVERITY_ORDER.get(b["severity"], 0)
             state = "worse" if sn_ > so_ else "better" if sn_ < so_ else "changed"
             sev, msg = b["severity"], b["message"]

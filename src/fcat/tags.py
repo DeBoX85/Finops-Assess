@@ -106,7 +106,9 @@ def classify_assignment(row) -> dict | None:
     kind = TAG_DEFINITIONS.get(m.group(0).lower())
     if not kind:
         return None
-    params = row.get("parameters") if isinstance(row.get("parameters"), dict) else {}
+    params = row.get("parameters")
+    if not isinstance(params, dict):
+        params = {}
     name = None
     for k, v in params.items():
         if str(k).lower() == "tagname" and isinstance(v, dict) and isinstance(v.get("value"), str) and v["value"]:

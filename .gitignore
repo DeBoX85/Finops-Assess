@@ -5,3 +5,6 @@ snapshots/
 .env
 __pycache__/
 .venv/
+.cache/
+.hypothesis/
+.coverage

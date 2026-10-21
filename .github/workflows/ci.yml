@@ -1,0 +1,36 @@
+# Gates G0 and G1 on every push and pull request. G2 (live tenant) is never run in CI.
+# Third-party actions are pinned to full commit SHAs (tags read with git ls-remote on 2026-10-21):
+#   actions/checkout v7.0.1, actions/setup-python v7.0.0, actions/setup-node v7.1.0
+# playwright and pip-audit are version-pinned but NOT hash-pinned (not in requirements/dev.txt yet; backlog).
+# Re-verify a pin before changing it; a tag can move, a SHA cannot.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+      - name: Install pinned dev dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/dev.txt
+          python -m pip install --no-deps -e .
+          python -m pip install playwright==1.56.0 pip-audit==2.10.1
+          python -m playwright install --with-deps chromium
+      - name: Gates G0, G1, dependency audit, accessibility
+        run: python scripts/gates.py --full
+      - name: Randomised test order (finds hidden test coupling)
+        run: python -m pytest -q --no-cov -p randomly

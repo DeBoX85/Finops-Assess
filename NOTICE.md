@@ -40,7 +40,7 @@ Dependencies are installed by the user, not bundled in this repository. Licence 
 |---|---|---|
 | azure-core | 1.41.0 | MIT |
 | azure-identity | 1.26.0 | MIT |
-| certifi | 2026.7.22 | MPL-2.0 (weak copyleft, file level; used unmodified, no obligation beyond keeping its notice if redistributed) |
+| certifi | 2026.10.19 | MPL-2.0 (weak copyleft, file level; used unmodified, no obligation beyond keeping its notice if redistributed) |
 | cffi | 2.1.1 | MIT-0 |
 | charset-normalizer | 3.5.2 | MIT |
 | cryptography | 50.0.2 | Apache-2.0 OR BSD-3-Clause |

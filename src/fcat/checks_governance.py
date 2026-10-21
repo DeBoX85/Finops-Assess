@@ -88,8 +88,8 @@ def tag_coverage(snap):
         if total < T.MIN_RESOURCES:
             continue
         missing = 0
-        per_key = Counter()
-        untagged_types = Counter()
+        per_key: Counter = Counter()
+        untagged_types: Counter = Counter()
         for row in rows:
             have = {k.lower() for k in T.tags_of(row)}
             if any(k not in have for k in sch["keys"]):

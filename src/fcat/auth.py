@@ -8,6 +8,7 @@ from __future__ import annotations
 import base64
 import json
 import time
+from typing import Any
 
 from .errors import AuthError
 
@@ -20,11 +21,11 @@ class AzCliTokenProvider:
             from azure.identity import AzureCliCredential
         except ImportError as e:
             raise AuthError("azure-identity not installed: pip install 'fcat[azure]'") from e
-        kw = {"process_timeout": timeout}
+        kw: dict[str, Any] = {"process_timeout": timeout}
         if tenant_id:
             kw["tenant_id"] = tenant_id
         self._cred = AzureCliCredential(**kw)
-        self._tok = None
+        self._tok: Any = None
 
     def token(self) -> str:
         if self._tok is None or self._tok.expires_on - time.time() < 300:

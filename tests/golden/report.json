@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "a981bfc8830bc752",
+  "report_hash": "1d443238c134b3b6",
   "status": "pass",
   "version": "0.1"
  },
@@ -1901,7 +1901,7 @@
     "collectors": [
      "app_gateways"
     ],
-    "logic_hash": "9b9ed01c9e71",
+    "logic_hash": "a17b57d96a8e",
     "snapshot_digests": {
      "app_gateways": "d299553a8662"
     }
@@ -3961,7 +3961,7 @@
     "collectors": [
      "tag_inventory"
     ],
-    "logic_hash": "4aae6342cf66",
+    "logic_hash": "eb04e75d34d7",
     "snapshot_digests": {
      "tag_inventory": "5888919cc1fd"
     }

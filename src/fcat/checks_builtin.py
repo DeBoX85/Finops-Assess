@@ -202,7 +202,9 @@ def backendless_app_gateways(snap):
         pools = r.get("backendPools") if isinstance(r.get("backendPools"), list) else []
         targets = 0
         for p in pools:
-            props = p.get("properties") if isinstance(p, dict) and isinstance(p.get("properties"), dict) else {}
+            props = p.get("properties") if isinstance(p, dict) else None
+            if not isinstance(props, dict):
+                props = {}
             for k in ("backendIPConfigurations", "backendAddresses"):
                 targets += len(props[k]) if isinstance(props.get(k), list) else 0
         if targets == 0:

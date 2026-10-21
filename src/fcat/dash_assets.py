@@ -12,7 +12,7 @@ button{cursor:pointer}button:hover{border-color:var(--acc)}button[aria-pressed=t
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 header.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:var(--pane);border-bottom:1px solid var(--line)}
 .brand{display:flex;gap:12px;align-items:center;min-width:0;margin-right:auto}.brand img{max-height:40px;max-width:140px}
-.bn{font-weight:700;line-height:1.2}.bt{color:var(--muted);font-size:13px}
+h1.bn{font-size:16px;font-weight:700;line-height:1.2;margin:0}.bt{color:var(--muted);font-size:13px}
 nav{display:flex;gap:6px;flex-wrap:wrap}.tools{display:flex;gap:6px;flex-wrap:wrap}
 .chip{border:1px solid var(--line);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--ink2);white-space:nowrap}.chip.ok{color:var(--ok);border-color:currentColor}.chip.bad{color:var(--bad);border-color:currentColor;font-weight:600}
 main{max-width:1240px;margin:0 auto;padding:14px 16px 40px}.view{display:none}.view.on{display:block}
@@ -81,7 +81,7 @@ const VIEWS=[['summary','Summary'],['findings','Findings'],['coverage','Coverage
 let rerender=()=>{};
 function go(v,after){st.view=v;store.set('view',v);if(after)after();rerender()}
 function topBar(){
- return h('header',{class:'top'},h('div',{class:'brand'},D.logo?h('img',{alt:'',src:D.logo}):null,h('div',0,h('div',{class:'bn'},D.title),D.subtitle?h('div',{class:'bt'},D.subtitle):null)),
+ return h('header',{class:'top'},h('div',{class:'brand'},D.logo?h('img',{alt:'',src:D.logo}):null,h('div',0,h('h1',{class:'bn'},D.title),D.subtitle?h('div',{class:'bt'},D.subtitle):null)),
   h('nav',{'aria-label':'Sections'},...VIEWS.map(([k,l])=>h('button',{'aria-current':st.view===k?'page':null,onclick:()=>go(k)},l))),
   h('div',{class:'tools'},OP?/*OP*/h('span',{class:'chip'},'Operator view')/*ENDOP*/:null,h('span',{class:'chip '+(D.audit.status==='pass'?'ok':'bad')},'Self-audit: '+D.audit.status),
    h('button',{onclick:()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}},'Light / dark'),
@@ -149,8 +149,9 @@ function coverage(){
   OP&&D.collectorErrors.length?/*OP*/[h('h3',0,'Collector errors (operator only)'),h('ul',{class:'plain'},...D.collectorErrors.map(e=>h('li',0,e.collector+': '+e.error)))]/*ENDOP*/:null)}
 const LV=['crawl','walk','run'],LX={crawl:16,walk:50,run:84},MS={below:'Below target',meets:'Meets target',above:'Above target',no_target:'No target set',needs_input:'Needs input'};
 const LAB={new:'New',worse:'Worse',better:'Better',changed:'Changed',no_longer_reported:'No longer reported'};
+const day=x=>typeof x==='string'&&x?x.slice(0,10):'not recorded';
 function changes(){const CH=D.changes,c=CH.counts;
- return h('div',{class:'pane'},h('h2',0,'CHANGES SINCE THE PREVIOUS RUN'),h('p',{class:'mini'},'Previous run '+CH.older.started.slice(0,10)+' ('+CH.older.findings+' findings). This run '+CH.newer.started.slice(0,10)+' ('+CH.newer.findings+' findings).'),
+ return h('div',{class:'pane'},h('h2',0,'CHANGES SINCE THE PREVIOUS RUN'),h('p',{class:'mini'},'Previous run '+day(CH.older.started)+' ('+CH.older.findings+' findings). This run '+day(CH.newer.started)+' ('+CH.newer.findings+' findings).'),
   h('div',{class:'chips'},...[['New',c.new],['Worse',c.worse],['Changed',c.changed],['Better',c.better],['No longer reported',c.no_longer_reported],['Unchanged',c.unchanged]].map(([l,n])=>h('span',{class:'chip'},l+' '+n))),
   h('div',{class:'note'},'No longer reported does not prove a fix: the resource may be gone, the rule may have changed, or the scope may differ.'),
   CH.warnings.length?h('ul',{class:'plain mini'},...CH.warnings.map(w=>h('li',0,w))):null,

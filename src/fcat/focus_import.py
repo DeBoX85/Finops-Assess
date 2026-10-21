@@ -39,7 +39,7 @@ def import_files(paths) -> dict:
         raise FcatError("no FOCUS csv files found")
     totals = {c: 0.0 for c in COST_COLUMNS}
     missing_cols: set[str] = set()
-    by = {"service": {}, "subscription": {}, "resource": {}}
+    by: dict[str, dict] = {"service": {}, "subscription": {}, "resource": {}}
     currencies: set[str] = set()
     rows = bad = 0
     first = last = None

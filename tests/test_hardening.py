@@ -142,3 +142,29 @@ def test_notice_covers_every_locked_dependency_and_upstream_licence():
     for name in re.findall(r"^([a-z0-9_.-]+)==", lock, re.M):
         assert name.lower().replace("_", "-") in notice, f"{name} is in the lock file but not in NOTICE.md"
     assert "copyright (c) microsoft corporation" in notice and "permission is hereby granted" in notice
+
+
+def test_allowlist_refuses_urls_that_urlparse_and_urllib_read_differently():
+    """Found by tests/test_properties.py: the check read the host from after the last '@' while urllib kept the whole string."""
+    import pytest
+
+    from fcat import http
+    from fcat.errors import BlockedRequest
+
+    class Tok:
+        def token(self):
+            return "t"
+
+    c = http.Client(Tok(), object())
+    for bad in (
+        "https://evil.example\\@management.azure.com/subscriptions?api-version=2022-01-01",
+        "https://management.azure.com@evil.example/subscriptions",
+        "https://user@management.azure.com/subscriptions",
+        "https://management.azure.com:8443/subscriptions",
+        "https://management.azure.com/subscriptions\n/x",
+        "https://management.azure.com/sub scriptions",
+    ):
+        with pytest.raises(BlockedRequest):
+            c._check("GET", bad)
+    c._check("GET", "https://management.azure.com/subscriptions?api-version=2022-01-01")
+    c._check("GET", "https://MANAGEMENT.AZURE.COM:443/subscriptions")

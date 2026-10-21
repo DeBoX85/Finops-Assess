@@ -2,4 +2,7 @@ pytest
 pytest-cov
 jsonschema
 ruff
+hypothesis
+mypy
+pytest-randomly
 -r runtime.in

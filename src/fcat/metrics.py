@@ -70,7 +70,9 @@ def parse_cpu_response(body, start: dt.datetime):
             except ValueError:
                 continue
             idx = int((t - start).total_seconds() // 3600)
-            if ok and 0 <= idx < WINDOW_DAYS * 24:  # points outside the requested window would inflate coverage
+            if (
+                ok and isinstance(mx, (int, float)) and isinstance(av, (int, float)) and 0 <= idx < WINDOW_DAYS * 24
+            ):  # points outside the requested window would inflate coverage
                 pts[idx] = Point(idx, float(mx), float(av))
         return [pts[k] for k in sorted(pts)], None
     return [], "CPU metric not present in response"
@@ -86,7 +88,7 @@ def parse_skus(pages) -> dict:
             for c in s.get("capabilities") or []:
                 if isinstance(c, dict) and c.get("name") == "vCPUs":
                     try:
-                        out[str(s.get("name"))] = int(c.get("value"))
+                        out[str(s.get("name"))] = int(c.get("value"))  # type: ignore[arg-type]  # TypeError for None is caught below
                     except (TypeError, ValueError):
                         pass
     return out
@@ -112,7 +114,7 @@ def smaller_size(name: str, vcpus_by_name: dict):
 
 
 def _get_pages(client, url, limit=20):
-    pages = []
+    pages: list = []
     while url and len(pages) < limit:
         r = client.request("GET", url)
         if r.status != 200:

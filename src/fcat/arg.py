@@ -6,6 +6,7 @@ uses limit/take/sample, or all output columns are dynamic/null; keep `id` in the
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from .errors import FcatError, IncompleteResult
 
@@ -33,9 +34,10 @@ def query(
     warnings = []
     if "order by" not in kql.lower():
         warnings.append("query has no 'order by': paging is not repeatable")
-    rows, skip, pages, total = [], None, 0, None
+    rows: list = []
+    skip, pages, total = None, 0, None
     while True:
-        body = {"query": kql, "options": {"$top": page_size}}
+        body: dict[str, Any] = {"query": kql, "options": {"$top": page_size}}
         if authorization_scope_filter:
             body["options"]["authorizationScopeFilter"] = (
                 authorization_scope_filter  # PolicyResources and AuthorizationResources only (Learn, read 2026-10-20)
