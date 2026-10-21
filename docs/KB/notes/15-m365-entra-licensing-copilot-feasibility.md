@@ -31,3 +31,11 @@ The Copilot goal is: extract and assess the RUNNING COST when a customer has Cop
 3. Not visible via Azure: prepaid Capacity packs, Copilot Cowork, Work IQ API (Microsoft admin center). DON'T KNOW if an API exists.
 4. Detecting "enabled": Copilot SKU in subscribedSkus (Graph); a pay-as-you-go billing plan shows as a Power Platform account resource in the Azure subscription (Learn, power-platform/admin/pay-as-you-go-usage-costs). The exact ARG resource type name is UNVERIFIED.
 Open: which Copilot products are in scope (M365 Copilot, Copilot Chat PAYG, Copilot Studio, GitHub Copilot, which is billed outside Azure as far as I know: UNVERIFIED).
+
+## Entra licences and usage (Learn pages read 2026-10-21)
+- Entitlements: the Entra admin center "License usage" page (Billing > Licenses) rolls up P1, P2, Suite, ID Governance etc. into one count per tier, because several products include each tier. Least privileged role: Reports Reader. Public clouds only. https://learn.microsoft.com/entra/fundamentals/concept-license-usage-insights
+- Usage there is one "hero metric" per tier: P1 = unique users with at least one Conditional Access policy evaluated; P2 = users with at least one risk-based Conditional Access policy evaluated; last month, up to 3 days delay. A Graph API for these numbers: NOT FOUND in my reading, so DON'T KNOW. Do not assume it exists.
+- Licences are needed per user who benefits from a feature (Learn Q&A answer, not an official page: treat as UNVERIFIED wording); PIM needs P2 or ID Governance for eligible users, approvers and reviewers (https://learn.microsoft.com/entra/id-governance/licensing-fundamentals). So F-CAT must not claim licence compliance, only prompt a check.
+- When P1 licences expire, Conditional Access policies are not auto-disabled (https://learn.microsoft.com/entra/identity/conditional-access/overview).
+- Any Azure tenant is an Entra tenant, so SKU inventory could be live-tested without M365; P1/P2 sign-in data needs P1 or P2 in the tenant. Trial availability: UNVERIFIED.
+- 2026-10-21 owner decisions: licensing and Copilot module PARKED until G2; owner has no M365 test tenant.
