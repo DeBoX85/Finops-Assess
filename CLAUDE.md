@@ -18,4 +18,4 @@ Read-only, agentless Azure FinOps assessment tool run from a laptop. Outputs: HT
 5. Record decisions in docs/decisions/. Tag claims VERIFIED/UNVERIFIED with source and date.
 6. A skipped or failed check must be reported as "not assessed, because X".
 8. Quality: follow docs/QUALITY.md. A check is `offline-only` until gate G2 passes on a real tenant; never describe it as verified before. Main must always pass G0 and G1.
-7. Do not copy code from ELv2 or AGPL projects (Komiser, Steampipe, Powerpipe); MIT/Apache reuse needs notices in NOTICE.
+7. Do not copy code, queries or data files from ELv2, AGPL or GPL projects (Komiser, Steampipe, Powerpipe, Log Horizon); MIT/Apache reuse needs notices in NOTICE. A repo with no licence file is not reusable. Ideas and approaches may be studied; write independent code. (GPL-3.0 added 2026-10-21 by owner decision.)

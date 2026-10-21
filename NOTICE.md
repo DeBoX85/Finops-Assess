@@ -56,7 +56,7 @@ Dependencies are installed by the user, not bundled in this repository. Licence 
 Development tools (pytest, pytest-cov, jsonschema, ruff, pip-tools) are MIT or BSD-3-Clause per installed metadata and are not part of a customer run.
 
 ## Excluded sources (hard rule 7)
-No code or query text from Komiser (ELv2) or Steampipe/Powerpipe (AGPL) is in the repository; a search of src, scripts and tests on 2026-10-18 found no mention of them. Their ideas may appear in research notes only. This is a search for names, not a code-similarity scan: DON'T KNOW whether independent code resembles theirs.
+No code or query text from Komiser (ELv2) or Steampipe/Powerpipe (AGPL) is in the repository; a search of src, scripts and tests on 2026-10-18 found no mention of them. Their ideas may appear in research notes only. From 2026-10-21 the exclusion also covers GPL projects (Log Horizon, GPL-3.0) and repositories with no licence file (sentinel-pricing, DefenderIngestToSentinel); the repository was not searched for these names, and nothing was copied from them. This is a search for names, not a code-similarity scan: DON'T KNOW whether independent code resembles theirs.
 
 ## Other content
 - FinOps Framework capability names (finops.org, CC BY 4.0) are used in check metadata and the maturity design; attribution to FinOps Foundation applies if reproduced in a customer deliverable. Dashboard footer wording is not yet written (UNDECIDED).
