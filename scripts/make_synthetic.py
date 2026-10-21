@@ -115,7 +115,14 @@ def estate():
             "id": base + "Compute/virtualMachines/vm-dealloc",
             "vmSize": "Standard_D4s_v5",
             "powerState": "PowerState/deallocated",
+            "powerTime": "2026-05-01T00:00:00Z",  # 153 days before the synthetic collection time: IDLE-VMDEAL-01 must fire
             "osDiskId": base + "Compute/disks/vm-dealloc-os",
+        },
+        {  # 16 days: must NOT fire. No disk id so no other check is touched.
+            "id": base + "Compute/virtualMachines/vm-dealloc-recent",
+            "vmSize": "Standard_B2s",
+            "powerState": "PowerState/deallocated",
+            "powerTime": "2026-09-15T00:00:00Z",
         },
         {"id": base + "Compute/virtualMachines/vm-run", "vmSize": "Standard_B2s", "powerState": "PowerState/running"},
         {

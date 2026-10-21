@@ -59,6 +59,8 @@ KQL_VMS = (
     "| project id, name, subscriptionId, resourceGroup, location, vmSize=tostring(properties.hardwareProfile.vmSize), "
     "powerState=tostring(properties.extended.instanceView.powerState.code), "
     "powerDisplay=tostring(properties.extended.instanceView.powerState.displayStatus), "
+    # UNVERIFIED live: whether the extended powerState object carries a time. IDLE-VMDEAL-01 refuses to decide without it.
+    "powerTime=tostring(properties.extended.instanceView.powerState.time), "
     "osDiskId=tostring(properties.storageProfile.osDisk.managedDisk.id), osDiskVhdUri=tostring(properties.storageProfile.osDisk.vhd.uri), "
     "dataDisks=properties.storageProfile.dataDisks, tags | order by id asc"
 )

@@ -1,8 +1,8 @@
 """Backlog 35 (gap analysis KB 14): non-production and housekeeping checks. Ideas come from the public ACORT README (GPL, ideas only, no code
 read or copied) and Microsoft Learn pages cited per check. Every check is offline-only until gate G2 passes on a real tenant."""
 
-from .checks import Finding, NotAssessed, check
-from .checks_builtin import _cm, _devtest_subs, _rows
+from .checks import Finding, NotAssessed, check, collected_at
+from .checks_builtin import _cm, _devtest_subs, _parse_ts, _rows
 
 NONPROD_WORDS = {"dev", "development", "test", "testing", "uat", "qa", "nonprod", "sandbox", "staging", "stg", "preprod"}
 REDUNDANT_SKU_PARTS = ("_grs", "_gzrs", "_ragrs", "_ragzrs", "_zrs")
@@ -168,3 +168,42 @@ def empty_availability_sets(snap):
     for r in _rows(snap, "availability_sets"):
         if r.get("vmCount") == 0:
             yield Finding("ORPH-AVSET-01", r["id"], "low", "Availability set contains no virtual machines", {"location": r.get("location")})
+
+
+DEALLOC_DAYS = 90
+
+
+@check(
+    _cm(
+        "IDLE-VMDEAL-01",
+        "compute",
+        "Usage Optimization",
+        "VMs deallocated for more than 90 days (disks and IPs still billed)",
+        "vms",
+        conf="low",
+    )
+)
+def long_deallocated_vms(snap):
+    """Compute is not billed while deallocated, but disks, snapshots and public IPs are (Learn, States and billing status of Azure Virtual Machines,
+    read 2026-10-21). Age comes ONLY from a timestamp on the power state (powerTime). We never infer 'over 90 days' from a missing Activity Log entry:
+    the Activity Log keeps 90 days (Learn, Activity log in Azure Monitor, read 2026-10-21), so absence proves nothing. UNVERIFIED live: whether
+    Resource Graph returns a time on the power state at all. If deallocated VMs exist but none carries a time, the check refuses to decide."""
+    dealloc = [v for v in _rows(snap, "vms") if str(v.get("powerState") or "").lower() == "powerstate/deallocated"]
+    if not dealloc:
+        return
+    ref = collected_at(snap)
+    dated = [(v, _parse_ts(v.get("powerTime"))) for v in dealloc]
+    if not any(t for _, t in dated):
+        raise NotAssessed(
+            f"{len(dealloc)} deallocated VM(s) found but none has a power-state timestamp, so their age is unknown "
+            "(the Activity Log only reaches back 90 days and cannot prove a longer period) (UNVERIFIED)"
+        )
+    for v, t in dated:
+        if t is not None and (ref - t).days > DEALLOC_DAYS:
+            yield Finding(
+                "IDLE-VMDEAL-01",
+                v["id"],
+                "low",
+                f"VM ({v.get('vmSize')}) has been deallocated for {(ref - t).days} days: review whether it, its disks and its public IPs are still needed",
+                {"location": v.get("location"), "vmSize": v.get("vmSize"), "deallocated_days": (ref - t).days},
+            )

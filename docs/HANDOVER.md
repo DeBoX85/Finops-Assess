@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 14:32 UTC
+Last updated: 2026-10-21 14:40 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 14:32
-Base commit: 1e53de6
+Last checkpoint (UTC): 2026-10-21 14:40
+Base commit: f96c38f
 Gates: pass
-Files changed in this checkpoint: 8
-narrative_hash: bf3c70ec1701
-stale_count: 1
+Files changed in this checkpoint: 18
+narrative_hash: d2f9a4575b27
+stale_count: 0
 <!-- auto:end -->
 
 ## State
@@ -59,6 +59,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 ## In progress
 Mock-up round 3 built (docs/mockups/frontend3, scripts/make_frontend_v3.py), awaiting commit. Nothing half-done. Cost governance phase 2 built offline (docs/COST-GOVERNANCE.md section 11), awaiting commit via checkpoint. Cost governance phase 1 is built offline (docs/COST-GOVERNANCE.md section 10). Phase 2 needs owner go-ahead.
 ## Next step
+2026-10-21 (unsupervised batch, owner said run all 8 in best order; order: 1 quality gates DONE, 2 IDLE-VMDEAL-01 DONE, 7 Learn research DONE (KB 17), then 3 cost collectors, 6 synthetic/live sheet, 4 roll-up B, 5 guided launcher, 8 housekeeping + RESUME_PROMPT). New: IDLE-VMDEAL-01 (fires only on a power-state timestamp), docs link errors, per-module coverage floors, hash-locked CI tools. Found: OPT-STORLC-01 probably cannot work via ARG (backlog 44).
 2026-10-21 (quality pass, offline): added mypy, pip-audit, Hypothesis, pytest-randomly, axe-core and headless-browser tests, a CI workflow (.github/workflows/ci.yml, SHA-pinned, UNTESTED until it runs on GitHub), `gates.py --full`. Found and fixed: certifi advisory, allowlist parser differential, dashboard crash on null `started`. Mutation smoke 0 survivors. See KB 16. Open: docs link check, per-module coverage floors, hash-pin CI tools.
 2026-10-21 (offline work, no tenant): built scripts/live_readiness.py (generates docs/UNVERIFIED-REGISTER.md and docs/LIVE-TEST-SHEET.md), wrote docs/LIVE-TESTING.md (G2 session plan, owner decisions listed) and docs/OPERATOR-GUIDE.md (for juniors), added a Tags view to both dashboards. Owner agreed to park licensing and Copilot until G2. Still open: customer self-audit simplification (my proposal, awaiting OK), never-show list, local guided UI before the first junior, roll-up B (backlog 41) not built.
 2026-10-21 (later): owner answered the four dashboard questions: never-show list undecided (revisit), why-it-matters stays per domain (REVISIT later), report.html and roll-up scope awaiting reasons/options. Owner asked for A3 clickability and drill-down; added to both dashboards (summary tiles, area bars, subscription map, breadcrumb), see docs/FRONTEND-DESIGN.md.

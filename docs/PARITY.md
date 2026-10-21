@@ -124,4 +124,4 @@ These come from the public ACORT README (GPL-3.0, ideas only; its code was not r
 | Premium disks and zone or geo redundant storage in Dev/Test-looking subscriptions | DONE-OFFLINE | OPT-DTSTOR-01 | Prompt, not a saving |
 | Storage accounts without a lifecycle policy | DONE-OFFLINE | OPT-STORLC-01 | GPv2 and premium block blob only; refuses to decide when no policy resources are returned; ARG exposure UNVERIFIED |
 | Empty availability sets | DONE-OFFLINE | ORPH-AVSET-01 | Hygiene, low |
-| Deallocated VMs for more than 90 days | NOT-PLANNED (this round) | | ARG exposes no deallocation timestamp that I know of (UNVERIFIED); would need Activity Log |
+| Deallocated VMs for more than 90 days | DONE-OFFLINE | IDLE-VMDEAL-01 | Only fires on a power-state timestamp; refuses to decide without one (ARG exposure UNVERIFIED). The Activity Log keeps 90 days, so a missing entry is never read as 'over 90 days' |

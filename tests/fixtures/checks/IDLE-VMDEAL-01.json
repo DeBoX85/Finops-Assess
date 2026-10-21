@@ -1,0 +1,63 @@
+{
+ "cases": [
+  {
+   "name": "over 90 days reported, boundary and recent not",
+   "snapshot": {
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    },
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "powerState": "PowerState/deallocated",
+       "powerTime": "2026-07-02T00:00:00Z"
+      },
+      {
+       "id": "/v/2",
+       "powerState": "PowerState/deallocated",
+       "powerTime": "2026-07-03T00:00:00Z"
+      },
+      {
+       "id": "/v/3",
+       "powerState": "PowerState/deallocated",
+       "powerTime": "2026-09-20T00:00:00Z"
+      },
+      {
+       "id": "/v/4",
+       "powerState": "POWERSTATE/DEALLOCATED",
+       "powerTime": "2026-01-01T00:00:00Z"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/4"
+   ]
+  },
+  {
+   "name": "running and stopped never reported even with old time",
+   "snapshot": {
+    "_meta": {
+     "collected_at": "2026-10-01T00:00:00Z"
+    },
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/5",
+       "powerState": "PowerState/running",
+       "powerTime": "2020-01-01T00:00:00Z"
+      },
+      {
+       "id": "/v/6",
+       "powerState": "PowerState/stopped",
+       "powerTime": "2020-01-01T00:00:00Z"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

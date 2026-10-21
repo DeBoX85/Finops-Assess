@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "1d443238c134b3b6",
+  "report_hash": "e6ef56df10024655",
   "status": "pass",
   "version": "0.1"
  },
@@ -923,6 +923,25 @@
     "all"
    ],
    "collectors": [
+    "vms"
+   ],
+   "confidence": "low",
+   "domain": "compute",
+   "framework": "Usage Optimization",
+   "id": "IDLE-VMDEAL-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "VMs deallocated for more than 90 days (disks and IPs still billed)",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
     "tag_inventory"
    ],
    "confidence": "medium",
@@ -1424,6 +1443,27 @@
    "severity": "low"
   },
   {
+   "check_id": "IDLE-VMDEAL-01",
+   "details": {
+    "deallocated_days": 153,
+    "location": null,
+    "vmSize": "Standard_D4s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "vms"
+    ],
+    "logic_hash": "198010883814",
+    "snapshot_digests": {
+     "vms": "8646fa90fc8d"
+    }
+   },
+   "fingerprint": "52844ae630b40de9",
+   "message": "VM (Standard_D4s_v5) has been deallocated for 153 days: review whether it, its disks and its public IPs are still needed",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dealloc",
+   "severity": "low"
+  },
+  {
    "check_id": "IDLE-VMDISK-01",
    "details": {
     "power_state": "PowerState/stopped",
@@ -1439,7 +1479,7 @@
     "logic_hash": "daafcff00b1a",
     "snapshot_digests": {
      "all_disks": "ce7e0e52e1c7",
-     "vms": "189b2440db85"
+     "vms": "8646fa90fc8d"
     }
    },
    "fingerprint": "6eb830ed1dc2b19a",
@@ -1463,7 +1503,7 @@
     "snapshot_digests": {
      "devtest_schedules": "23167acfb552",
      "subscriptions": "e35a342fa493",
-     "vms": "189b2440db85"
+     "vms": "8646fa90fc8d"
     }
    },
    "fingerprint": "989627db4897beaf",
@@ -1484,7 +1524,7 @@
     ],
     "logic_hash": "64384817e502",
     "snapshot_digests": {
-     "vms": "189b2440db85"
+     "vms": "8646fa90fc8d"
     }
    },
    "fingerprint": "254e29bb8cd755b9",
@@ -1634,7 +1674,7 @@
     ],
     "logic_hash": "8627008a7b39",
     "snapshot_digests": {
-     "vms": "189b2440db85"
+     "vms": "8646fa90fc8d"
     }
    },
    "fingerprint": "dc0256a1f4dbcc5f",
@@ -4338,6 +4378,11 @@
    {
     "findings": 1,
     "id": "ORPH-AVSET-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "IDLE-VMDEAL-01",
     "status": "ran"
    },
    {

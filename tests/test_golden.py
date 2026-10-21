@@ -87,7 +87,12 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["OPT-DTSTOR-01"] == {"dev-prem", "stdevgrs"}
     assert by["OPT-STORLC-01"] == {"stv2nolc", "stdevgrs"}
     assert by["ORPH-AVSET-01"] == {"as-empty"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1
+    # 2026-05-01 to 2026-10-01 = 153 days (31+30+31+31+30) is over 90; 2026-09-15 is 16 days and must NOT appear
+    assert by["IDLE-VMDEAL-01"] == {"vm-dealloc"}
+    assert (
+        golden["audit"]["status"] == "pass"
+        and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1 + 1
+    )
 
 
 def test_tag_governance_findings_match_hand_derivation():

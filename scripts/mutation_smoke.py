@@ -12,6 +12,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 MUTATIONS = [
     ("src/fcat/http.py", "if r.status in (429, 503):", "if r.status in (503,):", "no retry on 429"),
     ("src/fcat/http.py", 'if method == "GET":\n            return', 'if method in ("GET", "PUT"):\n            return', "PUT allowed"),
+    (
+        "src/fcat/checks_extra.py",
+        "if t is not None and (ref - t).days > DEALLOC_DAYS:",
+        "if t is not None and (ref - t).days >= DEALLOC_DAYS:",
+        "deallocated boundary off by one",
+    ),
+    ("src/fcat/checks_extra.py", "if not any(t for _, t in dated):", "if False:", "deallocated VMs without timestamp judged anyway"),
     ("src/fcat/http.py", 'u.scheme != "https"', "False", "plain http allowed"),
     (
         "src/fcat/http.py",
