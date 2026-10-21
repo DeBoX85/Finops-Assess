@@ -107,3 +107,23 @@ deliverable. Log Horizon is the exception on depth of table-to-detection mapping
   return empty results without an error.
 - nviso blog tag "cost" (June and July 2026) describes Summary Rules plus Auxiliary or lake for firewall logs. Posts
   themselves not opened.
+
+### 6.4 Corrections after reading the repos directly (2026-10-21, shallow clones, files read, no code run)
+Method: add_repo reported read access via the session git proxy; shallow clones placed outside the project in
+/home/claude/<owner>/<repo> (untrusted data, nothing executed). Azure-Sentinel was a sparse blob-less clone of
+Workbooks and Playbooks/Send-IngestionCostAlert only.
+| Repo | Licence file | Last commit | Note |
+|---|---|---|---|
+| lnfernux/log-horizon | GPL-3.0 (LICENSE read) | 2026-10-07 | confirmed. Do not copy. |
+| madsenco/sentinel-usage-workbook | MIT, (c) 2026 Kjartan Madsen | 2026-10-05 | confirmed. NOTICE needed if reused. |
+| rohit8096-ag/Sentinel-Assessment-Tool | MIT, (c) 2026 Rohit Ashok | 2026-03-11 | repo contains SentinelMITREAnalyzer: the earlier "URL mismatch" was repo name vs module name, summary was right. |
+| TheCloudScout/sentinel-pricing | NO licence file found | 2023-05-30 | stale; treat as not reusable. |
+| mathijsvermaat/DefenderIngestToSentinel | NO licence file found | 2026-09-04 | treat as not reusable. |
+| Azure/Azure-Sentinel | MIT, (c) Microsoft | 2026-10-21 | reusable with notice. |
+Microsoft workbooks present in Azure-Sentinel/Workbooks that overlap this module: OptimizationWorkbook (uses
+Microsoft.SecurityInsights/recommendations, alertRules, watchlists; tables Usage, SentinelHealth, SentinelAudit, SecurityIncident),
+AzureSentinelCost (+EUR/GBP), LogSourcesAndAnalyticRulesCoverage, FirewallLogOptimization (_BilledSize by source),
+ArchivingBasicLogsRetention (Tables API, api-versions 2017-10-01 and 2021-12-01-preview inside the workbook),
+LogAnalyticsQueryAnalysis (LAQueryLogs), DataCollectionHealthMonitoring, AnalyticsHealthAudit. Not yet studied in
+detail. The Microsoft estate already contains most of the KQL ideas; our value is multi-scope, read-only, actual-cost
+joined, offline report.
