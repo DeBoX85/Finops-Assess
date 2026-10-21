@@ -1,0 +1,42 @@
+{
+ "cases": [
+  {
+   "name": "empty set reported",
+   "snapshot": {
+    "availability_sets": {
+     "rows": [
+      {
+       "id": "/as/1",
+       "vmCount": 0
+      },
+      {
+       "id": "/as/2",
+       "vmCount": 3
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/as/1"
+   ]
+  },
+  {
+   "name": "populated and unknown not reported",
+   "snapshot": {
+    "availability_sets": {
+     "rows": [
+      {
+       "id": "/as/3",
+       "vmCount": 1
+      },
+      {
+       "id": "/as/4",
+       "vmCount": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

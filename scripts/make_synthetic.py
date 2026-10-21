@@ -201,6 +201,14 @@ def estate():
     subs.append(
         {"id": "/subscriptions/sub-synth-4", "name": "Synthetic Dev", "quotaId": "MSDNDevTest_2014-09-01", "mgAncestors": ["mg-synth-root"]}
     )
+    subs.append(
+        {
+            "id": "/subscriptions/sub-synth-5",
+            "name": "Synthetic Staging",
+            "quotaId": "EnterpriseAgreement_2014-09-01",
+            "mgAncestors": ["mg-synth-root"],
+        }
+    )
     comp = base + "Compute/"
     batch4 = {
         "snapshots": [
@@ -230,10 +238,23 @@ def estate():
             {"id": comp + "disks/disk-src-ok", "skuName": "Premium_LRS", "sizeGB": 128},
             {"id": comp + "disks/vm-stopped-os", "skuName": "Premium_LRS", "sizeGB": 128},
             {"id": comp + "disks/vm-dealloc-os", "skuName": "StandardSSD_LRS", "sizeGB": 64},
+            {
+                "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/dev-prem",
+                "subscriptionId": "sub-synth-4",
+                "skuName": "Premium_LRS",
+                "sizeGB": 256,
+            },
         ],
         "storage_accounts": [
             {"id": base + "Storage/storageAccounts/stlegacy", "kind": "Storage", "skuName": "Standard_LRS"},
             {"id": base + "Storage/storageAccounts/stv2", "kind": "StorageV2", "skuName": "Standard_LRS"},
+            {"id": base + "Storage/storageAccounts/stv2nolc", "kind": "StorageV2", "skuName": "Standard_LRS"},
+            {
+                "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stdevgrs",
+                "subscriptionId": "sub-synth-4",
+                "kind": "StorageV2",
+                "skuName": "Standard_GRS",
+            },
         ],
         "private_dns_zones": [
             {"id": net + "privateDnsZones/privatelink.unused.example", "linkCount": 0, "recordSets": 1},
@@ -509,7 +530,39 @@ def estate():
             }
         ],
     }
+    batch7 = {  # 2026-10-21, backlog 35: non-production and housekeeping checks
+        "availability_sets": [
+            {"id": base + "Compute/availabilitySets/as-empty", "skuName": "Aligned", "vmCount": 0},
+            {"id": base + "Compute/availabilitySets/as-used", "skuName": "Aligned", "vmCount": 2},
+        ],
+        "devtest_schedules": [
+            {
+                "id": sub4 + "DevTestLab/schedules/shutdown-computevm-vm-dev-ok",
+                "taskType": "ComputeVmShutdownTask",
+                "status": "Enabled",
+                "targetResourceId": (sub4 + "Compute/virtualMachines/vm-dev-ok").lower(),
+            }
+        ],
+        "storage_lifecycle": [
+            {"id": base + "Storage/storageAccounts/stv2/managementPolicies/default", "ruleCount": 2},
+        ],
+    }
+    vms += [
+        {
+            "id": sub4 + "Compute/virtualMachines/vm-dev-ok",
+            "subscriptionId": "sub-synth-4",
+            "vmSize": "Standard_B2s",
+            "powerState": "PowerState/running",
+        },
+        {
+            "id": sub4 + "Compute/virtualMachines/vm-dev-noshut",
+            "subscriptionId": "sub-synth-4",
+            "vmSize": "Standard_D2s_v5",
+            "powerState": "PowerState/running",
+        },
+    ]
     return {
+        **batch7,
         **gov,
         **gov2,
         **batch6,

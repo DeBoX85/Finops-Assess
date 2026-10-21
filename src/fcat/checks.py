@@ -69,7 +69,7 @@ def logic_hash(fn) -> str:
 
 def load_builtin():
     """Import built-in checks so they register. Explicit, so linters cannot remove the import."""
-    from . import checks_builtin, checks_governance  # noqa: F401, PLC0415
+    from . import checks_builtin, checks_extra, checks_governance  # noqa: F401, PLC0415
 
 
 def check(meta: CheckMeta):

@@ -197,6 +197,22 @@ KQL_FIREWALL_POLICIES = _NET.format(
     "basePolicyId=tostring(properties.basePolicy.id), ",
 )
 
+# Batch 7 (2026-10-21, backlog 35). Property names from Learn ARM template references (availabilitySets: properties.virtualMachines is SubResource[];
+# storage lifecycle: managementPolicies child resource named 'default'; DevTest schedules: Microsoft.DevTestLab/schedules). Whether Resource Graph
+# returns the last two child/extension types is UNVERIFIED live, so the checks that depend on them refuse to decide when the result is empty.
+KQL_AVAILABILITY_SETS = _NET.format(
+    t="microsoft.compute/availabilitysets", f="skuName=tostring(sku.name), vmCount=array_length(properties.virtualMachines), "
+)
+KQL_DEVTEST_SCHEDULES = (
+    "resources | where type =~ 'microsoft.devtestlab/schedules' "
+    "| project id, name, subscriptionId, resourceGroup, taskType=tostring(properties.taskType), status=tostring(properties.status), "
+    "targetResourceId=tolower(tostring(properties.targetResourceId)) | order by id asc"
+)
+KQL_STORAGE_LIFECYCLE = (
+    "resources | where type =~ 'microsoft.storage/storageaccounts/managementpolicies' "
+    "| project id, name, subscriptionId, resourceGroup, ruleCount=array_length(properties.policy.rules) | order by id asc"
+)
+
 # Cost governance, phase 1 (docs/COST-GOVERNANCE.md). Whole-estate tag inventory, container tags, policy assignments and state counts.
 # Property names for policy are UNVERIFIED live. Policy assignments are read with AuthorizationScopeFilter=AtScopeAboveAndBelow so assignments
 # made at management group or tenant root level are included (Learn query-language page, read 2026-10-20).
@@ -258,6 +274,9 @@ COLLECTORS = {
     "synapse_pools": KQL_SYNAPSE_POOLS,
     "azure_firewalls": KQL_AZURE_FIREWALLS,
     "firewall_policies": KQL_FIREWALL_POLICIES,
+    "availability_sets": KQL_AVAILABILITY_SETS,
+    "devtest_schedules": KQL_DEVTEST_SCHEDULES,
+    "storage_lifecycle": KQL_STORAGE_LIFECYCLE,
 }
 
 

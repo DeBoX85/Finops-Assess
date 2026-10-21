@@ -1,0 +1,63 @@
+{
+ "cases": [
+  {
+   "name": "nonprod name on non devtest offer",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/a",
+       "subscriptionId": "a",
+       "name": "Contoso-Dev-01",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/b",
+       "subscriptionId": "b",
+       "name": "app non-prod",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/a",
+    "/subscriptions/b"
+   ]
+  },
+  {
+   "name": "prod, substring and devtest offer not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/c",
+       "subscriptionId": "c",
+       "name": "Contest platform",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/d",
+       "subscriptionId": "d",
+       "name": "Prod-Core",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/e",
+       "subscriptionId": "e",
+       "name": "team-dev",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/f",
+       "subscriptionId": "f",
+       "name": null,
+       "quotaId": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

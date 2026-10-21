@@ -1,0 +1,11 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stv2/managementPolicies/default",
+   "ruleCount": 2
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

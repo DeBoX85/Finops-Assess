@@ -26,8 +26,20 @@
    "osDiskVhdUri": "https://stsynth.blob.core.windows.net/vhds/vm-unmanaged-os.vhd",
    "powerState": "PowerState/running",
    "vmSize": "Standard_D2s_v3"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dev-ok",
+   "powerState": "PowerState/running",
+   "subscriptionId": "sub-synth-4",
+   "vmSize": "Standard_B2s"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dev-noshut",
+   "powerState": "PowerState/running",
+   "subscriptionId": "sub-synth-4",
+   "vmSize": "Standard_D2s_v5"
   }
  ],
- "total_records": 4,
+ "total_records": 6,
  "warnings": []
 }

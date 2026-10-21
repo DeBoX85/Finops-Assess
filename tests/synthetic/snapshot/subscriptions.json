@@ -32,8 +32,16 @@
    ],
    "name": "Synthetic Dev",
    "quotaId": "MSDNDevTest_2014-09-01"
+  },
+  {
+   "id": "/subscriptions/sub-synth-5",
+   "mgAncestors": [
+    "mg-synth-root"
+   ],
+   "name": "Synthetic Staging",
+   "quotaId": "EnterpriseAgreement_2014-09-01"
   }
  ],
- "total_records": 4,
+ "total_records": 5,
  "warnings": []
 }

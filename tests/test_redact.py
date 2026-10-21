@@ -57,7 +57,7 @@ def test_cli_redact_on_synthetic_estate(tmp_path):
         text = (tmp_path / "out" / name).read_text().lower()
         for secret in ("sub-synth", "rg-synth", "disk-001", "disk-104", "ünïcode", "pip-orphan", "nsg-orphan", "asp-empty"):
             assert secret not in text, (name, secret)
-    assert all(f["resource_id"] for f in doc["findings"]) and len(doc["findings"]) == 121
+    assert all(f["resource_id"] for f in doc["findings"]) and len(doc["findings"]) == 128
 
 
 def test_purge_dry_run_then_delete_keeps_foreign_files(tmp_path, capsys):

@@ -15,8 +15,14 @@
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/vm-dealloc-os",
    "sizeGB": 64,
    "skuName": "StandardSSD_LRS"
+  },
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/dev-prem",
+   "sizeGB": 256,
+   "skuName": "Premium_LRS",
+   "subscriptionId": "sub-synth-4"
   }
  ],
- "total_records": 3,
+ "total_records": 4,
  "warnings": []
 }

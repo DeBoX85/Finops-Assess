@@ -1,0 +1,156 @@
+{
+ "cases": [
+  {
+   "name": "running devtest vm without enabled schedule",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s-dev",
+       "subscriptionId": "s-dev",
+       "name": "x",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s-prod",
+       "subscriptionId": "s-prod",
+       "name": "x",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/1",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      },
+      {
+       "id": "/v/2",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      },
+      {
+       "id": "/v/3",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      }
+     ]
+    },
+    "devtest_schedules": {
+     "rows": [
+      {
+       "id": "/sch//v/2",
+       "targetResourceId": "/v/2",
+       "status": "Enabled",
+       "taskType": "ComputeVmShutdownTask"
+      },
+      {
+       "id": "/sch//v/3",
+       "targetResourceId": "/v/3",
+       "status": "Disabled",
+       "taskType": "ComputeVmShutdownTask"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/1",
+    "/v/3"
+   ]
+  },
+  {
+   "name": "prod, stopped and scheduled not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s-dev",
+       "subscriptionId": "s-dev",
+       "name": "x",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s-prod",
+       "subscriptionId": "s-prod",
+       "name": "x",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/4",
+       "subscriptionId": "s-prod",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      },
+      {
+       "id": "/v/5",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/deallocated",
+       "vmSize": "Standard_D2s_v5"
+      },
+      {
+       "id": "/v/6",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      }
+     ]
+    },
+    "devtest_schedules": {
+     "rows": [
+      {
+       "id": "/sch//V/6",
+       "targetResourceId": "/V/6",
+       "status": "Enabled",
+       "taskType": "ComputeVmShutdownTask"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "no schedule rows at all refuses to decide",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s-dev",
+       "subscriptionId": "s-dev",
+       "name": "x",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s-prod",
+       "subscriptionId": "s-prod",
+       "name": "x",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "vms": {
+     "rows": [
+      {
+       "id": "/v/7",
+       "subscriptionId": "s-dev",
+       "powerState": "PowerState/running",
+       "vmSize": "Standard_D2s_v5"
+      }
+     ]
+    },
+    "devtest_schedules": {
+     "rows": []
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

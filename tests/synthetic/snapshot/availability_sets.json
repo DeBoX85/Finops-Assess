@@ -1,0 +1,17 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/availabilitySets/as-empty",
+   "skuName": "Aligned",
+   "vmCount": 0
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/availabilitySets/as-used",
+   "skuName": "Aligned",
+   "vmCount": 2
+  }
+ ],
+ "total_records": 2,
+ "warnings": []
+}

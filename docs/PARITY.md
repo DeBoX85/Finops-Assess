@@ -114,3 +114,14 @@ Monitoring and security tier A (docs/MODULE-MONITORING-SECURITY.md): MON-LAWCAP-
 
 ## Honest summary
 Of the Optimization items listed here, the orphan and idle group is largely implemented offline. The big-value groups are not: Hybrid Benefit, commitments, tagging and cost allocation, monitoring cost. None of the implemented checks has run on a real tenant, so "parity" is a claim about coverage of predicates, not about proven results.
+
+## Items from the GitHub gap analysis (2026-10-21, KB 14, backlog 35)
+These come from the public ACORT README (GPL-3.0, ideas only; its code was not read) and Learn pages cited in each check. Not workbook parity, so listed here to keep the registry and this file in step.
+| Item | Status | Check IDs | Note |
+|---|---|---|---|
+| Non-production subscription not on a Dev/Test offer | DONE-OFFLINE | OPT-DEVOFF-01 | Name-word heuristic, info only; eligibility needs Visual Studio subscribers (Learn) |
+| Running VMs in Dev/Test-looking subscriptions without auto-shutdown | DONE-OFFLINE | IDLE-VMSHUT-01 | Refuses to decide when no schedule resources are returned; ARG exposure UNVERIFIED |
+| Premium disks and zone or geo redundant storage in Dev/Test-looking subscriptions | DONE-OFFLINE | OPT-DTSTOR-01 | Prompt, not a saving |
+| Storage accounts without a lifecycle policy | DONE-OFFLINE | OPT-STORLC-01 | GPv2 and premium block blob only; refuses to decide when no policy resources are returned; ARG exposure UNVERIFIED |
+| Empty availability sets | DONE-OFFLINE | ORPH-AVSET-01 | Hygiene, low |
+| Deallocated VMs for more than 90 days | NOT-PLANNED (this round) | | ARG exposes no deallocation timestamp that I know of (UNVERIFIED); would need Activity Log |

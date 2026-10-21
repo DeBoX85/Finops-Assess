@@ -9,3 +9,14 @@ Q1 Practice Operations, Executive Strategy Alignment. Q2 Executive Strategy Alig
 One question covers several capabilities, so this is a screening level, not a full assessment. Known weakness: a single answer cannot separate, for example, Budgeting from Forecasting. UNVERIFIED design.
 ## Sources (read 2026-10-18)
 finops.org/framework/domains (22 capabilities), finops.org/wg/finops-assessment (0 to 4 on five lenses), finops.org/framework/maturity-model (Crawl/Walk/Run definitions), Learn framework and assessment pages.
+
+## Target level per capability (backlog 36, owner agreed 2026-10-21)
+`fcat maturity INPUT.toml --out DIR` (src/fcat/maturity.py) reads the customer's answers plus optional owner-set targets and writes maturity.json and maturity.md. Offline, no Azure access.
+```
+[answers]   # q1..q13, A = Crawl, B = Walk, C = Run, D = Not sure
+q4 = "B"
+q6 = "D"
+[targets]   # optional, capability name (case-insensitive) = crawl | walk | run
+Budgeting = "run"
+```
+Rules: a capability's current level is the LOWEST level among its answered questions (cautious); no answered question means "needs input"; "Not sure" is never scored as zero; no default target is invented, because finops.org says the goal is not Run everywhere; status is below, meets, above, no target or needs input. Levels come from answers only. Folding Azure scan evidence into the levels is a separate step that needs the PART1 mapping reviewed by the owner (UNVERIFIED design).

@@ -1,0 +1,13 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.DevTestLab/schedules/shutdown-computevm-vm-dev-ok",
+   "status": "Enabled",
+   "targetResourceId": "/subscriptions/sub-synth-4/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-dev-ok",
+   "taskType": "ComputeVmShutdownTask"
+  }
+ ],
+ "total_records": 1,
+ "warnings": []
+}

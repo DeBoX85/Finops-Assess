@@ -1,0 +1,125 @@
+{
+ "cases": [
+  {
+   "name": "premium disk and redundant storage in devtest",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s-dev",
+       "subscriptionId": "s-dev",
+       "name": "x",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s-prod",
+       "subscriptionId": "s-prod",
+       "name": "x",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/d/1",
+       "subscriptionId": "s-dev",
+       "skuName": "Premium_LRS",
+       "sizeGB": 128
+      },
+      {
+       "id": "/d/2",
+       "subscriptionId": "s-dev",
+       "skuName": "PremiumV2_LRS",
+       "sizeGB": 64
+      }
+     ]
+    },
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/sa/1",
+       "subscriptionId": "s-dev",
+       "skuName": "Standard_GRS",
+       "kind": "StorageV2"
+      },
+      {
+       "id": "/sa/2",
+       "subscriptionId": "s-dev",
+       "skuName": "Standard_RAGZRS",
+       "kind": "StorageV2"
+      },
+      {
+       "id": "/sa/3",
+       "subscriptionId": "s-dev",
+       "skuName": "Premium_LRS",
+       "kind": "BlockBlobStorage"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/d/1",
+    "/d/2",
+    "/sa/1",
+    "/sa/2",
+    "/sa/3"
+   ]
+  },
+  {
+   "name": "standard lrs and prod not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s-dev",
+       "subscriptionId": "s-dev",
+       "name": "x",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/s-prod",
+       "subscriptionId": "s-prod",
+       "name": "x",
+       "quotaId": "EnterpriseAgreement_2014-09-01"
+      }
+     ]
+    },
+    "all_disks": {
+     "rows": [
+      {
+       "id": "/d/3",
+       "subscriptionId": "s-dev",
+       "skuName": "StandardSSD_LRS"
+      },
+      {
+       "id": "/d/4",
+       "subscriptionId": "s-prod",
+       "skuName": "Premium_LRS"
+      }
+     ]
+    },
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/sa/4",
+       "subscriptionId": "s-dev",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/5",
+       "subscriptionId": "s-prod",
+       "skuName": "Standard_GRS"
+      },
+      {
+       "id": "/sa/6",
+       "subscriptionId": "s-dev",
+       "skuName": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

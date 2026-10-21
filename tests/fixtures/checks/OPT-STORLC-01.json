@@ -1,0 +1,104 @@
+{
+ "cases": [
+  {
+   "name": "account without policy or with empty policy",
+   "snapshot": {
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/sa/1",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/2",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/3",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      }
+     ]
+    },
+    "storage_lifecycle": {
+     "rows": [
+      {
+       "id": "/sa/2/managementPolicies/default",
+       "ruleCount": 0
+      },
+      {
+       "id": "/sa/3/managementPolicies/default",
+       "ruleCount": 2
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/sa/1",
+    "/sa/2"
+   ]
+  },
+  {
+   "name": "policy present, unsupported kinds and null rule count not reported",
+   "snapshot": {
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/sa/4",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/5",
+       "kind": "FileStorage",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/6",
+       "kind": "BlobStorage",
+       "skuName": "Standard_LRS"
+      },
+      {
+       "id": "/sa/7",
+       "kind": "Storage",
+       "skuName": "Standard_LRS"
+      }
+     ]
+    },
+    "storage_lifecycle": {
+     "rows": [
+      {
+       "id": "/sa/4/managementPolicies/default",
+       "ruleCount": 1
+      },
+      {
+       "id": "/sa/9/managementPolicies/default",
+       "ruleCount": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "no policy rows anywhere refuses to decide",
+   "snapshot": {
+    "storage_accounts": {
+     "rows": [
+      {
+       "id": "/sa/8",
+       "kind": "StorageV2",
+       "skuName": "Standard_LRS"
+      }
+     ]
+    },
+    "storage_lifecycle": {
+     "rows": []
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

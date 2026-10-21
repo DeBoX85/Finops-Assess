@@ -79,7 +79,15 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["OPT-COSBKP-01"] == {"cosmos-many-copies"}
     assert by["ORPH-SYN-01"] == {"syn-empty"}
     assert by["OPT-FWPREM-01"] == {"fw-premium-idle"}
-    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7
+    # batch 7, hand-derived: running dev VM without an enabled schedule (the one with a schedule must NOT appear); a staging-named subscription on an EA
+    # offer (the Dev/Test one must NOT appear); premium disk and GRS storage in the Dev/Test subscription; two accounts with no lifecycle rules (the
+    # one with 2 rules and the legacy kind must NOT appear); the empty availability set
+    assert by["IDLE-VMSHUT-01"] == {"vm-dev-noshut"}
+    assert by["OPT-DEVOFF-01"] == {"sub-synth-5"}
+    assert by["OPT-DTSTOR-01"] == {"dev-prem", "stdevgrs"}
+    assert by["OPT-STORLC-01"] == {"stv2nolc", "stdevgrs"}
+    assert by["ORPH-AVSET-01"] == {"as-empty"}
+    assert golden["audit"]["status"] == "pass" and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1
 
 
 def test_tag_governance_findings_match_hand_derivation():

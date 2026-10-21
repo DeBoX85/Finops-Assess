@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "233316760e16fa52",
+  "report_hash": "a981bfc8830bc752",
   "status": "pass",
   "version": "0.1"
  },
@@ -823,6 +823,106 @@
     "all"
    ],
    "collectors": [
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "billing",
+   "framework": "Rate Optimization",
+   "id": "OPT-DEVOFF-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Subscriptions that look non-production but are not on a Dev/Test offer",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "vms",
+    "subscriptions",
+    "devtest_schedules"
+   ],
+   "confidence": "low",
+   "domain": "compute",
+   "framework": "Usage Optimization",
+   "id": "IDLE-VMSHUT-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Running VMs in Dev/Test-looking subscriptions with no auto-shutdown schedule",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "all_disks",
+    "storage_accounts",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "storage",
+   "framework": "Usage Optimization",
+   "id": "OPT-DTSTOR-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Premium disks and zone or geo redundant storage in Dev/Test-looking subscriptions",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "storage_accounts",
+    "storage_lifecycle"
+   ],
+   "confidence": "low",
+   "domain": "storage",
+   "framework": "Usage Optimization",
+   "id": "OPT-STORLC-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Storage accounts with no blob lifecycle management policy",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "availability_sets"
+   ],
+   "confidence": "medium",
+   "domain": "orphaned",
+   "framework": "Usage Optimization",
+   "id": "ORPH-AVSET-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Availability sets with no virtual machines",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
     "tag_inventory"
    ],
    "confidence": "medium",
@@ -1167,7 +1267,7 @@
     ],
     "logic_hash": "3d6cdde93e63",
     "snapshot_digests": {
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "3bb217cf48950872",
@@ -1188,7 +1288,7 @@
     ],
     "logic_hash": "3d6cdde93e63",
     "snapshot_digests": {
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "62e889567f53951a",
@@ -1338,14 +1438,38 @@
     ],
     "logic_hash": "daafcff00b1a",
     "snapshot_digests": {
-     "all_disks": "ed46c46eaf6f",
-     "vms": "9e6a9bc0c00b"
+     "all_disks": "ce7e0e52e1c7",
+     "vms": "189b2440db85"
     }
    },
    "fingerprint": "6eb830ed1dc2b19a",
    "message": "VM is stopped but 1 Premium disk(s) are still billed",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-stopped",
    "severity": "medium"
+  },
+  {
+   "check_id": "IDLE-VMSHUT-01",
+   "details": {
+    "location": null,
+    "vmSize": "Standard_D2s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "vms",
+     "subscriptions",
+     "devtest_schedules"
+    ],
+    "logic_hash": "8359c00d5c8d",
+    "snapshot_digests": {
+     "devtest_schedules": "23167acfb552",
+     "subscriptions": "e35a342fa493",
+     "vms": "189b2440db85"
+    }
+   },
+   "fingerprint": "989627db4897beaf",
+   "message": "Running VM (Standard_D2s_v5) in a Dev/Test-looking subscription has no enabled auto-shutdown schedule: review whether it needs to run around the clock",
+   "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/vm-dev-noshut",
+   "severity": "low"
   },
   {
    "check_id": "IDLE-VMSTOP-01",
@@ -1360,7 +1484,7 @@
     ],
     "logic_hash": "64384817e502",
     "snapshot_digests": {
-     "vms": "9e6a9bc0c00b"
+     "vms": "189b2440db85"
     }
    },
    "fingerprint": "254e29bb8cd755b9",
@@ -1383,7 +1507,7 @@
     "logic_hash": "ede9e01be5e3",
     "snapshot_digests": {
      "sql_vms": "a1133aec2932",
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "d1a0714d4eb2adde",
@@ -1405,7 +1529,7 @@
     ],
     "logic_hash": "92599fc610ea",
     "snapshot_digests": {
-     "subscriptions": "6d3c3a547749",
+     "subscriptions": "e35a342fa493",
      "vm_licensing": "d895b50b011a"
     }
    },
@@ -1489,7 +1613,7 @@
     ],
     "logic_hash": "800593d46a0c",
     "snapshot_digests": {
-     "storage_accounts": "1687ce79e52a"
+     "storage_accounts": "d42ac6b285f8"
     }
    },
    "fingerprint": "5b0350f423a1009a",
@@ -1510,7 +1634,7 @@
     ],
     "logic_hash": "8627008a7b39",
     "snapshot_digests": {
-     "vms": "9e6a9bc0c00b"
+     "vms": "189b2440db85"
     }
    },
    "fingerprint": "dc0256a1f4dbcc5f",
@@ -1603,6 +1727,76 @@
    "severity": "info"
   },
   {
+   "check_id": "OPT-DEVOFF-01",
+   "details": {
+    "basis": "subscription name words only",
+    "quotaId": "EnterpriseAgreement_2014-09-01"
+   },
+   "evidence": {
+    "collectors": [
+     "subscriptions"
+    ],
+    "logic_hash": "c0ec1f031ddc",
+    "snapshot_digests": {
+     "subscriptions": "e35a342fa493"
+    }
+   },
+   "fingerprint": "86177c5644581426",
+   "message": "Subscription name suggests non-production use but the offer is not a Dev/Test offer: check whether Dev/Test pricing is available and allowed",
+   "resource_id": "/subscriptions/sub-synth-5",
+   "severity": "info"
+  },
+  {
+   "check_id": "OPT-DTSTOR-01",
+   "details": {
+    "kind": "disk",
+    "sizeGB": 256,
+    "skuName": "Premium_LRS"
+   },
+   "evidence": {
+    "collectors": [
+     "all_disks",
+     "storage_accounts",
+     "subscriptions"
+    ],
+    "logic_hash": "501551579114",
+    "snapshot_digests": {
+     "all_disks": "ce7e0e52e1c7",
+     "storage_accounts": "d42ac6b285f8",
+     "subscriptions": "e35a342fa493"
+    }
+   },
+   "fingerprint": "d300e5f96ae933f6",
+   "message": "Premium disk (Premium_LRS, 256 GB) in a Dev/Test-looking subscription: check whether a cheaper SKU meets the test need",
+   "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Compute/disks/dev-prem",
+   "severity": "info"
+  },
+  {
+   "check_id": "OPT-DTSTOR-01",
+   "details": {
+    "accountKind": "StorageV2",
+    "kind": "storage_account",
+    "skuName": "Standard_GRS"
+   },
+   "evidence": {
+    "collectors": [
+     "all_disks",
+     "storage_accounts",
+     "subscriptions"
+    ],
+    "logic_hash": "501551579114",
+    "snapshot_digests": {
+     "all_disks": "ce7e0e52e1c7",
+     "storage_accounts": "d42ac6b285f8",
+     "subscriptions": "e35a342fa493"
+    }
+   },
+   "fingerprint": "dd6cf07963287cf9",
+   "message": "Storage account SKU Standard_GRS in a Dev/Test-looking subscription: check whether locally redundant standard storage meets the test need",
+   "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stdevgrs",
+   "severity": "info"
+  },
+  {
    "check_id": "OPT-FWPREM-01",
    "details": {
     "idpsMode": "Off",
@@ -1626,6 +1820,54 @@
    "severity": "low"
   },
   {
+   "check_id": "OPT-STORLC-01",
+   "details": {
+    "accessTier": null,
+    "kind": "StorageV2",
+    "location": null,
+    "skuName": "Standard_LRS"
+   },
+   "evidence": {
+    "collectors": [
+     "storage_accounts",
+     "storage_lifecycle"
+    ],
+    "logic_hash": "d569ae02e048",
+    "snapshot_digests": {
+     "storage_accounts": "d42ac6b285f8",
+     "storage_lifecycle": "fb5848be6699"
+    }
+   },
+   "fingerprint": "0028a17242bed8a1",
+   "message": "Storage account (StorageV2, Standard_LRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stv2nolc",
+   "severity": "low"
+  },
+  {
+   "check_id": "OPT-STORLC-01",
+   "details": {
+    "accessTier": null,
+    "kind": "StorageV2",
+    "location": null,
+    "skuName": "Standard_GRS"
+   },
+   "evidence": {
+    "collectors": [
+     "storage_accounts",
+     "storage_lifecycle"
+    ],
+    "logic_hash": "d569ae02e048",
+    "snapshot_digests": {
+     "storage_accounts": "d42ac6b285f8",
+     "storage_lifecycle": "fb5848be6699"
+    }
+   },
+   "fingerprint": "7062d02e0791b8cd",
+   "message": "Storage account (StorageV2, Standard_GRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them",
+   "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stdevgrs",
+   "severity": "low"
+  },
+  {
    "check_id": "OPT-VAULT-01",
    "details": {
     "location": null,
@@ -1639,7 +1881,7 @@
     "logic_hash": "4df58a5caa6d",
     "snapshot_digests": {
      "recovery_vaults": "ec94afa0dfc9",
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "62f2134bb0ba9b93",
@@ -1690,6 +1932,25 @@
    "message": "App Service plan (P1v3) hosts no apps",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Web/serverFarms/asp-empty",
    "severity": "medium"
+  },
+  {
+   "check_id": "ORPH-AVSET-01",
+   "details": {
+    "location": null
+   },
+   "evidence": {
+    "collectors": [
+     "availability_sets"
+    ],
+    "logic_hash": "25959d0aea85",
+    "snapshot_digests": {
+     "availability_sets": "99eea8743eea"
+    }
+   },
+   "fingerprint": "37730d7df03954b5",
+   "message": "Availability set contains no virtual machines",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/availabilitySets/as-empty",
+   "severity": "low"
   },
   {
    "check_id": "ORPH-DDOS-01",
@@ -3528,9 +3789,9 @@
     ],
     "logic_hash": "baf6e6c66c88",
     "snapshot_digests": {
-     "all_disks": "ed46c46eaf6f",
+     "all_disks": "ce7e0e52e1c7",
      "snapshots": "44350d1c5690",
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "e2825c0d91fc95ad",
@@ -3646,7 +3907,7 @@
     "logic_hash": "dd15ce1c99e3",
     "snapshot_digests": {
      "defender_pricings": "88284d40b49a",
-     "subscriptions": "6d3c3a547749"
+     "subscriptions": "e35a342fa493"
     }
    },
    "fingerprint": "8d64095f14ad97b3",
@@ -4056,6 +4317,31 @@
    },
    {
     "findings": 1,
+    "id": "OPT-DEVOFF-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "IDLE-VMSHUT-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "OPT-DTSTOR-01",
+    "status": "ran"
+   },
+   {
+    "findings": 2,
+    "id": "OPT-STORLC-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
+    "id": "ORPH-AVSET-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
     "id": "TAG-DISC-01",
     "status": "ran"
    },
@@ -4149,7 +4435,7 @@
   "schema_version": "0.1",
   "scope": {
    "management_groups": 2,
-   "subscriptions": 4
+   "subscriptions": 5
   }
  },
  "schema_version": "0.1"
