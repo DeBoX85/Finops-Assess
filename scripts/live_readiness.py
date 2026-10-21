@@ -2,6 +2,7 @@
 """Offline preparation for the first live (G2) session. Writes two generated documents:
   docs/UNVERIFIED-REGISTER.md  every UNVERIFIED / NOT SEEN / DON'T KNOW marker in the docs, with file and line
   docs/LIVE-TEST-SHEET.md      one row per check: collectors, permissions, confidence, and empty columns to fill in live
+  docs/CANARY-SPEC.md          per check: the condition a real canary must reproduce, taken from the synthetic estate and the fixtures
 Usage: python scripts/live_readiness.py [--out-dir DIR]
 Nothing here touches Azure. Re-run after docs or checks change; the files say so in their header."""
 
@@ -59,6 +60,59 @@ def sheet() -> tuple[str, int]:
     return "\n".join(lines) + "\n", len(rows)
 
 
+def canary_spec() -> tuple[str, int]:
+    """One section per check, derived from the synthetic estate (a hand-checked model of known-bad and known-good twins) and the per-check
+    fixtures. It tells the owner WHAT condition a real canary has to reproduce; it is not a bill of materials and creates nothing."""
+    import json
+
+    from fcat import checks
+
+    checks.load_builtin()
+    golden = json.loads((ROOT / "tests" / "golden" / "report.json").read_text())
+    snapdir = ROOT / "tests" / "synthetic" / "snapshot"
+    fixdir = ROOT / "tests" / "fixtures" / "checks"
+    by_check: dict = {}
+    for f in golden["findings"]:
+        by_check.setdefault(f["check_id"], []).append(f)
+
+    def short(rid):
+        return str(rid).rstrip("/").rsplit("/", 1)[-1]
+
+    out = [
+        f"{HEADER}# Canary specification (gate G2)\n",
+        "What a real canary must look like, derived from the synthetic estate (`scripts/make_synthetic.py`) and the per-check fixtures. "
+        "The OWNER creates canaries; the tool never does. Name each `fcat-canary-<kind>`. A real canary reproduces the CONDITION in the "
+        '"known-bad" line (same resource type, same property values that matter); sizes and regions are free. Pair it with a "known-good" twin '
+        "that is almost the same but must NOT be flagged. Cost of canaries: DON'T KNOW per item, check the Azure pricing calculator before creating.\n",
+    ]
+    n = 0
+    for meta, _fn in sorted(checks.REGISTRY, key=lambda x: x[0].id):
+        n += 1
+        out.append(f"## {meta.id}: {meta.title}\n")
+        out.append(f"Needs: {', '.join(meta.collectors)}; permissions: {', '.join(meta.permissions)}; confidence: {meta.confidence}.\n")
+        fs = by_check.get(meta.id, [])
+        flagged = {f["resource_id"] for f in fs}
+        if fs:
+            out.append("Known-bad in the synthetic estate (the tool reports these):")
+            out += [f"- `{short(f['resource_id'])}`: {f['message'][:200]}" for f in fs[:3]]
+        else:
+            out.append(
+                "No resource in the synthetic estate fires this check (it needs data the estate does not model, or it refuses to decide); see the fixture cases below."
+            )
+        snap = snapdir / f"{meta.collectors[0]}.json"
+        if snap.exists():
+            rows = json.loads(snap.read_text()).get("rows") or []
+            good = list(dict.fromkeys(short(r["id"]) for r in rows if isinstance(r, dict) and r.get("id") and r["id"] not in flagged))[:2]
+            if good:
+                out.append("Known-good in the synthetic estate (the tool must not report these): " + ", ".join(f"`{g}`" for g in good))
+        fx = fixdir / f"{meta.id}.json"
+        if fx.exists():
+            names = [c.get("name") for c in json.loads(fx.read_text()).get("cases", [])]
+            out.append("Fixture cases (tests/fixtures/checks/" + meta.id + ".json): " + "; ".join(str(x) for x in names if x))
+        out.append("")
+    return "\n".join(out), n
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out-dir", default=str(ROOT / "docs"))
@@ -69,7 +123,9 @@ def main(argv=None) -> int:
     sh, c = sheet()
     (out / "UNVERIFIED-REGISTER.md").write_text(reg)
     (out / "LIVE-TEST-SHEET.md").write_text(sh)
-    print(f"register: {n} marker lines; live test sheet: {c} checks; written to {out}")
+    spec, k = canary_spec()
+    (out / "CANARY-SPEC.md").write_text(spec)
+    print(f"register: {n} marker lines; live test sheet: {c} checks; canary spec: {k} checks; written to {out}")
     return 0
 
 

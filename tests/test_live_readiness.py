@@ -41,3 +41,16 @@ def test_register_skips_its_own_output(tmp_path):
     (docs / "UNVERIFIED-REGISTER.md").write_text("UNVERIFIED\n")
     _text, n = m.register(tmp_path)
     assert n == 0
+
+
+def test_canary_spec_covers_every_check_and_is_in_sync(tmp_path):
+    from fcat import checks
+
+    m = _mod()
+    assert m.main(["--out-dir", str(tmp_path)]) == 0
+    text = (tmp_path / "CANARY-SPEC.md").read_text()
+    checks.load_builtin()
+    for meta, _fn in checks.REGISTRY:
+        assert f"## {meta.id}: " in text
+    assert "`vm-dealloc`" in text and "Fixture cases (tests/fixtures/checks/IDLE-VMDEAL-01.json)" in text
+    assert text == (ROOT / "docs" / "CANARY-SPEC.md").read_text(), "docs/CANARY-SPEC.md is stale: run python scripts/live_readiness.py"

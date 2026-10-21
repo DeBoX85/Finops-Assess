@@ -10,7 +10,7 @@ Status: NOT STARTED. No tenant is available (owner, 2026-10-21). Every check is 
 
 ## 1. What the owner prepares (the tool never creates or changes anything)
 - Test tenant with at least one subscription; the signed-in identity has Reader on it (and on a management group if possible). Keep a second identity with no roles to test "not assessed" paths.
-- Canary resources, each named `fcat-canary-<kind>`, one known-bad and one known-good twin per check family. The sheet `docs/LIVE-TEST-SHEET.md` has a column to record each canary.
+- Canary resources, each named `fcat-canary-<kind>`, one known-bad and one known-good twin per check family. The sheet `docs/LIVE-TEST-SHEET.md` has a column to record each canary; `docs/CANARY-SPEC.md` (generated) says per check which condition the canary must reproduce and which near-identical twin must NOT be flagged.
 - Optional extras for opt-in modules: a Log Analytics workspace, a budget, a policy assignment with a tag rule. These exercise governance and monitoring checks.
 
 ## 2. Order of work in the session (stop at the first failure and log it)
