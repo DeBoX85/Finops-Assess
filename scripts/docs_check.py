@@ -38,10 +38,16 @@ def check():
     nums = sorted(int(m.group(1)) for p in (ROOT / "docs/decisions").glob("*.md") if (m := re.match(r"(\d{4})-", p.name)))
     if nums and nums != list(range(nums[0], nums[0] + len(nums))):
         warns.append(f"decision record numbering has gaps: {nums}")
-    for p in (ROOT / "docs").glob("*.md"):
-        for m in re.finditer(r"\]\((?!http|#|mailto)([^)\s]+)\)", p.read_text()):
-            if not (p.parent / m.group(1).split("#")[0]).exists():
-                warns.append(f"{p.relative_to(ROOT)}: broken relative link {m.group(1)}")
+    # Relative links in every markdown file under docs/ (recursive) plus the root files. Broken links are errors.
+    # Not checked: anchors (#...), absolute URLs (no network), and links inside fenced code blocks.
+    for p in [*(ROOT / "docs").rglob("*.md"), ROOT / "README.md", ROOT / "NOTICE.md", ROOT / "CLAUDE.md"]:
+        if not p.exists():
+            continue
+        text = re.sub(r"```.*?```", "", p.read_text(), flags=re.S)
+        for m in re.finditer(r"\]\((?!https?:|#|mailto:)([^)\s]+)\)", text):
+            target = m.group(1).split("#")[0]
+            if target and not (p.parent / target).exists():
+                errs.append(f"{p.relative_to(ROOT)}: broken relative link {m.group(1)}")
     return errs, warns
 
 

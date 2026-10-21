@@ -1,7 +1,7 @@
 # Gates G0 and G1 on every push and pull request. G2 (live tenant) is never run in CI.
 # Third-party actions are pinned to full commit SHAs (tags read with git ls-remote on 2026-10-21):
 #   actions/checkout v7.0.1, actions/setup-python v7.0.0, actions/setup-node v7.1.0
-# playwright and pip-audit are version-pinned but NOT hash-pinned (not in requirements/dev.txt yet; backlog).
+# playwright and pip-audit come from requirements/ci.txt (hash-locked).
 # Re-verify a pin before changing it; a tag can move, a SHA cannot.
 name: ci
 on:
@@ -28,7 +28,7 @@ jobs:
         run: |
           python -m pip install --require-hashes -r requirements/dev.txt
           python -m pip install --no-deps -e .
-          python -m pip install playwright==1.56.0 pip-audit==2.10.1
+          python -m pip install --require-hashes -r requirements/ci.txt
           python -m playwright install --with-deps chromium
       - name: Gates G0, G1, dependency audit, accessibility
         run: python scripts/gates.py --full

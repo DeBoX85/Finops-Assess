@@ -24,6 +24,6 @@ Each tool was run in this workspace before adoption. Sources: each tool's own do
 | axe-core 4.10.2 (dev only, MPL-2.0, via npm) | Adopt (`--full`, CI) | the script itself exposed a crash on a null `started` in the dashboard; fixed with a regression test |
 | Headless browser tests | Adopt | no external requests, customer file carries no operator code, views render |
 | mutmut 3.8.0 | Reject | conflicts with the src layout and with tests that read source text; recorded in M-012; the hand-picked mutation smoke stays (now about 30 mutants, 0 survive) |
-| Docs link check | Adopt later | not built |
-| Per-module coverage floors | Adopt later | not built |
-| Hash-pinning playwright and pip-audit in CI | Adopt later | not built |
+| Docs link check | Adopted 2026-10-21 | built (docs_check.py, gates.py, requirements/ci.txt) |
+| Per-module coverage floors | Adopted 2026-10-21 | built (docs_check.py, gates.py, requirements/ci.txt) |
+| Hash-pinning playwright and pip-audit in CI | Adopted 2026-10-21 | built (docs_check.py, gates.py, requirements/ci.txt) |

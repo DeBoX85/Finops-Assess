@@ -239,3 +239,51 @@ def test_transport_rejects_other_schemes():
 
     with pytest.raises(BlockedRequest):
         UrllibTransport().send("GET", "file:///etc/passwd", {}, None)
+
+
+def test_docs_check_flags_broken_relative_link(tmp_path, monkeypatch):
+    import sys
+
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent / "scripts"))
+    import docs_check
+
+    (tmp_path / "docs" / "sub").mkdir(parents=True)
+    (tmp_path / "docs" / "sub" / "a.md").write_text(
+        "ok [x](../b.md) bad [y](missing.md) skip [z](https://example.com) ```\n[c](nope.md)\n```"
+    )
+    (tmp_path / "docs" / "b.md").write_text("x")
+    monkeypatch.setattr(docs_check, "ROOT", tmp_path)
+    errs, _ = docs_check.check()
+    broken = [e for e in errs if "broken relative link" in e]
+    assert len(broken) == 1 and "missing.md" in broken[0]
+
+
+def test_module_floor_detects_weak_module(tmp_path, monkeypatch):
+    import json
+    import sys
+
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent / "scripts"))
+    import gates
+
+    class R:
+        returncode = 0
+        stderr = ""
+
+    def fake_run(*cmd):
+        (tmp_path / ".cache").mkdir(exist_ok=True)
+        (tmp_path / ".cache" / "cov.json").write_text(
+            json.dumps(
+                {
+                    "files": {
+                        "src/fcat/a.py": {"summary": {"percent_covered": 80.0}},
+                        "src/fcat/auth.py": {"summary": {"percent_covered": 71.0}},
+                    }
+                }
+            )
+        )
+        return R()
+
+    monkeypatch.setattr(gates, "ROOT", tmp_path)
+    monkeypatch.setattr(gates, "run", fake_run)
+    out = gates.module_floor_failures()
+    assert out == ["src/fcat/a.py 80.0% < 90%"]

@@ -4,6 +4,7 @@ Usage: python scripts/gates.py [--fast] [--full]    Exit 0 only if every execute
 --full adds the checks that need network or a browser (dependency audit, accessibility). When their prerequisites are missing they are reported
 as "NOT RUN, because X" and never as a pass."""
 
+import json
 import pathlib
 import re
 import subprocess
@@ -16,6 +17,30 @@ import docs_check  # noqa: E402
 
 def run(*cmd):
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)  # noqa: S603
+
+
+MODULE_FLOOR = 90  # percent, per module under src/fcat
+MODULE_FLOOR_EXCEPTIONS = {
+    "src/fcat/auth.py": 70
+}  # shells out to the az CLI; the rest is covered by fake runners. Raise, never lower, without an ADR.
+
+
+def module_floor_failures():
+    """A single weak module can hide behind a high total. Reads the .coverage file the test run just wrote."""
+    j = ROOT / ".cache" / "cov.json"
+    j.parent.mkdir(exist_ok=True)
+    r = run(sys.executable, "-m", "coverage", "json", "-q", "-o", str(j))
+    if r.returncode != 0:
+        return [f"coverage data unreadable: {r.stderr[-150:].strip()}"]
+    files = json.loads(j.read_text())["files"]
+    out = []
+    for name, v in sorted(files.items()):
+        key = name.replace("\\", "/")
+        floor = MODULE_FLOOR_EXCEPTIONS.get(key, MODULE_FLOOR)
+        pct = v["summary"]["percent_covered"]
+        if pct < floor:
+            out.append(f"{key} {pct:.1f}% < {floor}%")
+    return out
 
 
 def verification_debt():
@@ -53,6 +78,9 @@ def main():
         tail = r.stdout.strip().splitlines()
         cov = next((ln for ln in reversed(tail) if "Total coverage" in ln or "TOTAL" in ln), "")
         gate("G1 offline tests + coverage threshold", r.returncode == 0, cov if r.returncode == 0 else r.stdout[-800:])
+        if r.returncode == 0:
+            low = module_floor_failures()
+            gate("G1 per-module coverage floors", not low, "; ".join(low))
     not_run = []
     if "--full" in sys.argv:
         r = run(sys.executable, "-m", "pip_audit", "--require-hashes", "-r", "requirements/runtime.txt", "--progress-spinner", "off")
