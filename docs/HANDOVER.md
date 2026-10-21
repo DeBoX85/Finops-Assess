@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 11:56 UTC
+Last updated: 2026-10-21 12:04 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 11:56
-Base commit: 9b52b2c
+Last checkpoint (UTC): 2026-10-21 12:04
+Base commit: 60772ee
 Gates: pass
-Files changed in this checkpoint: 4
-narrative_hash: ced51f9bae8a
+Files changed in this checkpoint: 2
+narrative_hash: 81906927147d
 stale_count: 0
 <!-- auto:end -->
 
@@ -59,6 +59,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 ## In progress
 Mock-up round 3 built (docs/mockups/frontend3, scripts/make_frontend_v3.py), awaiting commit. Nothing half-done. Cost governance phase 2 built offline (docs/COST-GOVERNANCE.md section 11), awaiting commit via checkpoint. Cost governance phase 1 is built offline (docs/COST-GOVERNANCE.md section 10). Phase 2 needs owner go-ahead.
 ## Next step
+2026-10-21: GitHub gap analysis done (KB 14): 9 candidate gaps G1 to G9 (strongest: cost-to-inventory reconciliation, run-to-run diff, dev/test and lifecycle checks), plus non-goals. Awaiting owner choice on which to add to BACKLOG. Nothing built.
 2026-10-21: Sentinel module research done (KB 12, 13), ADR 0010 and docs/MODULE-SENTINEL.md drafted (PROPOSED). Owner asked about the impact of the rule scan (see MODULE-SENTINEL, Rule scan). Awaiting #13/#14 and ADR 0007 (#10). Tier A Sentinel checks can be built offline meanwhile. Rule 7 now covers GPL and unlicensed repos. Governance posture view and its mock-up (needs the owner's confidence-label rule, DECISIONS-PENDING #2). Ask the owner whether to start cost governance phase 2 (budgets, anomaly rules, exports, posture view) and whether to build the `[tags] required` config override. Older next steps: Owner review of maturity questionnaire and confidence-label rule (reminder due next stopping point). Backlog item 2 Layer A part 1 DONE; items 2, 3, 18 DONE; next 4 (cost collectors + allowlist ADR), 5, 7, 8. Old text: output audit Layer A (finding fingerprints/evidence, invariants checker, Audit section), then synthetic estate + golden report, cost collectors research. Add branding/module-weighting config to the plan.
 ## Open questions for the user
 Resolved 2026-10-20: GUID guard exemption for public tag policy ids, owner chose option 1 (ADR 0009). Audit sample size and confidence thresholds (explained in chat, awaiting agreement); maturity scope wording; Approve PLAN v0.1 formally.
