@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 19:18 UTC
+Last updated: 2026-10-21 19:19 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 19:18
-Base commit: 057b424
+Last checkpoint (UTC): 2026-10-21 19:19
+Base commit: 5ad1802
 Gates: pass
-Files changed in this checkpoint: 21
-narrative_hash: 2c2b29cd31aa
+Files changed in this checkpoint: 3
+narrative_hash: 66519536f07c
 stale_count: 0
 <!-- auto:end -->
 
@@ -24,14 +24,14 @@ Everything up to 2026-10-21 is described in docs/HANDOVER-ARCHIVE.md (verbatim o
 7. `fcat guide`: terminal wizard for less technical operators (backlog 43 first step; the local web front end is NOT built).
 8. Housekeeping: this handover rewritten, RESUME_PROMPT rewritten, M-013 logged.
 9. Scheduled batch 2026-10-21 (unit 1 of 3): KB 18 Learn verification done. OPT-STORLC-01 confirmed unworkable via ARG (message and docstring corrected, golden logic_hash updated, still refuses to decide). Unit 2 done: review found and fixed 3 defects (M-014): redaction of free-text errors/reasons, rollup reasons, silent row drop in costdata; regression tests added. Unit 3 done: ci.yml replayed in a clean venv; found and fixed one first-run failure (manifest.py coverage floor), .gitignore gets *.egg-info; see QUALITY.md. All three scheduled units complete.
-10. Follow-up batch (owner away): mutation smoke extended and 0 survive; backlog 44 BUILT: OPT-STORLC-01 now reads policies per account with opt-in `[run] storage_apis` (src/fcat/storagedata.py); no ADR needed, GET already allowed (M-015 corrects my earlier claim). Items 1, 3, 4 of the candidate list still wait for owner decisions.
+10. Follow-up batch (owner away): mutation smoke extended and 0 survive; backlog 44 BUILT: OPT-STORLC-01 now reads policies per account with opt-in `[run] storage_apis` (src/fcat/storagedata.py); no ADR needed, GET already allowed (M-015 corrects my earlier claim). docs/LIVE-REHEARSAL.md written (run sheet for the first live session). Items 1, 3, 4 of the candidate list still wait for owner decisions.
 
 ## In progress
 Nothing half-done. All work is committed and pushed (check `git status` and `git log origin/main..origin/wip/auto` first).
 
 ## Next step
 There is no tenant, so the next unsupervised work is limited. Candidates the owner has not yet asked for, in my order of value:
-1. Wait for or help prepare the first live (G2) session: docs/LIVE-TESTING.md section 0 lists four owner decisions that block it (which tenant, where the tool runs, what output may enter a Claude session, canary cost cap).
+1. Wait for or help prepare the first live (G2) session: docs/LIVE-TESTING.md section 0 (run sheet ready: docs/LIVE-REHEARSAL.md) lists four owner decisions that block it (which tenant, where the tool runs, what output may enter a Claude session, canary cost cap).
 2. Customer self-audit simplification in the customer dashboard (my proposal is in DECISIONS-PENDING; needs the owner's OK).
 3. Sentinel Tier A checks (docs/MODULE-SENTINEL.md) can be built offline; ADR 0010 is PROPOSED.
 4. Dashboard roll-up view and `[scopes]` driven batch run (only if the owner wants more than `fcat rollup`).
