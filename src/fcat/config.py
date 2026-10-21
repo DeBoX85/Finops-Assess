@@ -111,6 +111,7 @@ class Config:
     rightsizing_max_vms: int = 50
     governance_apis: bool = False  # opt-in: 3 GET calls per subscription (budgets, anomaly rules, exports); see docs/COST-GOVERNANCE.md
     cost_apis: bool = False  # opt-in: one Cost Management Query per subscription plus a full resource id list; see docs/COST-DATA.md
+    storage_apis: bool = False  # opt-in: one GET per eligible storage account (lifecycle policy); see src/fcat/storagedata.py
 
     def as_dict(self):
         return {
@@ -123,6 +124,7 @@ class Config:
             "rightsizing_max_vms": self.rightsizing_max_vms,
             "governance_apis": self.governance_apis,
             "cost_apis": self.cost_apis,
+            "storage_apis": self.storage_apis,
         }
 
     def enabled(self, meta) -> tuple[bool, str]:
@@ -152,6 +154,9 @@ def load(path) -> Config:
     cost = run.get("cost_apis", False)
     if not isinstance(cost, bool):
         raise ValueError("[run] cost_apis must be true or false")
+    stor = run.get("storage_apis", False)
+    if not isinstance(stor, bool):
+        raise ValueError("[run] storage_apis must be true or false")
     return Config(
         prof,
         d.get("domains", {}),
@@ -163,4 +168,5 @@ def load(path) -> Config:
         cap,
         gov,
         cost,
+        stor,
     )

@@ -261,10 +261,10 @@ Fixture cases (tests/fixtures/checks/OPT-FWPREM-01.json): premium with neither i
 Needs: storage_accounts, storage_lifecycle; permissions: Reader; confidence: low.
 
 Known-bad in the synthetic estate (the tool reports these):
-- `stv2nolc`: Storage account (StorageV2, Standard_LRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them
-- `stdevgrs`: Storage account (StorageV2, Standard_GRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them
+- `stv2nolc`: Storage account (StorageV2, Standard_LRS) has no enabled lifecycle rule: old blobs stay on their original tier until someone moves or deletes them
+- `stdevgrs`: Storage account (StorageV2, Standard_GRS) has no enabled lifecycle rule: old blobs stay on their original tier until someone moves or deletes them
 Known-good in the synthetic estate (the tool must not report these): `stlegacy`, `stv2`
-Fixture cases (tests/fixtures/checks/OPT-STORLC-01.json): account without policy or with empty policy; policy present, unsupported kinds and null rule count not reported; no policy rows anywhere refuses to decide
+Fixture cases (tests/fixtures/checks/OPT-STORLC-01.json): no policy, all rules disabled, and a working policy; unsupported kinds are not judged and need no answer
 
 ## OPT-VAULT-01: Geo-redundant backup vaults in Dev/Test-looking subscriptions
 

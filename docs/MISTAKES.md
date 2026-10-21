@@ -48,3 +48,6 @@ Prevention: derive counts from data, not literals; when adding a details key tha
 3. **costdata silently dropped malformed rows**, so a subscription total and every unmapped-cost share could be built on partial data. Now any malformed row fails that subscription ("cannot be trusted"), so COST-UNMAP-01 says not assessed. Regression test added.
 Known and not changed: names (resource group, resource) inside free text cannot be recognised and are not scrubbed; negative cost lines (credits) can make an unmapped share odd (not decided, noted for the first G2 session).
 Prevention: when adding free-text output (errors, reasons, messages) assume it can carry ids, and route it through redact.scrub_text.
+
+## M-015 (2026-10-21) Wrong claim about what a fix needed
+In KB 17, backlog 44 and my summary I said the per-account read for OPT-STORLC-01 "needs an allowlist ADR". The allowlist already permits any GET on management.azure.com, so it did not. I found this when about to draft the ADR, by reading http.py before writing. Prevention: before saying a change needs a decision record, read the code that enforces the rule.

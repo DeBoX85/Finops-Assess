@@ -202,8 +202,9 @@ KQL_FIREWALL_POLICIES = _NET.format(
 )
 
 # Batch 7 (2026-10-21, backlog 35). Property names from Learn ARM template references (availabilitySets: properties.virtualMachines is SubResource[];
-# storage lifecycle: managementPolicies child resource named 'default'; DevTest schedules: Microsoft.DevTestLab/schedules). Whether Resource Graph
-# returns the last two child/extension types is UNVERIFIED live, so the checks that depend on them refuse to decide when the result is empty.
+# DevTest schedules: Microsoft.DevTestLab/schedules). Whether Resource Graph returns this extension type with the property names used here is
+# UNVERIFIED live, so the check that depends on it refuses to decide when the result is empty. Storage lifecycle policies are NOT read from Resource Graph
+# (type not listed by Learn, KB 18); see storagedata.py.
 KQL_AVAILABILITY_SETS = _NET.format(
     t="microsoft.compute/availabilitysets", f="skuName=tostring(sku.name), vmCount=array_length(properties.virtualMachines), "
 )
@@ -211,10 +212,6 @@ KQL_DEVTEST_SCHEDULES = (
     "resources | where type =~ 'microsoft.devtestlab/schedules' "
     "| project id, name, subscriptionId, resourceGroup, taskType=tostring(properties.taskType), status=tostring(properties.status), "
     "targetResourceId=tolower(tostring(properties.targetResourceId)) | order by id asc"
-)
-KQL_STORAGE_LIFECYCLE = (
-    "resources | where type =~ 'microsoft.storage/storageaccounts/managementpolicies' "
-    "| project id, name, subscriptionId, resourceGroup, ruleCount=array_length(properties.policy.rules) | order by id asc"
 )
 
 # Cost governance, phase 1 (docs/COST-GOVERNANCE.md). Whole-estate tag inventory, container tags, policy assignments and state counts.
@@ -280,12 +277,11 @@ COLLECTORS = {
     "firewall_policies": KQL_FIREWALL_POLICIES,
     "availability_sets": KQL_AVAILABILITY_SETS,
     "devtest_schedules": KQL_DEVTEST_SCHEDULES,
-    "storage_lifecycle": KQL_STORAGE_LIFECYCLE,
 }
 
 
 # Collectors that are not ARG queries. They run only when the owner opts in and are never in COLLECTORS (which the KQL tests iterate).
-REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports", "cost_by_resource", "resource_ids")
+REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports", "cost_by_resource", "resource_ids", "storage_lifecycle")
 
 # ARG collectors that run only with [run] cost_apis = true (a full id list is large on big estates). Kept out of COLLECTORS for the same reason as above.
 KQL_RESOURCE_IDS = "resources | project id=tolower(id), type=tolower(type), subscriptionId | order by id asc"
@@ -317,6 +313,13 @@ def collect(client, snapshot, config, errors: list):
             costdata.collect_cost(client, snapshot, config, errors)
         except Exception as e:  # noqa: BLE001
             errors.append({"collector": "cost_apis", "error": f"{type(e).__name__}: {e}"})
+    if getattr(config, "storage_apis", False):
+        from . import storagedata  # noqa: PLC0415
+
+        try:
+            storagedata.collect_storage_lifecycle(client, snapshot, config, errors)
+        except Exception as e:  # noqa: BLE001
+            errors.append({"collector": "storage_apis", "error": f"{type(e).__name__}: {e}"})
     if getattr(config, "governance_apis", False):
         from . import govcost  # noqa: PLC0415
 

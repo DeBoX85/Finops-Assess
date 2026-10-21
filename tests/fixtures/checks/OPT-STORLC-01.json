@@ -1,7 +1,7 @@
 {
  "cases": [
   {
-   "name": "account without policy or with empty policy",
+   "name": "no policy, all rules disabled, and a working policy",
    "snapshot": {
     "storage_accounts": {
      "rows": [
@@ -25,14 +25,25 @@
     "storage_lifecycle": {
      "rows": [
       {
-       "id": "/sa/2/managementPolicies/default",
-       "ruleCount": 0
+       "id": "/sa/1",
+       "status": "none",
+       "ruleCount": null,
+       "enabledRuleCount": null
       },
       {
-       "id": "/sa/3/managementPolicies/default",
-       "ruleCount": 2
+       "id": "/sa/2",
+       "status": "present",
+       "ruleCount": 2,
+       "enabledRuleCount": 0
+      },
+      {
+       "id": "/sa/3",
+       "status": "present",
+       "ruleCount": 2,
+       "enabledRuleCount": 1
       }
-     ]
+     ],
+     "truncated": false
     }
    },
    "expect_resource_ids": [
@@ -41,7 +52,7 @@
    ]
   },
   {
-   "name": "policy present, unsupported kinds and null rule count not reported",
+   "name": "unsupported kinds are not judged and need no answer",
    "snapshot": {
     "storage_accounts": {
      "rows": [
@@ -70,32 +81,13 @@
     "storage_lifecycle": {
      "rows": [
       {
-       "id": "/sa/4/managementPolicies/default",
-       "ruleCount": 1
-      },
-      {
-       "id": "/sa/9/managementPolicies/default",
-       "ruleCount": null
+       "id": "/sa/4",
+       "status": "present",
+       "ruleCount": 1,
+       "enabledRuleCount": 1
       }
-     ]
-    }
-   },
-   "expect_resource_ids": []
-  },
-  {
-   "name": "no policy rows anywhere refuses to decide",
-   "snapshot": {
-    "storage_accounts": {
-     "rows": [
-      {
-       "id": "/sa/8",
-       "kind": "StorageV2",
-       "skuName": "Standard_LRS"
-      }
-     ]
-    },
-    "storage_lifecycle": {
-     "rows": []
+     ],
+     "truncated": false
     }
    },
    "expect_resource_ids": []

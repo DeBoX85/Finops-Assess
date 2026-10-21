@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "209a04371c724dd9",
+  "report_hash": "817a63f7cd4dd0c4",
   "status": "pass",
   "version": "0.1"
  },
@@ -1926,14 +1926,14 @@
      "storage_accounts",
      "storage_lifecycle"
     ],
-    "logic_hash": "ca46333381d7",
+    "logic_hash": "3caf8f8bccfa",
     "snapshot_digests": {
      "storage_accounts": "d42ac6b285f8",
-     "storage_lifecycle": "fb5848be6699"
+     "storage_lifecycle": "0019a1e7d2af"
     }
    },
    "fingerprint": "0028a17242bed8a1",
-   "message": "Storage account (StorageV2, Standard_LRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them",
+   "message": "Storage account (StorageV2, Standard_LRS) has no enabled lifecycle rule: old blobs stay on their original tier until someone moves or deletes them",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stv2nolc",
    "severity": "low"
   },
@@ -1950,14 +1950,14 @@
      "storage_accounts",
      "storage_lifecycle"
     ],
-    "logic_hash": "ca46333381d7",
+    "logic_hash": "3caf8f8bccfa",
     "snapshot_digests": {
      "storage_accounts": "d42ac6b285f8",
-     "storage_lifecycle": "fb5848be6699"
+     "storage_lifecycle": "0019a1e7d2af"
     }
    },
    "fingerprint": "7062d02e0791b8cd",
-   "message": "Storage account (StorageV2, Standard_GRS) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them",
+   "message": "Storage account (StorageV2, Standard_GRS) has no enabled lifecycle rule: old blobs stay on their original tier until someone moves or deletes them",
    "resource_id": "/subscriptions/sub-synth-4/resourceGroups/rg-synth/providers/Microsoft.Storage/storageAccounts/stdevgrs",
    "severity": "low"
   },
@@ -4525,6 +4525,7 @@
    "profile": "standard",
    "rightsizing": false,
    "rightsizing_max_vms": 50,
+   "storage_apis": false,
    "subscriptions_count": 0
   },
   "identity": {},

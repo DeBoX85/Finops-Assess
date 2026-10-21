@@ -135,27 +135,34 @@ def premium_or_redundant_in_devtest(snap):
 )
 def storage_without_lifecycle(snap):
     """Learn (read 2026-10-21): lifecycle policies are supported for block and append blobs in general-purpose v2 and premium block blob accounts;
-    the legacy BlobStorage kind is left out because Learn pages disagree on it. A policy is the child resource 'default'. Learn's Resource Graph
-    table reference (read 2026-10-21) does not list managementpolicies at all (KB 18), so on a real tenant this will normally refuse to decide until a
-    per-account ARM read is added (backlog 44). An empty result makes the check refuse to decide. Whether an account holds blobs at all is not known."""
-    pols = _rows(snap, "storage_lifecycle")
+    the legacy BlobStorage kind is left out because Learn pages disagree on it. The policy is read per account with a GET (opt-in
+    `[run] storage_apis = true`, src/fcat/storagedata.py) because Resource Graph does not list the type (KB 18). Every eligible account must have a
+    definite answer (policy read, or the 'no policy' reply); otherwise the check refuses to decide. A policy whose rules are all explicitly disabled
+    counts as no policy. Whether an account holds blobs at all is not known."""
+    data = snap.load("storage_lifecycle") or {}
+    if data.get("truncated") is True:
+        raise NotAssessed("the storage account list was cut off at the call cap, so the accounts that were not read cannot be judged")
+    got = {str(r["id"]).lower(): r for r in data.get("rows") or [] if isinstance(r, dict) and isinstance(r.get("id"), str)}
     accts = [a for a in _rows(snap, "storage_accounts") if str(a.get("kind") or "").lower() in ("storagev2", "blockblobstorage")]
-    if accts and not pols:
+
+    def definite(a):
+        row = got.get(str(a.get("id") or "").lower()) or {}
+        n = row.get("enabledRuleCount")
+        return row.get("status") == "none" or (row.get("status") == "present" and isinstance(n, int) and not isinstance(n, bool))
+
+    unknown = [a for a in accts if not definite(a)]
+    if unknown:
         raise NotAssessed(
-            "no lifecycle policy resources were returned; Learn's Resource Graph table reference does not list storage management policies, so 'none exist' cannot be told apart from 'not queryable here' (KB 18)"
+            f"{len(unknown)} of {len(accts)} eligible storage account(s) have no readable lifecycle answer, so absence of a policy proves nothing"
         )
-    have = {
-        str(p.get("id") or "").lower().rsplit("/managementpolicies/", 1)[0]
-        for p in pols
-        if isinstance(p.get("ruleCount"), int) and not isinstance(p.get("ruleCount"), bool) and p["ruleCount"] > 0
-    }
     for a in accts:
-        if str(a.get("id") or "").lower() not in have:
+        row = got[str(a["id"]).lower()]
+        if row["status"] == "none" or row["enabledRuleCount"] == 0:
             yield Finding(
                 "OPT-STORLC-01",
                 a["id"],
                 "low",
-                f"Storage account ({a.get('kind')}, {a.get('skuName')}) has no lifecycle policy with rules: old blobs stay on their original tier until someone moves or deletes them",
+                f"Storage account ({a.get('kind')}, {a.get('skuName')}) has no enabled lifecycle rule: old blobs stay on their original tier until someone moves or deletes them",
                 {"location": a.get("location"), "kind": a.get("kind"), "skuName": a.get("skuName"), "accessTier": a.get("accessTier")},
             )
 

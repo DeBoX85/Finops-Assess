@@ -87,6 +87,7 @@ OPT_IN_SWITCH = {
     "budgets": "[run] governance_apis = true",
     "anomaly_rules": "[run] governance_apis = true",
     "cost_exports": "[run] governance_apis = true",
+    "storage_lifecycle": "[run] storage_apis = true",
     "vm_cpu": "[run] rightsizing = true",
 }
 

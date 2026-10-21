@@ -32,6 +32,23 @@ MUTATIONS = [
     ),
     ("src/fcat/guide.py", "if code == 3:", "if False:", "guide hides a failed self-audit"),
     (
+        "src/fcat/storagedata.py",
+        "if r.status == 404 and code == NO_POLICY_CODE:",
+        "if r.status == 404:",
+        "any 404 treated as no lifecycle policy",
+    ),
+    (
+        "src/fcat/storagedata.py",
+        'if x.get("enabled") is not False',
+        'if x.get("enabled") is True',
+        "rules without an enabled flag not counted",
+    ),
+    ("src/fcat/checks_extra.py", '    if data.get("truncated") is True:', "    if False:", "capped storage list judged anyway"),
+    ("src/fcat/redact.py", 'return _GUID.sub("{id}", str(text))', "return str(text)", "ids left in redacted free text"),
+    ("src/fcat/cli.py", "cerrors = redact.errors(cerrors)", "cerrors = cerrors", "collector errors not scrubbed under --redact"),
+    ("src/fcat/rollup.py", "scrub_text(c.get('reason') or '')[:120]", "str(c.get('reason') or '')[:120]", "roll-up reasons not scrubbed"),
+    ("src/fcat/costdata.py", "    if bad:  #", "    if False:  #", "malformed cost rows dropped silently"),
+    (
         "src/fcat/guide.py",
         'if not _yes(ask, "Check access and run the analysis now?"):',
         "if False:",

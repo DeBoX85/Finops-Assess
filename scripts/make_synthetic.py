@@ -551,7 +551,14 @@ def estate():
             }
         ],
         "storage_lifecycle": [
-            {"id": base + "Storage/storageAccounts/stv2/managementPolicies/default", "ruleCount": 2},
+            {"id": (base + "Storage/storageAccounts/stv2").lower(), "status": "present", "ruleCount": 2, "enabledRuleCount": 2},
+            {"id": (base + "Storage/storageAccounts/stv2nolc").lower(), "status": "none", "ruleCount": None, "enabledRuleCount": None},
+            {
+                "id": "/subscriptions/sub-synth-4/resourcegroups/rg-synth/providers/microsoft.storage/storageaccounts/stdevgrs",
+                "status": "present",
+                "ruleCount": 1,
+                "enabledRuleCount": 0,
+            },
         ],
     }
     vms += [
@@ -650,6 +657,8 @@ def write_snapshot():
             body["api_version"] = "2026-06-01"
             if name == "cost_by_resource":
                 body["timeframe"] = "TheLastMonth"
+        if name == "storage_lifecycle":
+            body.update(eligible=len(rows), queried=len(rows), truncated=False, api_version="2026-09-01")
         (SNAP / f"{name}.json").write_text(json.dumps(body, indent=1, sort_keys=True))
 
 

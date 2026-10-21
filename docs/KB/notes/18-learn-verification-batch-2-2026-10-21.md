@@ -16,4 +16,5 @@ Goal: settle more UNVERIFIED items from docs/UNVERIFIED-REGISTER.md with Microso
 - Whether ARG actually returns these properties for real resources is still a G2 question.
 
 ## Follow-ups
-- Backlog 44 stays open: OPT-STORLC-01 needs a per-account ARM GET and an ADR 0006 allowlist addition.
+- CORRECTION to KB 17 and to my earlier summary: no allowlist change or ADR is needed for a per-account GET, because GET on management.azure.com is already allowed (src/fcat/http.py). Backlog 44 was therefore built the same day: opt-in `[run] storage_apis`, src/fcat/storagedata.py. Source for the call: https://learn.microsoft.com/rest/api/storagerp/management-policies/get (api-version 2026-09-01, read 2026-10-21). Storage management reads are throttled at 800 per 5 minutes per subscription per region: https://learn.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling (read 2026-10-21).
+- Still UNVERIFIED: the error a storage account returns when it has no policy.
