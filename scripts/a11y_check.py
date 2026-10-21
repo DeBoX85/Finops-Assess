@@ -53,6 +53,35 @@ def build_pages(out: pathlib.Path) -> dict[str, pathlib.Path]:
     return pages
 
 
+def run_rollup(browser, axe, out: pathlib.Path) -> tuple[int, list[str]]:
+    """The roll-up page is a single static page: axe in light and dark, no views to click through."""
+    from fcat import rollup
+
+    golden = json.loads((ROOT / "tests" / "golden" / "report.json").read_text())
+    other = json.loads(json.dumps(golden))
+    other["findings"] = other["findings"][5:]
+    paths = []
+    for name, doc in (("scope-a", golden), ("scope-b", other)):
+        p = out / name / "report.json"
+        p.parent.mkdir()
+        p.write_text(json.dumps(doc))
+        paths.append(str(p))
+    rollup.write(rollup.build(paths), out / "rollup")
+    bad, lines = 0, []
+    for scheme in ("light", "dark"):
+        pg = browser.new_context(color_scheme=scheme, viewport={"width": 1280, "height": 900}).new_page()
+        pg.goto((out / "rollup" / "rollup.html").as_uri())
+        pg.evaluate(axe)
+        res = pg.evaluate(
+            "tags => axe.run(document,{runOnly:{type:'tag',values:tags}}).then(r=>r.violations.map(v=>({id:v.id,impact:v.impact,n:v.nodes.length,help:v.help})))",
+            TAGS,
+        )
+        for x in res:
+            bad += 1
+            lines.append(f"rollup/{scheme}: {x['id']} ({x['impact']}, {x['n']} nodes): {x['help']}")
+    return bad, lines
+
+
 def run() -> tuple[int, list[str]]:
     why = ensure_axe()
     if why:
@@ -88,8 +117,13 @@ def run() -> tuple[int, list[str]]:
                     for x in res:
                         bad += 1
                         lines.append(f"{aud}/{scheme}/{v}: {x['id']} ({x['impact']}, {x['n']} nodes): {x['help']}")
+        rbad, rlines = run_rollup(browser, axe, pathlib.Path(tempfile.mkdtemp(dir=t)))
+        bad += rbad
+        lines += rlines
         browser.close()
-    return (1 if bad else 0), lines or ["no axe violations in 2 audiences x 2 colour schemes x every view"]
+    return (1 if bad else 0), lines or [
+        "no axe violations in 2 audiences x 2 colour schemes x every view, and the roll-up page in 2 colour schemes"
+    ]
 
 
 if __name__ == "__main__":

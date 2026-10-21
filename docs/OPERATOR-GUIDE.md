@@ -29,6 +29,9 @@ For whoever runs an assessment, including a junior colleague later. Status: the 
 | report.json, report.xlsx | You only until the owner decides | They hold everything. Whether the Excel goes to customers is NOT decided (DECISIONS-PENDING). |
 | snapshot/ | You only | Raw collected data, including tag values. Customer data. Never share, never commit. |
 
+## One customer, several tenants or scopes
+Run the normal analysis once per tenant or scope (own login, own config, own output folder). Then `fcat rollup <folder1>/report.json <folder2>/report.json --label "Tenant A" --label "Tenant B" --out <rollup folder>` writes rollup.html, rollup.md and rollup.json. It shows counts, the self-audit result and which checks did not run in each scope. It adds no amounts, removes no duplicates between scopes and contains no resource, subscription or tenant ids, so it is safe to show. A scope whose self-audit failed is flagged in red; do not quote its numbers.
+
 ## Handing over
 1. Open dashboard-customer.html in a browser. Check the title, prepared for, footer and logo. Check that the Summary, Findings, Coverage and Self-audit pages open without errors (Progress appears only if you passed `--previous` or `--maturity`).
 2. Print to PDF from the browser ("Print or save as PDF") if the customer wants a fixed copy. Keep the report fingerprint on the page; it shows if the file was altered.

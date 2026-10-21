@@ -5,7 +5,21 @@ import json
 import pathlib
 import sys
 
-from . import checks, collectors, compare, dash, doctor, focus_import, manifest, maturity, redact, render_html, render_json, render_xlsx
+from . import (
+    checks,
+    collectors,
+    compare,
+    dash,
+    doctor,
+    focus_import,
+    manifest,
+    maturity,
+    redact,
+    render_html,
+    render_json,
+    render_xlsx,
+    rollup,
+)
 from . import config as cfgmod
 from .auth import AzCliTokenProvider
 from .errors import FcatError
@@ -100,6 +114,20 @@ def _compare(args) -> int:
     return 0
 
 
+def _rollup(args) -> int:
+    try:
+        result = rollup.build(args.reports, args.label)
+    except FcatError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+    rollup.write(result, args.out)
+    t = result["totals"]
+    print(f"{t['scopes']} scopes, {t['findings']} findings in total; written to {args.out}")
+    for w in result["warnings"]:
+        print(f"warning: {w}")
+    return 0
+
+
 PURGE_FILES = (
     "report.json",
     "report.html",
@@ -110,6 +138,9 @@ PURGE_FILES = (
     "compare.md",
     "maturity.json",
     "maturity.md",
+    "rollup.json",
+    "rollup.md",
+    "rollup.html",
 )
 
 
@@ -175,10 +206,17 @@ def main(argv=None):
     )
     mt.add_argument("input", help="TOML file with [answers] q1..q13 (A,B,C,D) and optional [targets]")
     mt.add_argument("--out", default="output")
+    ru = sub.add_parser(
+        "rollup",
+        help="put several finished report.json files (one per tenant or scope) side by side: counts, audit state, checks that did not run (offline)",
+    )
+    ru.add_argument("reports", nargs="+", help="two or more report.json files")
+    ru.add_argument("--label", action="append", help="name of a scope; give one per report, in the same order")
+    ru.add_argument("--out", default="output")
     pg = sub.add_parser("purge", help="delete files fcat created in an output folder (dry run unless --yes)")
     pg.add_argument("--out", default="output")
     pg.add_argument("--yes", action="store_true")
-    for sp in (r, a, f, cp, mt):
+    for sp in (r, a, f, cp, mt, ru):
         sp.add_argument(
             "--allow-unignored-out", action="store_true", help="write into a git work tree even if git would not ignore the folder"
         )
@@ -193,6 +231,8 @@ def main(argv=None):
         return _compare(args)
     if args.cmd == "maturity":
         return _maturity(args)
+    if args.cmd == "rollup":
+        return _rollup(args)
     if args.cmd == "purge":
         return _purge(pathlib.Path(args.out), args.yes)
     if args.cmd == "import-focus":

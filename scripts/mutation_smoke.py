@@ -23,6 +23,13 @@ MUTATIONS = [
     ("src/fcat/checks_cost.py", "if mixed:", "if False:", "mixed currencies added together"),
     ("src/fcat/costdata.py", "if r.status == 204:", "if False:", "no content treated as error"),
     ("src/fcat/redact.py", "for k in RESOURCE_ID_LIST_KEYS:", "for k in ():", "resource ids in details not redacted"),
+    ("src/fcat/rollup.py", "if bad_audit:", "if False:", "failed audit not flagged in the roll-up"),
+    (
+        "src/fcat/rollup.py",
+        'cells.append({"state": status or "not in this run", "findings": s["_counts"].get(cid, 0) if status == "ran" else None})',
+        'cells.append({"state": "ran", "findings": s["_counts"].get(cid, 0)})',
+        "not-run shown as zero in the roll-up",
+    ),
     ("src/fcat/http.py", 'u.scheme != "https"', "False", "plain http allowed"),
     (
         "src/fcat/http.py",
