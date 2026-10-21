@@ -41,6 +41,17 @@ label.opt{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer}l
 details.dom{border:1px solid var(--line);border-radius:var(--r);padding:6px 12px;margin-bottom:8px}details.dom>summary{cursor:pointer;font-weight:600}
 .keys{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:6px 0}.keys i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-2px}.keys .a{background:var(--ink)}.keys .b{border:2px dashed var(--acc)}.keys .c{border:2px solid var(--line)}
 textarea{width:100%;min-height:56px;resize:vertical}
+.stat .k{border:0;background:none;text-align:left;padding:6px 10px;margin:-6px -10px;border-radius:var(--r)}.stat .k:hover,.stat .k:focus-visible{background:var(--accbg)}
+.stat .k b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}.stat .k span{font-size:12px;color:var(--muted)}
+.abars{display:grid;gap:2px}.abars .r{display:grid;grid-template-columns:minmax(110px,210px) minmax(0,1fr) 36px;gap:10px;align-items:center;width:100%;border:0;background:none;text-align:left;padding:5px 6px}
+.abars .r:hover,.abars .r:focus-visible{background:var(--accbg)}.abars .bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden;display:block}.abars .bar i{display:block;height:100%;background:var(--acc)}.abars b{text-align:right;font-variant-numeric:tabular-nums}
+.tm{display:flex;gap:10px;flex-wrap:wrap}.sp{flex:1 1 230px;min-width:0;border:1px solid var(--line);border-radius:var(--r);padding:6px}
+.sph{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;background:none;font-weight:600;padding:4px 6px;text-align:left;overflow-wrap:anywhere}.sph em{font-style:normal;font-weight:400;color:var(--muted);font-size:12px;white-space:nowrap}.sph:hover{background:var(--accbg)}
+.spb{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tile{flex:1 1 96px;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left;padding:7px 9px;background:var(--accbg);border:1px solid transparent;position:relative;overflow:hidden;min-height:64px}.tile:hover,.tile:focus-visible{border-color:var(--acc)}
+.tile span{font-size:12px;color:var(--ink2);overflow-wrap:anywhere}.tile b{font-size:18px;font-variant-numeric:tabular-nums}.tile i{position:absolute;left:0;bottom:0;height:4px;background:var(--acc)}
+.crumb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px;font-size:13px}.crumb .sep{color:var(--muted)}.crumb button{padding:2px 10px;border-radius:999px;font-size:13px}.crumb .x{color:var(--muted)}
+@media print{.tile,.sp{break-inside:avoid}.crumb{display:none}}
 .cover{display:none}
 @media (max-width:900px){.g3,.g2,.find{grid-template-columns:minmax(0,1fr)}.mat{grid-template-columns:minmax(0,1fr) 120px}.mat .mst{grid-column:1/-1}}
 @page{margin:16mm 14mm;@bottom-center{content:"Page " counter(page) " of " counter(pages)}}
@@ -73,22 +84,41 @@ function topBar(){
 function topFive(){
  const m={};D.findings.forEach(f=>{const x=m[f.check]||(m[f.check]={n:0,s:0});x.n++;x.s=Math.max(x.s,SEV[f.sev])});
  return Object.entries(m).sort((a,b)=>b[1].s-a[1].s||b[1].n-a[1].n).slice(0,5)}
+const subL=s=>s==='-'?'Tenant-wide':s;
+function drill(o){go('findings',()=>{st.sev=new Set(o.sev||SEVL);st.area=o.area||null;st.sub=o.sub||'all';st.q='';st.open=o.open||null;st.sel=null})}
+function areaBars(){const m={};D.findings.forEach(f=>{const d=byCheck(f.check).domain;m[d]=(m[d]||0)+1});const es=Object.entries(m).sort((a,b)=>b[1]-a[1]);if(!es.length)return h('p',{class:'mini'},'No items to show.');const mx=es[0][1];
+ return h('div',{class:'abars'},...es.map(([d,n])=>h('button',{class:'r',title:'Show these items',onclick:()=>drill({area:d})},h('span',0,dn(d)),h('span',{class:'bar'},h('i',{style:'width:'+Math.max(3,100*n/mx)+'%'})),h('b',0,n))))}
+function treemap(){const cell={};D.findings.forEach(f=>{const d=byCheck(f.check).domain;cell[f.sub]=cell[f.sub]||{};cell[f.sub][d]=(cell[f.sub][d]||0)+1});
+ const subs=Object.keys(cell).sort(),tot=s=>Object.values(cell[s]).reduce((a,b)=>a+b,0),mx=Math.max(1,...subs.flatMap(s=>Object.values(cell[s])));
+ return h('div',{class:'tm'},...subs.map(s=>h('div',{class:'sp'},h('button',{class:'sph',title:'Show everything in this subscription',onclick:()=>drill({sub:s})},h('span',0,subL(s)),h('em',0,tot(s)+(tot(s)===1?' item':' items'))),
+  h('div',{class:'spb'},...Object.entries(cell[s]).sort((a,b)=>b[1]-a[1]).map(([d,n])=>h('button',{class:'tile',title:dn(d)+' in '+subL(s)+': '+n,onclick:()=>drill({sub:s,area:d})},h('span',0,dn(d)),h('b',0,n),h('i',{style:'width:'+Math.max(6,100*n/mx)+'%'})))))))}
+function mapPane(){return D.findings.length?h('div',{class:'pane'},h('h2',0,'MAP OF SUBSCRIPTIONS AND AREAS'),treemap(),h('p',{class:'mini'},'One panel per subscription; the bar on each tile shows how many items, compared with the busiest tile. Click a tile to see those items, or a panel title to see the whole subscription. On the Findings page you can step back.')):null}
+function crumbs(){const parts=[];
+ if(st.sub!=='all')parts.push(['Subscription: '+subL(st.sub),()=>{st.sub='all'}]);
+ if(st.area)parts.push(['Area: '+dn(st.area),()=>{st.area=null}]);
+ if(st.sev.size<SEVL.length)parts.push(['Severity: '+SEVL.filter(x=>st.sev.has(x)).join(', '),()=>{st.sev=new Set(SEVL)}]);
+ if(st.q)parts.push(['Search: '+st.q,()=>{st.q=''}]);
+ const sel=D.findings.find(x=>x.fp+x.res===st.sel),ck=st.open&&byCheck(st.open);
+ return h('nav',{class:'crumb noprint','aria-label':'Where you are'},h('button',{onclick:()=>go('summary')},'Summary'),h('span',{class:'sep'},'>'),h('span',0,'Findings'),
+  ...parts.flatMap(([l,fn])=>[h('span',{class:'sep'},'>'),h('button',{title:'Remove this filter',onclick:()=>{fn();st.open=null;st.sel=null;rerender()}},l+'  \u00d7')]),
+  ck?[h('span',{class:'sep'},'>'),h('span',0,ck.title)]:null,sel?[h('span',{class:'sep'},'>'),h('span',0,sel.name)]:null,
+  parts.length?h('button',{class:'x',onclick:()=>{st.sub='all';st.area=null;st.sev=new Set(SEVL);st.q='';st.open=null;st.sel=null;rerender()}},'Clear all'):null)}
 function summary(){
  const n=D.findings.length,sv=SEVL.map(s=>[s,D.findings.filter(f=>f.sev===s).length]);
  return h('div',0,
   h('div',{class:'pane'},h('p',{class:'headline'},n===0?'The checks that ran found nothing to review. '+(naN+skN?naN+skN+' checks did not run, so that is not a clean bill of health.':''):n+' items to review from '+ranN+' checks that ran. '+(naN+skN+faN?(naN+skN+faN)+((naN+skN+faN)===1?' check could not run and is':' checks could not run and are')+' listed as not assessed.':'Every check ran.')),
-   h('div',{class:'stat'},...sv.map(([s,k])=>h('div',0,h('b',0,k),h('span',0,sevIcon(s)))),h('div',0,h('b',0,ranN),h('span',0,'checks ran')),h('div',0,h('b',0,naN+skN+faN),h('span',0,'not assessed'))),
+   h('div',{class:'stat'},...sv.map(([s,k])=>h('button',{class:'k',title:'Show these items',onclick:()=>drill({sev:[s]})},h('b',0,k),h('span',0,sevIcon(s)))),h('button',{class:'k',title:'See which checks ran',onclick:()=>go('coverage')},h('b',0,ranN),h('span',0,'checks ran')),h('button',{class:'k',title:'See what was not assessed',onclick:()=>go('coverage')},h('b',0,naN+skN+faN),h('span',0,'not assessed'))),
    h('div',{class:'note'},'F-CAT only reads. It recommends and never changes anything in Azure. Each item is a prompt to check with the owner, not an instruction.')),
   h('div',{class:'grid g2'},
    h('div',{class:'pane'},h('h2',0,'WHERE TO LOOK FIRST'),topFive().length?h('ul',{class:'plain'},...topFive().map(([id,x])=>h('li',0,h('button',{onclick:()=>go('findings',()=>{st.open=id;st.area=null;st.sev=new Set(SEVL)})},byCheck(id).title),' ',h('span',{class:'mini'},x.n+' item'+(x.n>1?'s':'')+', highest '+SEVL[3-Math.max(...D.findings.filter(f=>f.check===id).map(f=>SEV[f.sev]))])))):h('p',{class:'mini'},'Nothing to list.')),
-   h('div',{class:'pane'},h('h2',0,'WHAT WE COULD NOT ASSESS'),naN+skN+faN?h('ul',{class:'plain'},...D.checks.filter(c=>c.status!=='ran').map(c=>h('li',0,h('b',0,c.title),': ',c.plain))):h('p',{class:'mini'},'Every check ran.'))),
+   h('div',{class:'pane'},h('h2',0,'WHERE THE ITEMS CONCENTRATE'),areaBars())),mapPane(),h('div',{class:'pane'},h('h2',0,'WHAT WE COULD NOT ASSESS'),naN+skN+faN?h('ul',{class:'plain'},...D.checks.filter(c=>c.status!=='ran').map(c=>h('li',0,h('b',0,c.title),': ',c.plain))):h('p',{class:'mini'},'Every check ran.')),
   h('div',{class:'pane'},h('h2',0,'WHAT THIS RUN LOOKED AT'),h('p',{class:'mini'},D.scopeText+' Run '+D.run.started.slice(0,10)+'. Report fingerprint '+D.run.fingerprint+'.')))}
 function side(){
  const dom=[...new Set(D.checks.map(c=>c.domain))],subs=[...new Set(D.findings.map(f=>f.sub))].sort();
  return h('aside',{class:'pane','aria-label':'Filters'},h('h2',0,'SEARCH'),h('input',{type:'search',id:'q','aria-label':'Search findings',value:st.q,oninput:e=>{st.q=e.target.value;rerender(true)}}),
   h('h2',{style:'margin-top:12px'},'AREA'),...dom.map(d=>h('label',{class:'opt'},h('input',{type:'radio',name:'ar',checked:st.area===d,onclick:e=>{st.area=st.area===d?null:d;rerender()}}),dn(d),h('span',{class:'n'},D.findings.filter(f=>byCheck(f.check).domain===d).length))),
   h('h2',{style:'margin-top:12px'},'SEVERITY'),...SEVL.map(s=>h('label',{class:'opt'},h('input',{type:'checkbox',checked:st.sev.has(s),onchange:e=>{e.target.checked?st.sev.add(s):st.sev.delete(s);rerender()}}),sevIcon(s))),
-  subs.length>1?[h('h2',{style:'margin-top:12px'},'SUBSCRIPTION'),h('select',{'aria-label':'Subscription',onchange:e=>{st.sub=e.target.value;rerender()}},h('option',{value:'all'},'All'),...subs.map(s=>h('option',{value:s,selected:st.sub===s},s)))]:null)}
+  subs.length>1?[h('h2',{style:'margin-top:12px'},'SUBSCRIPTION'),h('select',{'aria-label':'Subscription',onchange:e=>{st.sub=e.target.value;rerender()}},h('option',{value:'all'},'All'),...subs.map(s=>h('option',{value:s,selected:st.sub===s},subL(s))))]:null)}
 function queue(){
  const vf=visible(),ids=[...new Set(vf.map(f=>f.check))].sort((a,b)=>Math.max(...vf.filter(f=>f.check===b).map(f=>SEV[f.sev]))-Math.max(...vf.filter(f=>f.check===a).map(f=>SEV[f.sev]))||vf.filter(f=>f.check===b).length-vf.filter(f=>f.check===a).length);
  return h('section',{'aria-label':'Findings by check'},ids.length?ids.map(id=>{const c=byCheck(id),fl=vf.filter(f=>f.check===id),open=st.open===id;
@@ -106,7 +136,7 @@ function drawer(){
   OP?/*OP*/[h('h3',0,'Evidence (operator only)'),h('dl',{class:'kv'},h('dt',0,'Rule version'),h('dd',0,f.evidence.logic_hash||'n/a'),h('dt',0,'Fingerprint'),h('dd',0,f.fp),h('dt',0,'Data digests'),h('dd',0,Object.entries(f.evidence.snapshot_digests||{}).map(([k,v])=>k+' '+v).join(', ')||'n/a')),
    h('h3',0,'Your notes (kept in this browser only)'),h('textarea',{'aria-label':'Notes',oninput:e=>store.set('note:'+f.fp+f.res,e.target.value)},store.get('note:'+f.fp+f.res,'')),
    h('select',{'aria-label':'Review status',onchange:e=>store.set('status:'+f.fp+f.res,e.target.value)},...['To review','Confirmed','Ask owner',"Won't fix"].map(s=>h('option',{selected:store.get('status:'+f.fp+f.res,'To review')===s},s)))]/*ENDOP*/:null)}
-function findings(){return h('div',{class:'grid find'},side(),queue(),drawer())}
+function findings(){return h('div',0,crumbs(),h('div',{class:'grid find'},side(),queue(),drawer()))}
 function coverage(){
  return h('div',{class:'pane'},h('h2',0,'DID EVERY CHECK RUN?'),h('p',{class:'mini'},'A check that did not run is not a pass. It is listed here with the reason.'),
   h('div',{class:'tw'},h('table',0,h('thead',0,h('tr',0,h('th',0,'Check'),h('th',0,'Status'),h('th',0,'What happened'),h('th',0,'Verified on a live tenant?'))),

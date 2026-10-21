@@ -194,3 +194,13 @@ def test_cli_bad_previous_or_maturity_exit_2(tmp_path, capsys):
         )
         == 2
     )
+
+
+def test_drill_down_present_in_both_audiences(tmp_path):
+    """The summary has clickable severity tiles, area bars and a subscription map, and the findings page has a breadcrumb."""
+    from fcat import dash_assets
+
+    for aud in ("operator", "customer"):
+        js = dash_assets.js_for(aud)
+        for needle in ("function drill(", "function treemap(", "function areaBars(", "function crumbs("):
+            assert needle in js

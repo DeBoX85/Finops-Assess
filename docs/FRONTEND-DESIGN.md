@@ -49,3 +49,6 @@ src/fcat/dash.py (data and audience split) and src/fcat/dash_assets.py (CSS and 
 - All report values are written as text nodes; the data JSON is escaped for `<`, `>`, `&`, U+2028 and U+2029.
 - "Why it matters" wording is domain-level only for now (not per check).
 Checked: headless Chromium at desktop, 390 px mobile and dark, both audiences: 0 console errors, no horizontal overflow, search keeps focus. Tests: tests/test_dash.py. Still open: the customer never-show list, roll-up scope, keep or drop report.html.
+
+### Drill-down added (2026-10-21, owner asked for the A3 clickability back, both audiences)
+Summary: severity counts are buttons (open Findings filtered), "where the items concentrate" bars by area, and a map of subscriptions and areas (tile = items per area per subscription, bar on the tile compares with the busiest tile; text always in normal ink so contrast holds in light and dark). Findings: a breadcrumb (Summary > filters > check > item), each filter removable, Clear all. Path: Summary, tile, check list, item detail. Browser-checked (clicks, breadcrumb, desktop and 390 px, both audiences): 0 console errors, no overflow. Not carried over from A3: tag panel and posture matrix (not in the real dashboard yet).

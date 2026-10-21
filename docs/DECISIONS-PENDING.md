@@ -32,3 +32,5 @@ Owner is away from the next few steps. Rules while items are pending:
 - 2026-10-21: GitHub gap analysis. Owner agreed G7 (target level per capability, backlog 36). G8 multi-tenant/MSSP batch: owner unsure, chose the option that keeps maximum flexibility (backlog 37: design for a list of scopes, keep single-tenant default, no hard-coded single-tenant assumptions). Not yet chosen to build: G1, G2, G4 to G6 (backlog 33 to 35).
 
 - 2026-10-21: Two HTML audiences agreed in principle (backlog 39): operator (editable, in depth) and customer (read-only, no config controls, browsable). Still open: the exact never-show list for the customer version. Roll-up scope (one customer with many tenants versus several customers) still undecided, backlog 37 stays open.
+
+- 2026-10-21 (owner answers): customer never-show list is NOT decided, revisit (defaults held). "Why it matters" wording stays per FinOps domain for now; owner may want to re-evaluate per-check wording later (marked REVISIT). report.html: owner asked for reasons for keeping or dropping before deciding. Roll-up scope: owner asked what the options are before deciding (backlog 37 open).

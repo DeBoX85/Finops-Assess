@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 13:13 UTC
+Last updated: 2026-10-21 13:28 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 13:13
-Base commit: bfb1ae9
+Last checkpoint (UTC): 2026-10-21 13:28
+Base commit: eead5e9
 Gates: pass
-Files changed in this checkpoint: 10
-narrative_hash: 5758de1ba3d5
+Files changed in this checkpoint: 6
+narrative_hash: 5edab66c9289
 stale_count: 0
 <!-- auto:end -->
 
@@ -59,6 +59,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 ## In progress
 Mock-up round 3 built (docs/mockups/frontend3, scripts/make_frontend_v3.py), awaiting commit. Nothing half-done. Cost governance phase 2 built offline (docs/COST-GOVERNANCE.md section 11), awaiting commit via checkpoint. Cost governance phase 1 is built offline (docs/COST-GOVERNANCE.md section 10). Phase 2 needs owner go-ahead.
 ## Next step
+2026-10-21 (later): owner answered the four dashboard questions: never-show list undecided (revisit), why-it-matters stays per domain (REVISIT later), report.html and roll-up scope awaiting reasons/options. Owner asked for A3 clickability and drill-down; added to both dashboards (summary tiles, area bars, subscription map, breadcrumb), see docs/FRONTEND-DESIGN.md.
 2026-10-21: REAL DASHBOARD BUILT OFFLINE (backlog 39): dashboard-operator.html and dashboard-customer.html written on every run (src/fcat/dash.py, dash_assets.py), Progress view fed by `--previous` and `--maturity`. Gates pass, browser QA clean. Awaiting owner: keep or drop report.html, customer never-show list, roll-up scope (37), per-check why-it-matters wording.
 2026-10-21: GitHub gap analysis done (KB 14): 9 candidate gaps G1 to G9 (strongest: cost-to-inventory reconciliation, run-to-run diff, dev/test and lifecycle checks), plus non-goals. BUILT OFFLINE 2026-10-21 (owner asked for the next 3 tasks): G2 `fcat compare` (backlog 34), G4-G6 five checks in checks_extra.py (35), G7 `fcat maturity` with target levels (36); G8 kept flexible (37, design only). QA done: gates pass, mutation smoke 0 survived, end-to-end compare run, mobile overflow fixed. Round 4 mock-up at docs/mockups/frontend4 (38). Awaiting owner review of the mock-up. G1 reconciliation (33) still waits for cost data (ADR 0006).
 2026-10-21: Sentinel module research done (KB 12, 13), ADR 0010 and docs/MODULE-SENTINEL.md drafted (PROPOSED). Owner asked about the impact of the rule scan (see MODULE-SENTINEL, Rule scan). Awaiting #13/#14 and ADR 0007 (#10). Tier A Sentinel checks can be built offline meanwhile. Rule 7 now covers GPL and unlicensed repos. Governance posture view and its mock-up (needs the owner's confidence-label rule, DECISIONS-PENDING #2). Ask the owner whether to start cost governance phase 2 (budgets, anomaly rules, exports, posture view) and whether to build the `[tags] required` config override. Older next steps: Owner review of maturity questionnaire and confidence-label rule (reminder due next stopping point). Backlog item 2 Layer A part 1 DONE; items 2, 3, 18 DONE; next 4 (cost collectors + allowlist ADR), 5, 7, 8. Old text: output audit Layer A (finding fingerprints/evidence, invariants checker, Audit section), then synthetic estate + golden report, cost collectors research. Add branding/module-weighting config to the plan.
