@@ -578,6 +578,52 @@ def estate():
         **batch3,
         **tier_a,
         "vms": vms,
+        # Cost reconciliation (hand-derived in tests/test_golden.py). sub 1: 1000 USD, of which 150 on a resource that is not in the id list and
+        # 50 with no resource id = 20 percent, so COST-UNMAP-01 fires. sub 2: everything known, no finding.
+        "resource_ids": [
+            {
+                "id": (base + "Compute/virtualMachines/vm-run").lower(),
+                "type": "microsoft.compute/virtualmachines",
+                "subscriptionId": "sub-synth-1",
+            },
+            {
+                "id": (base + "Compute/virtualMachines/vm-stopped").lower(),
+                "type": "microsoft.compute/virtualmachines",
+                "subscriptionId": "sub-synth-1",
+            },
+            {
+                "id": "/subscriptions/sub-synth-2/resourcegroups/rg-two/providers/microsoft.storage/storageaccounts/st2",
+                "type": "microsoft.storage/storageaccounts",
+                "subscriptionId": "sub-synth-2",
+            },
+        ],
+        "cost_by_resource": [
+            {
+                "subscriptionId": "sub-synth-1",
+                "resourceId": (base + "Compute/virtualMachines/vm-run").lower(),
+                "cost": 600.0,
+                "currency": "USD",
+            },
+            {
+                "subscriptionId": "sub-synth-1",
+                "resourceId": (base + "Compute/virtualMachines/vm-stopped").lower(),
+                "cost": 200.0,
+                "currency": "USD",
+            },
+            {
+                "subscriptionId": "sub-synth-1",
+                "resourceId": (base + "Compute/virtualMachines/vm-deleted").lower(),
+                "cost": 150.0,
+                "currency": "USD",
+            },
+            {"subscriptionId": "sub-synth-1", "resourceId": "", "cost": 50.0, "currency": "USD"},
+            {
+                "subscriptionId": "sub-synth-2",
+                "resourceId": "/subscriptions/sub-synth-2/resourcegroups/rg-two/providers/microsoft.storage/storageaccounts/st2",
+                "cost": 10.0,
+                "currency": "USD",
+            },
+        ],
         "subscriptions": subs,
         "management_groups": mgs,
         "unattached_disks": disks,
@@ -591,12 +637,19 @@ def estate():
 def write_snapshot():
     SNAP.mkdir(parents=True, exist_ok=True)
     (SNAP / "_meta.json").write_text(json.dumps({"collected_at": "2026-10-01T00:00:00Z"}, indent=1))
-    rest = {"budgets", "anomaly_rules", "cost_exports"}  # REST collectors: rows plus a per-subscription 'scopes' list (fcat.govcost)
+    rest = {
+        "budgets",
+        "anomaly_rules",
+        "cost_exports",
+        "cost_by_resource",
+    }  # REST collectors: rows plus a per-subscription 'scopes' list (fcat.govcost)
     for name, rows in estate().items():
         body = {"rows": rows, "total_records": len(rows), "pages": 1, "warnings": []}
         if name in rest:
             body["scopes"] = [{"subscriptionId": f"sub-synth-{i}", "status": "ok"} for i in (1, 2, 3)]
             body["api_version"] = "2026-06-01"
+            if name == "cost_by_resource":
+                body["timeframe"] = "TheLastMonth"
         (SNAP / f"{name}.json").write_text(json.dumps(body, indent=1, sort_keys=True))
 
 

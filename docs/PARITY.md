@@ -125,3 +125,4 @@ These come from the public ACORT README (GPL-3.0, ideas only; its code was not r
 | Storage accounts without a lifecycle policy | DONE-OFFLINE | OPT-STORLC-01 | GPv2 and premium block blob only; refuses to decide when no policy resources are returned; ARG exposure UNVERIFIED |
 | Empty availability sets | DONE-OFFLINE | ORPH-AVSET-01 | Hygiene, low |
 | Deallocated VMs for more than 90 days | DONE-OFFLINE | IDLE-VMDEAL-01 | Only fires on a power-state timestamp; refuses to decide without one (ARG exposure UNVERIFIED). The Activity Log keeps 90 days, so a missing entry is never read as 'over 90 days' |
+| Cost on resources missing from the inventory or without a resource id | DONE-OFFLINE | COST-UNMAP-01 | Needs `[run] cost_apis = true`. Reconciliation of the Cost Management Query (last full month, by ResourceId) with the Resource Graph id list. Cost column name, ResourceId case and nextLink paging are UNVERIFIED live |

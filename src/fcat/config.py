@@ -110,6 +110,7 @@ class Config:
     rightsizing: bool = False  # opt-in: reads Azure Monitor metrics and compute SKUs (many GET calls); see docs/RIGHTSIZING.md
     rightsizing_max_vms: int = 50
     governance_apis: bool = False  # opt-in: 3 GET calls per subscription (budgets, anomaly rules, exports); see docs/COST-GOVERNANCE.md
+    cost_apis: bool = False  # opt-in: one Cost Management Query per subscription plus a full resource id list; see docs/COST-DATA.md
 
     def as_dict(self):
         return {
@@ -121,6 +122,7 @@ class Config:
             "rightsizing": self.rightsizing,
             "rightsizing_max_vms": self.rightsizing_max_vms,
             "governance_apis": self.governance_apis,
+            "cost_apis": self.cost_apis,
         }
 
     def enabled(self, meta) -> tuple[bool, str]:
@@ -147,6 +149,18 @@ def load(path) -> Config:
     gov = run.get("governance_apis", False)
     if not isinstance(gov, bool):
         raise ValueError("[run] governance_apis must be true or false")
+    cost = run.get("cost_apis", False)
+    if not isinstance(cost, bool):
+        raise ValueError("[run] cost_apis must be true or false")
     return Config(
-        prof, d.get("domains", {}), d.get("checks", {}), run.get("subscriptions", []), run.get("management_groups", []), rep, rs, cap, gov
+        prof,
+        d.get("domains", {}),
+        d.get("checks", {}),
+        run.get("subscriptions", []),
+        run.get("management_groups", []),
+        rep,
+        rs,
+        cap,
+        gov,
+        cost,
     )

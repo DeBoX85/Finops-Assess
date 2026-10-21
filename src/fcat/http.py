@@ -116,11 +116,19 @@ class Client:
             self.sleep(wait)
 
 
+RETRY_HEADERS = (
+    "retry-after",
+    "x-ms-ratelimit-microsoft.consumption-retry-after",
+)  # second: Cost Management 429 (Learn, Query - Usage, read 2026-10-21)
+
+
 def _retry_after(h):
-    try:
-        return max(1.0, float(h.get("retry-after", "")))
-    except ValueError:
-        return 2.0
+    for name in RETRY_HEADERS:
+        try:
+            return max(1.0, float(h.get(name, "")))
+        except ValueError:
+            continue
+    return 2.0
 
 
 def _hms(v):

@@ -76,6 +76,9 @@ def _ireplace(text: str, old: str, new: str) -> str:
         i = j + len(old)
 
 
+RESOURCE_ID_LIST_KEYS = (
+    "top_missing",
+)  # details keys holding a list of {"id": <resource id>, ...}; the ids are pseudonymised like the finding's own id
 TAG_VALUE_KEYS = ("variants",)  # details keys that hold customer tag values (owner chose to store values, 2026-10-20)
 
 
@@ -107,6 +110,13 @@ def findings(fs, salt: str):
         names: dict = {}
         g = copy.deepcopy(f)
         g.resource_id = resource_id(f.resource_id, salt, names)
+        if isinstance(g.details, dict):
+            for k in RESOURCE_ID_LIST_KEYS:
+                if isinstance(g.details.get(k), list):
+                    g.details[k] = [
+                        {**x, "id": resource_id(x["id"], salt, names)} if isinstance(x, dict) and isinstance(x.get("id"), str) else x
+                        for x in g.details[k]
+                    ]
         g.message = _scrub(g.message, names)
         g.details = _mask_values(_scrub(g.details, names), salt)
         g.fingerprint = fingerprint(g)

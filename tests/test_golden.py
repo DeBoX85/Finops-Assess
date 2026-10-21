@@ -89,9 +89,12 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["ORPH-AVSET-01"] == {"as-empty"}
     # 2026-05-01 to 2026-10-01 = 153 days (31+30+31+31+30) is over 90; 2026-09-15 is 16 days and must NOT appear
     assert by["IDLE-VMDEAL-01"] == {"vm-dealloc"}
+    # cost reconciliation: sub 1 has 1000 USD, 150 on a resource missing from the id list and 50 without id = 20 percent (over the 5 percent
+    # threshold); sub 2 has everything known and must NOT appear
+    assert by["COST-UNMAP-01"] == {"sub-synth-1"}
     assert (
         golden["audit"]["status"] == "pass"
-        and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1 + 1
+        and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1 + 1 + 1
     )
 
 

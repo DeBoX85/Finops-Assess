@@ -1,0 +1,53 @@
+{
+ "api_version": "2026-06-01",
+ "pages": 1,
+ "rows": [
+  {
+   "cost": 600.0,
+   "currency": "USD",
+   "resourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "cost": 200.0,
+   "currency": "USD",
+   "resourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-stopped",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "cost": 150.0,
+   "currency": "USD",
+   "resourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-deleted",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "cost": 50.0,
+   "currency": "USD",
+   "resourceId": "",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "cost": 10.0,
+   "currency": "USD",
+   "resourceId": "/subscriptions/sub-synth-2/resourcegroups/rg-two/providers/microsoft.storage/storageaccounts/st2",
+   "subscriptionId": "sub-synth-2"
+  }
+ ],
+ "scopes": [
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-2"
+  },
+  {
+   "status": "ok",
+   "subscriptionId": "sub-synth-3"
+  }
+ ],
+ "timeframe": "TheLastMonth",
+ "total_records": 5,
+ "warnings": []
+}

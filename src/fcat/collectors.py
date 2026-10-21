@@ -285,7 +285,11 @@ COLLECTORS = {
 
 
 # Collectors that are not ARG queries. They run only when the owner opts in and are never in COLLECTORS (which the KQL tests iterate).
-REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports")
+REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports", "cost_by_resource", "resource_ids")
+
+# ARG collectors that run only with [run] cost_apis = true (a full id list is large on big estates). Kept out of COLLECTORS for the same reason as above.
+KQL_RESOURCE_IDS = "resources | project id=tolower(id), type=tolower(type), subscriptionId | order by id asc"
+COST_ARG_COLLECTORS = {"resource_ids": KQL_RESOURCE_IDS}
 
 
 def collect(client, snapshot, config, errors: list):
@@ -299,6 +303,20 @@ def collect(client, snapshot, config, errors: list):
             errors.append({"collector": name, "error": f"{type(e).__name__}: {e}"})
             continue
         snapshot.save(name, {"rows": res.rows, "total_records": res.total_records, "pages": res.pages, "warnings": res.warnings})
+    if getattr(config, "cost_apis", False):
+        from . import costdata  # noqa: PLC0415
+
+        for name, kql in COST_ARG_COLLECTORS.items():
+            try:
+                res = arg.query(client, kql, config.subscriptions or None, config.management_groups or None)
+            except Exception as e:  # noqa: BLE001
+                errors.append({"collector": name, "error": f"{type(e).__name__}: {e}"})
+                continue
+            snapshot.save(name, {"rows": res.rows, "total_records": res.total_records, "pages": res.pages, "warnings": res.warnings})
+        try:
+            costdata.collect_cost(client, snapshot, config, errors)
+        except Exception as e:  # noqa: BLE001
+            errors.append({"collector": "cost_apis", "error": f"{type(e).__name__}: {e}"})
     if getattr(config, "governance_apis", False):
         from . import govcost  # noqa: PLC0415
 

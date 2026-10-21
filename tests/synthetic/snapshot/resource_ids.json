@@ -1,0 +1,22 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "id": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run",
+   "subscriptionId": "sub-synth-1",
+   "type": "microsoft.compute/virtualmachines"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-stopped",
+   "subscriptionId": "sub-synth-1",
+   "type": "microsoft.compute/virtualmachines"
+  },
+  {
+   "id": "/subscriptions/sub-synth-2/resourcegroups/rg-two/providers/microsoft.storage/storageaccounts/st2",
+   "subscriptionId": "sub-synth-2",
+   "type": "microsoft.storage/storageaccounts"
+  }
+ ],
+ "total_records": 3,
+ "warnings": []
+}

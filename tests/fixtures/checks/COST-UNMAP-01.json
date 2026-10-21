@@ -1,0 +1,187 @@
+{
+ "cases": [
+  {
+   "name": "20 percent unmapped reported",
+   "snapshot": {
+    "cost_by_resource": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/a",
+       "cost": 800,
+       "currency": "USD"
+      },
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/gone",
+       "cost": 150,
+       "currency": "USD"
+      },
+      {
+       "subscriptionId": "s1",
+       "resourceId": "",
+       "cost": 50,
+       "currency": "USD"
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok",
+       "truncated": false
+      }
+     ],
+     "timeframe": "TheLastMonth"
+    },
+    "resource_ids": {
+     "rows": [
+      {
+       "id": "/a"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1"
+   ]
+  },
+  {
+   "name": "under 5 percent not reported",
+   "snapshot": {
+    "cost_by_resource": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/a",
+       "cost": 970,
+       "currency": "USD"
+      },
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/gone",
+       "cost": 30,
+       "currency": "USD"
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok",
+       "truncated": false
+      }
+     ],
+     "timeframe": "TheLastMonth"
+    },
+    "resource_ids": {
+     "rows": [
+      {
+       "id": "/a"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "case-insensitive id match, no cost, all known",
+   "snapshot": {
+    "cost_by_resource": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/a",
+       "cost": 100,
+       "currency": "USD"
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok",
+       "truncated": false
+      }
+     ],
+     "timeframe": "TheLastMonth"
+    },
+    "resource_ids": {
+     "rows": [
+      {
+       "id": "/A"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "zero total cost skipped",
+   "snapshot": {
+    "cost_by_resource": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/gone",
+       "cost": 0,
+       "currency": "USD"
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok",
+       "truncated": false
+      }
+     ],
+     "timeframe": "TheLastMonth"
+    },
+    "resource_ids": {
+     "rows": [
+      {
+       "id": "/a"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "exactly 5 percent is reported",
+   "snapshot": {
+    "cost_by_resource": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/a",
+       "cost": 950,
+       "currency": "USD"
+      },
+      {
+       "subscriptionId": "s1",
+       "resourceId": "/gone",
+       "cost": 50,
+       "currency": "USD"
+      }
+     ],
+     "scopes": [
+      {
+       "subscriptionId": "s1",
+       "status": "ok",
+       "truncated": false
+      }
+     ],
+     "timeframe": "TheLastMonth"
+    },
+    "resource_ids": {
+     "rows": [
+      {
+       "id": "/a"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/subscriptions/s1"
+   ]
+  }
+ ]
+}

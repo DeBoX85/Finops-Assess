@@ -19,6 +19,10 @@ MUTATIONS = [
         "deallocated boundary off by one",
     ),
     ("src/fcat/checks_extra.py", "if not any(t for _, t in dated):", "if False:", "deallocated VMs without timestamp judged anyway"),
+    ("src/fcat/checks_cost.py", "if share < SHARE_THRESHOLD:", "if share <= SHARE_THRESHOLD:", "cost threshold boundary excluded"),
+    ("src/fcat/checks_cost.py", "if mixed:", "if False:", "mixed currencies added together"),
+    ("src/fcat/costdata.py", "if r.status == 204:", "if False:", "no content treated as error"),
+    ("src/fcat/redact.py", "for k in RESOURCE_ID_LIST_KEYS:", "for k in ():", "resource ids in details not redacted"),
     ("src/fcat/http.py", 'u.scheme != "https"', "False", "plain http allowed"),
     (
         "src/fcat/http.py",

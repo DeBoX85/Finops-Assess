@@ -186,7 +186,7 @@ def test_sku_failure_is_recorded_and_vms_skipped(tmp_path):
 
 
 def test_config_flag_defaults_off_and_validates(tmp_path):
-    assert collectors.REST_COLLECTORS == ("vm_cpu", "budgets", "anomaly_rules", "cost_exports")
+    assert collectors.REST_COLLECTORS == ("vm_cpu", "budgets", "anomaly_rules", "cost_exports", "cost_by_resource", "resource_ids")
     p = tmp_path / "c.toml"
     p.write_text("[run]\nrightsizing = true\nrightsizing_max_vms = 10\n")
     c = load(str(p))

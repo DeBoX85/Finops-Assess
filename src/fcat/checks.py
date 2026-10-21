@@ -69,7 +69,7 @@ def logic_hash(fn) -> str:
 
 def load_builtin():
     """Import built-in checks so they register. Explicit, so linters cannot remove the import."""
-    from . import checks_builtin, checks_extra, checks_governance  # noqa: F401, PLC0415
+    from . import checks_builtin, checks_cost, checks_extra, checks_governance  # noqa: F401, PLC0415
 
 
 def check(meta: CheckMeta):
@@ -78,6 +78,17 @@ def check(meta: CheckMeta):
         return fn
 
     return deco
+
+
+# Collectors that only run when the owner opts in. The reason text names the switch so an operator does not have to look it up.
+OPT_IN_SWITCH = {
+    "cost_by_resource": "[run] cost_apis = true",
+    "resource_ids": "[run] cost_apis = true",
+    "budgets": "[run] governance_apis = true",
+    "anomaly_rules": "[run] governance_apis = true",
+    "cost_exports": "[run] governance_apis = true",
+    "vm_cpu": "[run] rightsizing = true",
+}
 
 
 def run_all(config, snapshot, registry=None):
@@ -91,7 +102,9 @@ def run_all(config, snapshot, registry=None):
             continue
         missing = [c for c in meta.collectors if not snapshot.has(c)]
         if missing:
-            status.append({"id": meta.id, "status": "not_assessed", "reason": f"missing collector data: {', '.join(missing)}"})
+            hints = sorted({OPT_IN_SWITCH[c] for c in missing if c in OPT_IN_SWITCH})
+            why = f"missing collector data: {', '.join(missing)}" + (f" (opt-in, set {' and '.join(hints)} in the config)" if hints else "")
+            status.append({"id": meta.id, "status": "not_assessed", "reason": why})
             continue
         try:
             got = list(fn(snapshot))

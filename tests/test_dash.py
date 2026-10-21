@@ -248,5 +248,7 @@ def test_changes_section_survives_reports_without_a_start_time(tmp_path):
             "globalThis.window={scrollY:0,scrollTo(){}};globalThis.localStorage={getItem(){return null},setItem(){}};"
             "globalThis.matchMedia=()=>({matches:false});globalThis.print=()=>{};"
         )
-        r = subprocess.run([node, "-e", stub + js], capture_output=True, text=True, timeout=30)  # noqa: S603
+        script = tmp_path / "smoke.js"  # a file, not -e: the page data can exceed the 128 KB limit for a single command-line argument
+        script.write_text(stub + js)
+        r = subprocess.run([node, str(script)], capture_output=True, text=True, timeout=30)  # noqa: S603
         assert r.returncode == 0, r.stderr[-400:]

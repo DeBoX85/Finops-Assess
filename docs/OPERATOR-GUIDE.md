@@ -11,6 +11,7 @@ For whoever runs an assessment, including a junior colleague later. Status: the 
 1. Agree scope with the customer in writing: which subscriptions or management groups, and the time window.
 2. Send the customer the access list: `fcat doctor --needs` (no login, no network). It states which access each check needs and why. Reader on the scope is the baseline.
 3. Copy `config/example.toml` to a new file outside the code folder, set `subscriptions` (or leave empty for everything the login can read), and fill in `[report]` (title, prepared for, prepared by, footer, optional logo and accent colour; see docs/TAILORING.md).
+3a. Optional switches in `[run]`, all default off, ask the owner before turning one on: `governance_apis` (budgets, anomaly rules, exports), `cost_apis` (last month's cost per resource, needs Cost Management Reader; docs/COST-DATA.md), `rightsizing` (Azure Monitor metrics, many calls). A check that needs a switch that is off says so in its "not assessed" reason.
 4. Sign in with `az login` using the identity the customer gave you.
 5. Check access: `fcat doctor --config <your config>`. Read every failure. Do not continue past a failure you do not understand; ask the owner.
 

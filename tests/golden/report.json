@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "e6ef56df10024655",
+  "report_hash": "fb8701f56cc4894d",
   "status": "pass",
   "version": "0.1"
  },
@@ -823,6 +823,27 @@
     "all"
    ],
    "collectors": [
+    "cost_by_resource",
+    "resource_ids"
+   ],
+   "confidence": "low",
+   "domain": "billing",
+   "framework": "Allocation",
+   "id": "COST-UNMAP-01",
+   "permissions": [
+    "Cost Management Reader",
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Cost on resources missing from the inventory, or with no resource id",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
     "subscriptions"
    ],
    "confidence": "low",
@@ -1398,6 +1419,39 @@
    "message": "No budget has an enabled forecast alert, so overspend is only flagged after it happens",
    "resource_id": "/subscriptions/sub-synth-2",
    "severity": "low"
+  },
+  {
+   "check_id": "COST-UNMAP-01",
+   "details": {
+    "currency": "USD",
+    "missing_from_inventory_cost": 150.0,
+    "missing_from_inventory_resources": 1,
+    "no_resource_id_cost": 50.0,
+    "period": "TheLastMonth",
+    "subscription_cost": 1000.0,
+    "threshold_share": 0.05,
+    "top_missing": [
+     {
+      "cost": 150.0,
+      "id": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-deleted"
+     }
+    ]
+   },
+   "evidence": {
+    "collectors": [
+     "cost_by_resource",
+     "resource_ids"
+    ],
+    "logic_hash": "94631669312f",
+    "snapshot_digests": {
+     "cost_by_resource": "e6677dd668d1",
+     "resource_ids": "49f98e6e3c1f"
+    }
+   },
+   "fingerprint": "f1092baf2ab6354b",
+   "message": "20% of last month's cost (USD) sits on resources missing from the inventory or on lines without a resource id: explain it before using cost-per-resource views",
+   "resource_id": "/subscriptions/sub-synth-1",
+   "severity": "info"
   },
   {
    "check_id": "EXP-CFG-01",
@@ -4352,8 +4406,13 @@
    },
    {
     "id": "RIGHT-VMCPU-01",
-    "reason": "missing collector data: vm_cpu",
+    "reason": "missing collector data: vm_cpu (opt-in, set [run] rightsizing = true in the config)",
     "status": "not_assessed"
+   },
+   {
+    "findings": 1,
+    "id": "COST-UNMAP-01",
+    "status": "ran"
    },
    {
     "findings": 1,
@@ -4459,6 +4518,7 @@
   "collector_errors": [],
   "config": {
    "checks": {},
+   "cost_apis": false,
    "domains": {},
    "governance_apis": false,
    "management_groups_count": 0,
