@@ -50,6 +50,10 @@ textarea{width:100%;min-height:56px;resize:vertical}
 .spb{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .tile{flex:1 1 96px;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left;padding:7px 9px;background:var(--accbg);border:1px solid transparent;position:relative;overflow:hidden;min-height:64px}.tile:hover,.tile:focus-visible{border-color:var(--acc)}
 .tile span{font-size:12px;color:var(--ink2);overflow-wrap:anywhere}.tile b{font-size:18px;font-variant-numeric:tabular-nums}.tile i{position:absolute;left:0;bottom:0;height:4px;background:var(--acc)}
+.covrow{display:grid;grid-template-columns:minmax(80px,150px) minmax(0,1fr) 54px;gap:10px;align-items:center;padding:3px 0}.covrow .bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.covrow .bar i{display:block;height:100%;background:var(--acc)}.covrow em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;margin:2px 4px 2px 0;font:12px ui-monospace,Menlo,Consolas,monospace}.src{display:inline-block;border-left:4px solid var(--acc);padding:2px 8px;background:var(--accbg);border-radius:0 4px 4px 0;margin-right:6px}
+.var{display:inline-flex;gap:5px;margin:2px 6px 2px 0;border:1px solid var(--line);border-radius:4px;padding:0 6px;font:12px ui-monospace,Menlo,Consolas,monospace}.var em{font-style:normal;color:var(--muted)}
+.tagrow{padding:6px 0;border-top:1px solid var(--line)}
 .crumb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px;font-size:13px}.crumb .sep{color:var(--muted)}.crumb button{padding:2px 10px;border-radius:999px;font-size:13px}.crumb .x{color:var(--muted)}
 @media print{.tile,.sp{break-inside:avoid}.crumb{display:none}}
 .cover{display:none}
@@ -72,7 +76,8 @@ const st={view:store.get('view','summary'),sev:new Set(SEVL),area:null,sub:'all'
 const byCheck=id=>D.checks.find(c=>c.id===id);
 const visible=()=>D.findings.filter(f=>st.sev.has(f.sev)&&(!st.area||byCheck(f.check).domain===st.area)&&(st.sub==='all'||f.sub===st.sub)&&(!st.q||(f.msg+' '+f.res+' '+f.check).toLowerCase().includes(st.q.toLowerCase())));
 const ranN=D.checks.filter(c=>c.status==='ran').length,naN=D.checks.filter(c=>c.status==='not_assessed').length,skN=D.checks.filter(c=>c.status==='skipped').length,faN=D.checks.filter(c=>c.status==='failed').length;
-const VIEWS=[['summary','Summary'],['findings','Findings'],['coverage','Coverage'],...(D.changes||D.maturity?[['progress','Progress']]:[]),['audit','Self-audit']];
+const TAGIDS=['TAG-DISC-01','TAG-COV-01','TAG-CASE-01','TAG-VAL-01','TAG-RG-01'],HASTAG=D.checks.some(c=>TAGIDS.includes(c.id)),fnd=id=>D.findings.filter(f=>f.check===id);
+const VIEWS=[['summary','Summary'],['findings','Findings'],['coverage','Coverage'],...(HASTAG?[['tags','Tags']]:[]),...(D.changes||D.maturity?[['progress','Progress']]:[]),['audit','Self-audit']];
 let rerender=()=>{};
 function go(v,after){st.view=v;store.set('view',v);if(after)after();rerender()}
 function topBar(){
@@ -167,7 +172,37 @@ function audit(){const A=D.audit;
  return h('div',{class:'pane'},h('h2',0,'SELF-AUDIT'),h('p',0,'Result: '+A.status.toUpperCase()+'. Report fingerprint '+D.run.fingerprint+'.'),h('p',{class:'mini'},A.limits),
   A.invariants.length?h('div',{class:'tw'},h('table',0,h('thead',0,h('tr',0,h('th',0,'Test'),h('th',0,'Result'),h('th',0,'What it verifies'))),h('tbody',0,...A.invariants.map(i=>h('tr',0,h('td',{class:'id'},i.id),h('td',0,i.passed?'pass':'FAIL'),h('td',0,i.description+(i.passed?'':' ('+i.violation_count+' violations)'))))))):h('p',{class:'mini'},'Test detail was left out of this copy. The result line above is the full result.'),
   OP?/*OP*/h('p',{class:'mini'},'Operator copy. Tool '+D.run.tool+' ran '+D.run.apiCalls+' read calls.')/*ENDOP*/:null)}
-const RENDER={summary,findings,coverage,progress,audit};
+const maskVal=v=>{let x=2166136261;for(const c of String(v)){x^=c.charCodeAt(0);x=Math.imul(x,16777619)}return 'val-'+(x>>>0).toString(16).padStart(8,'0')};
+st.mask=false;const shown=v=>OP&&st.mask?maskVal(v):v;
+const toChecks=(id,label)=>h('button',{class:'noprint',onclick:()=>drill({open:id})},label||'See these items');
+function tags(){
+ const disc=fnd('TAG-DISC-01')[0],dd=disc&&disc.details,num=(x,d)=>typeof x==='number'?x:d;
+ const off=TAGIDS.map(byCheck).filter(c=>c&&c.status!=='ran');
+ const SRC={policy:'Declared by a tag policy',inferred:'Inferred from what most resources already use',none:'No standard evident'};
+ const keys=dd&&dd.top_keys&&typeof dd.top_keys==='object'?Object.entries(dd.top_keys):[];
+ return h('div',0,
+  h('div',{class:'pane'},h('h2',0,'TAG STANDARD'),
+   dd?[h('dl',{class:'kv'},h('dt',0,'Standard found'),h('dd',0,h('span',{class:'src'},SRC[dd.scheme_source]||'Not recorded'),...(Array.isArray(dd.scheme_keys)?dd.scheme_keys.map(k=>h('span',{class:'tag'},k)):[])),
+    h('dt',0,'How we know'),h('dd',{class:'mini'},dd.scheme_source==='policy'?'A tag policy names these tags. Nothing is judged against a list built into F-CAT.':(dd.inference_rule||'Not recorded')),
+    h('dt',0,'Coverage'),h('dd',0,num(dd.resources_with_any_tag,'?')+' of '+num(dd.resources,'?')+' resources carry at least one tag; '+num(dd.distinct_keys,'?')+' distinct tag names.')),toChecks('TAG-DISC-01')]
+   :h('p',{class:'mini'},'No tag discovery result in this run.'),
+   OP?/*OP*/h('label',{class:'opt noprint'},h('input',{type:'checkbox',checked:st.mask,onchange:e=>{st.mask=e.target.checked;rerender(true)}}),'Mask tag values (for screenshots)')/*ENDOP*/:null),
+  keys.length?h('div',{class:'pane'},h('h2',0,'TAG NAMES IN USE'),...keys.map(([k,v])=>h('div',{class:'covrow'},h('span',{class:'id'},k),h('div',{class:'bar'},h('i',{style:'width:'+Math.max(0,Math.min(100,num(v&&v.percent,0)))+'%'})),h('em',0,num(v&&v.percent,0)+'%')))):null,
+  h('div',{class:'pane'},h('h2',0,'SUBSCRIPTIONS BELOW THE BAR'),
+   fnd('TAG-COV-01').length?[...fnd('TAG-COV-01').map(f=>{const d=f.details||{};return h('div',{class:'tagrow'},h('b',0,f.name),h('div',0,num(d.missing_any_scheme_key,'?')+' of '+num(d.resources,'?')+' resources lack a tag from the standard ('+num(d.percent_missing,'?')+'%).'),
+     d.top_types_lacking&&typeof d.top_types_lacking==='object'?h('div',{class:'mini'},'Most often missing on: '+Object.entries(d.top_types_lacking).map(([t,n])=>t+' ('+n+')').join(', ')):null)}),
+    h('p',{class:'mini'},'Only subscriptions with at least 10 resources and 25% or more lacking the standard are listed. Others were not flagged; this is a proposed bar, not a verified rule.'),toChecks('TAG-COV-01')]
+   :h('p',{class:'mini'},'No subscription was flagged by this rule.')),
+  h('div',{class:'pane'},h('h2',0,'INCONSISTENT SPELLING (MAY SPLIT COST REPORTS)'),
+   fnd('TAG-CASE-01').length||fnd('TAG-VAL-01').length?[
+    ...fnd('TAG-CASE-01').map(f=>h('div',{class:'tagrow'},h('span',{class:'tag'},'name '+f.name.replace('tag:','')),...Object.entries((f.details&&f.details.casings)||{}).map(([k,n])=>h('span',{class:'var'},k,h('em',0,n))))),
+    ...fnd('TAG-VAL-01').map(f=>h('div',{class:'tagrow'},h('span',{class:'tag'},'values of '+f.name.replace('tag:','')),...((f.details&&Array.isArray(f.details.variants))?f.details.variants.flatMap(g=>Array.isArray(g)?g.map(x=>h('span',{class:'var'},shown(x.value),h('em',0,x.count))):[]):[]))),
+    h('p',{class:'mini'},'Names are case-insensitive to Azure but the casing shows in cost reports; values are case-sensitive and appear as separate rows. Whether Cost Management merges them is not verified.'),toChecks('TAG-CASE-01','See name variants'),' ',toChecks('TAG-VAL-01','See value variants')]
+   :h('p',{class:'mini'},'No spelling variants were flagged.')),
+  fnd('TAG-RG-01').length?h('div',{class:'pane'},h('h2',0,'RESOURCE GROUP TAGS NOT CARRIED BY THEIR RESOURCES'),...fnd('TAG-RG-01').map(f=>h('div',{class:'tagrow'},h('b',0,subL(f.sub)+' / '+f.name),h('div',{class:'mini'},f.msg))),
+   h('div',{class:'note'},'Azure does not copy resource group tags to resources. Cost Management has an optional inheritance setting that F-CAT cannot read yet, so whether it is on is not assessed.'),toChecks('TAG-RG-01')):null,
+  off.length?h('div',{class:'pane'},h('h2',0,'TAG CHECKS THAT DID NOT RUN'),h('ul',{class:'plain'},...off.map(c=>h('li',0,h('b',0,c.title),': ',c.plain)))):null)}
+const RENDER={summary,findings,coverage,tags,progress,audit};
 const root=$('#app');
 function mountAll(keep){const sc=window.scrollY,ae=document.activeElement&&document.activeElement.id;root.replaceChildren(h('div',{class:'cover'},h('h1',0,D.title),D.subtitle?h('p',0,D.subtitle):null,D.preparedFor?h('p',0,'Prepared for '+D.preparedFor):null,D.preparedBy?h('p',0,'Prepared by '+D.preparedBy):null,h('p',{class:'mini'},'Run '+D.run.started.slice(0,10)+'. Report fingerprint '+D.run.fingerprint+'. Self-audit: '+D.audit.status+'.')),topBar(),
  h('main',0,...VIEWS.map(([k])=>h('div',{class:'view'+(st.view===k?' on':''),id:'v-'+k},RENDER[k]())),D.footer?h('p',{class:'mini'},D.footer):null));if(keep)window.scrollTo(0,sc);if(ae==='q'){const q=$('#q');if(q){q.focus();q.setSelectionRange(q.value.length,q.value.length)}}}

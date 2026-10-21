@@ -204,3 +204,26 @@ def test_drill_down_present_in_both_audiences(tmp_path):
         js = dash_assets.js_for(aud)
         for needle in ("function drill(", "function treemap(", "function areaBars(", "function crumbs("):
             assert needle in js
+
+
+def test_tag_view_only_when_tag_checks_exist_and_mask_is_operator_only(tmp_path):
+    for aud in ("operator", "customer"):
+        assert "TAG-DISC-01" in _page(tmp_path, aud)
+    assert "Mask tag values" in _page(tmp_path, "operator")
+    assert "Mask tag values" not in _page(tmp_path, "customer")
+    doc = json.loads(json.dumps(GOLDEN))
+    doc["check_catalogue"] = [c for c in doc["check_catalogue"] if not c["id"].startswith("TAG-")]
+    doc["findings"] = [f for f in doc["findings"] if not f["check_id"].startswith("TAG-")]
+    doc["manifest"]["checks"] = [c for c in doc["manifest"]["checks"] if not c["id"].startswith("TAG-")]
+    d = _data(_page(tmp_path, "customer", doc))
+    assert not any(c["id"].startswith("TAG-") for c in d["checks"])
+
+
+def test_tag_values_with_hostile_text_stay_inert(tmp_path):
+    doc = json.loads(json.dumps(GOLDEN))
+    evil = "</script><img src=x onerror=alert(1)>"
+    for f in doc["findings"]:
+        if f["check_id"] == "TAG-VAL-01":
+            f["details"]["variants"] = [[{"value": evil, "count": 1}]]
+    page = _page(tmp_path, "operator", doc)
+    assert page.count("</script>") == 1 and "<img src=x" not in page

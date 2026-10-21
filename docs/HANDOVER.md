@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 13:48 UTC
+Last updated: 2026-10-21 13:53 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 13:48
-Base commit: 68604b6
+Last checkpoint (UTC): 2026-10-21 13:53
+Base commit: b09fe7d
 Gates: pass
-Files changed in this checkpoint: 1
-narrative_hash: 5edab66c9289
+Files changed in this checkpoint: 13
+narrative_hash: 007980e40a2c
 stale_count: 0
 <!-- auto:end -->
 
@@ -59,6 +59,7 @@ KB notes 01-09, plan v0.1, ADR 0001-0004 (0004 accepted), NOTICE, Phase 1 code, 
 ## In progress
 Mock-up round 3 built (docs/mockups/frontend3, scripts/make_frontend_v3.py), awaiting commit. Nothing half-done. Cost governance phase 2 built offline (docs/COST-GOVERNANCE.md section 11), awaiting commit via checkpoint. Cost governance phase 1 is built offline (docs/COST-GOVERNANCE.md section 10). Phase 2 needs owner go-ahead.
 ## Next step
+2026-10-21 (offline work, no tenant): built scripts/live_readiness.py (generates docs/UNVERIFIED-REGISTER.md and docs/LIVE-TEST-SHEET.md), wrote docs/LIVE-TESTING.md (G2 session plan, owner decisions listed) and docs/OPERATOR-GUIDE.md (for juniors), added a Tags view to both dashboards. Owner agreed to park licensing and Copilot until G2. Still open: customer self-audit simplification (my proposal, awaiting OK), never-show list, local guided UI before the first junior, roll-up B (backlog 41) not built.
 2026-10-21 (later): owner answered the four dashboard questions: never-show list undecided (revisit), why-it-matters stays per domain (REVISIT later), report.html and roll-up scope awaiting reasons/options. Owner asked for A3 clickability and drill-down; added to both dashboards (summary tiles, area bars, subscription map, breadcrumb), see docs/FRONTEND-DESIGN.md.
 2026-10-21: REAL DASHBOARD BUILT OFFLINE (backlog 39): dashboard-operator.html and dashboard-customer.html written on every run (src/fcat/dash.py, dash_assets.py), Progress view fed by `--previous` and `--maturity`. Gates pass, browser QA clean. Awaiting owner: keep or drop report.html, customer never-show list, roll-up scope (37), per-check why-it-matters wording.
 2026-10-21: GitHub gap analysis done (KB 14): 9 candidate gaps G1 to G9 (strongest: cost-to-inventory reconciliation, run-to-run diff, dev/test and lifecycle checks), plus non-goals. BUILT OFFLINE 2026-10-21 (owner asked for the next 3 tasks): G2 `fcat compare` (backlog 34), G4-G6 five checks in checks_extra.py (35), G7 `fcat maturity` with target levels (36); G8 kept flexible (37, design only). QA done: gates pass, mutation smoke 0 survived, end-to-end compare run, mobile overflow fixed. Round 4 mock-up at docs/mockups/frontend4 (38). Awaiting owner review of the mock-up. G1 reconciliation (33) still waits for cost data (ADR 0006).
