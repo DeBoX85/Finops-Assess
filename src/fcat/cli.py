@@ -5,7 +5,7 @@ import json
 import pathlib
 import sys
 
-from . import checks, collectors, compare, doctor, focus_import, manifest, maturity, redact, render_html, render_json, render_xlsx
+from . import checks, collectors, compare, dash, doctor, focus_import, manifest, maturity, redact, render_html, render_json, render_xlsx
 from . import config as cfgmod
 from .auth import AzCliTokenProvider
 from .errors import FcatError
@@ -13,7 +13,7 @@ from .http import Client
 from .snapshot import Snapshot
 
 
-def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False):
+def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False, previous=None, mat=None):
     findings, status = checks.run_all(cfg, snap)
     if redacted:
         salt = redact.new_salt()
@@ -27,6 +27,17 @@ def _finish(cfg, snap, out, identity, calls, cerrors, started, redacted=False):
         render_xlsx.render(pathlib.Path(out) / "report.xlsx", doc, cfg.report)
     except ImportError:
         print("note: openpyxl not installed, Excel report skipped (pip install 'fcat[excel]')")
+    changes = None
+    if previous is not None:
+        try:
+            changes = compare.compare(previous, doc)
+            for i in changes["items"]:
+                i["name"] = i["resource_id"].rstrip("/").rsplit("/", 1)[-1]
+            changes["items"] = [i for i in changes["items"] if i["state"] != "unchanged"]
+        except compare.CompareError as e:
+            print(f"note: comparison with the previous run skipped: {e}")
+    for aud in dash.AUDIENCES:
+        dash.render(pathlib.Path(out) / f"dashboard-{aud}.html", doc, aud, cfg.report, changes, mat)
     print(f"{len(findings)} findings; checks: " + ", ".join(f"{s['id']}={s['status']}" for s in status))
     print(f"self-audit: {doc['audit']['status']} (report fingerprint {doc['audit']['report_hash']})")
     return doc["audit"]["status"] == "pass"
@@ -89,7 +100,17 @@ def _compare(args) -> int:
     return 0
 
 
-PURGE_FILES = ("report.json", "report.html", "report.xlsx", "compare.json", "compare.md", "maturity.json", "maturity.md")
+PURGE_FILES = (
+    "report.json",
+    "report.html",
+    "report.xlsx",
+    "dashboard-operator.html",
+    "dashboard-customer.html",
+    "compare.json",
+    "compare.md",
+    "maturity.json",
+    "maturity.md",
+)
 
 
 def _purge(out: pathlib.Path, yes: bool) -> int:
@@ -126,6 +147,11 @@ def main(argv=None):
     f.add_argument("paths", nargs="+")
     f.add_argument("--out", default="output")
     for sp in (r, a):
+        sp.add_argument("--previous", help="an earlier report.json of the same tenant; adds a Changes section to the dashboards")
+        sp.add_argument(
+            "--maturity",
+            help="maturity input TOML (answers and targets, see docs/maturity/README.md); adds a Maturity section to the dashboards",
+        )
         sp.add_argument(
             "--branding", help="TOML file with only a [report] table; replaces the [report] settings of the main config for this run"
         )
@@ -185,6 +211,15 @@ def main(argv=None):
         except (cfgmod.ReportOptionsError, OSError) as e:
             print(f"error: {e}", file=sys.stderr)
             return 2
+    previous, mat = None, None
+    try:
+        if getattr(args, "previous", None):
+            previous = compare.load(args.previous)
+        if getattr(args, "maturity", None):
+            mat = maturity.evaluate(maturity.load(args.maturity))
+    except FcatError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     snap = Snapshot(out / "snapshot")
@@ -195,9 +230,9 @@ def main(argv=None):
             client = Client(tp)
             cerrors = []
             collectors.collect(client, snap, cfg, cerrors)
-            ok = _finish(cfg, snap, out, tp.identity(), client.calls, cerrors, started, args.redact)
+            ok = _finish(cfg, snap, out, tp.identity(), client.calls, cerrors, started, args.redact, previous, mat)
         else:
-            ok = _finish(cfg, snap, out, {}, [], [], started, args.redact)
+            ok = _finish(cfg, snap, out, {}, [], [], started, args.redact, previous, mat)
         if not ok:
             print("warning: self-audit FAILED, do not use this report; see the Audit section", file=sys.stderr)
             return 3

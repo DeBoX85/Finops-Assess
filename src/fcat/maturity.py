@@ -37,6 +37,29 @@ QMAP = {
     13: ("Reporting and Analytics", "Data Ingestion", "Automation Tools and Services", "FinOps Assessment"),
 }
 CAPABILITIES = tuple(dict.fromkeys(c for q in sorted(QMAP) for c in QMAP[q]))  # 22, in first-mention order
+# FinOps Framework domains (finops.org/framework/domains, read 2026-10-21). Our capability names drop the words FinOps, "&" is written "and".
+DOMAINS = {
+    "Understand Usage and Cost": ("Data Ingestion", "Allocation", "Reporting and Analytics", "Anomaly Management"),
+    "Quantify Business Value": ("Planning and Estimating", "Forecasting", "Budgeting", "KPIs and Benchmarking", "Unit Economics"),
+    "Optimize Usage and Cost": (
+        "Architecting and Workload Placement",
+        "Rate Optimization",
+        "Usage Optimization",
+        "Sustainability",
+        "Licensing and SaaS",
+    ),
+    "Manage the FinOps Practice": (
+        "Practice Operations",
+        "Governance, Policy and Risk",
+        "FinOps Assessment",
+        "Automation Tools and Services",
+        "FinOps Education and Enablement",
+        "Invoicing and Chargeback",
+        "Intersecting Disciplines",
+        "Executive Strategy Alignment",
+    ),
+}
+DOMAIN_OF = {c: d for d, cs in DOMAINS.items() for c in cs}
 DISCLAIMER = (
     "Screening level from questionnaire answers only. Technical evidence from the Azure scan is not part of these levels. "
     "Targets are set by the owner; a level below target is a prompt for a conversation, not a failure."
@@ -96,6 +119,7 @@ def evaluate(d: dict) -> dict:
         rows.append(
             {
                 "capability": cap,
+                "domain": DOMAIN_OF[cap],
                 "questions": qs,
                 "current": current,
                 "target": target,

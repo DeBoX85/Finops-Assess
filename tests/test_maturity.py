@@ -102,3 +102,9 @@ def test_cli_bad_input_exit_2(tmp_path, capsys):
     p = tmp_path / "m.toml"
     p.write_text('[answers]\nq1 = "Z"\n')
     assert cli.main(["maturity", str(p), "--out", str(tmp_path / "o"), "--allow-unignored-out"]) == 2
+
+
+def test_every_capability_has_exactly_one_domain():
+    assert set(maturity.DOMAIN_OF) == set(maturity.CAPABILITIES) and len(maturity.DOMAINS) == 4
+    assert sum(len(v) for v in maturity.DOMAINS.values()) == 22
+    assert all(r["domain"] in maturity.DOMAINS for r in _ev({})["capabilities"])
