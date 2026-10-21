@@ -57,7 +57,7 @@ def test_cli_redact_on_synthetic_estate(tmp_path):
         text = (tmp_path / "out" / name).read_text().lower()
         for secret in ("sub-synth", "rg-synth", "disk-001", "disk-104", "ünïcode", "pip-orphan", "nsg-orphan", "asp-empty"):
             assert secret not in text, (name, secret)
-    assert all(f["resource_id"] for f in doc["findings"]) and len(doc["findings"]) == 130
+    assert all(f["resource_id"] for f in doc["findings"]) and len(doc["findings"]) == len(_golden()["findings"])
 
 
 def test_purge_dry_run_then_delete_keeps_foreign_files(tmp_path, capsys):
@@ -72,3 +72,10 @@ def test_purge_dry_run_then_delete_keeps_foreign_files(tmp_path, capsys):
     assert not (out / "report.json").exists() and not (out / "snapshot").exists()
     assert (out / "notes.txt").read_text() == "mine"
     assert cli.main(["purge", "--out", str(tmp_path / "none")]) == 0
+
+
+def _golden():
+    import json
+    import pathlib
+
+    return json.loads((pathlib.Path(__file__).resolve().parent / "golden" / "report.json").read_text())
