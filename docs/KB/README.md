@@ -18,6 +18,7 @@ Rule used throughout: every fact carries its source; "OPENED" means the page was
 | notes/10-cost-api-and-billing-types.md | Cost Management data by billing type, APIs, limits |
 | notes/11-cost-governance-azure.md | Cost governance on Azure: CAF, WAF, FinOps, Policy, tags, budgets, anomaly alerts, exports; what a Reader can see (2026-10-20) |
 | notes/17-learn-verification-batch-2026-10-21.md | Learn facts that settle UNVERIFIED items: Activity Log 90 days, instance view time, DevTest schedules in ARG, storage policies probably not in ARG, policy exemption and budget properties |
+| notes/18-learn-verification-batch-2-2026-10-21.md | Batch 2: storage lifecycle absent from ARG (confirmed), powerState code, Advisor, Defender pricings, backup items, Hybrid Benefit field |
 | sources/url-register.csv | One row per URL: status, reliability, note |
 | sources/workbook-queries-raw.json | 467 raw workbook query rows |
 | sources/hub-recommendation-queries/ | 23 hub query JSONs (MIT, Microsoft; attribution needed) |

@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 15:14 UTC
+Last updated: 2026-10-21 18:41 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 15:14
-Base commit: 92e93ba
+Last checkpoint (UTC): 2026-10-21 18:41
+Base commit: a17ce67
 Gates: pass
-Files changed in this checkpoint: 9
-narrative_hash: 7c04b1d0a0a7
+Files changed in this checkpoint: 7
+narrative_hash: 66f9f2ad34a1
 stale_count: 0
 <!-- auto:end -->
 
@@ -23,6 +23,7 @@ Everything up to 2026-10-21 is described in docs/HANDOVER-ARCHIVE.md (verbatim o
 6. `fcat rollup` (backlog 41): offline side-by-side of finished reports, counts only, ADR 0011.
 7. `fcat guide`: terminal wizard for less technical operators (backlog 43 first step; the local web front end is NOT built).
 8. Housekeeping: this handover rewritten, RESUME_PROMPT rewritten, M-013 logged.
+9. Scheduled batch 2026-10-21 (unit 1 of 3): KB 18 Learn verification done. OPT-STORLC-01 confirmed unworkable via ARG (message and docstring corrected, golden logic_hash updated, still refuses to decide). Units 2 (code review) and 3 (ci.yml desk check) follow.
 
 ## In progress
 Nothing half-done. All work is committed and pushed (check `git status` and `git log origin/main..origin/wip/auto` first).

@@ -135,13 +135,14 @@ def premium_or_redundant_in_devtest(snap):
 )
 def storage_without_lifecycle(snap):
     """Learn (read 2026-10-21): lifecycle policies are supported for block and append blobs in general-purpose v2 and premium block blob accounts;
-    the legacy BlobStorage kind is left out because Learn pages disagree on it. A policy is the child resource 'default'. UNVERIFIED live: that
-    Resource Graph returns managementpolicies; an empty result makes the check refuse to decide. Whether an account holds blobs at all is not known."""
+    the legacy BlobStorage kind is left out because Learn pages disagree on it. A policy is the child resource 'default'. Learn's Resource Graph
+    table reference (read 2026-10-21) does not list managementpolicies at all (KB 18), so on a real tenant this will normally refuse to decide until a
+    per-account ARM read is added (backlog 44). An empty result makes the check refuse to decide. Whether an account holds blobs at all is not known."""
     pols = _rows(snap, "storage_lifecycle")
     accts = [a for a in _rows(snap, "storage_accounts") if str(a.get("kind") or "").lower() in ("storagev2", "blockblobstorage")]
     if accts and not pols:
         raise NotAssessed(
-            "no lifecycle policy resources were returned for the estate; cannot tell 'none exist' from 'Resource Graph does not return this type' (UNVERIFIED)"
+            "no lifecycle policy resources were returned; Learn's Resource Graph table reference does not list storage management policies, so 'none exist' cannot be told apart from 'not queryable here' (KB 18)"
         )
     have = {
         str(p.get("id") or "").lower().rsplit("/managementpolicies/", 1)[0]
