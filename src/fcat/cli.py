@@ -213,6 +213,7 @@ def main(argv=None):
     ru.add_argument("reports", nargs="+", help="two or more report.json files")
     ru.add_argument("--label", action="append", help="name of a scope; give one per report, in the same order")
     ru.add_argument("--out", default="output")
+    sub.add_parser("guide", help="step-by-step questions, then access check and run (for operators who prefer not to write commands)")
     pg = sub.add_parser("purge", help="delete files fcat created in an output folder (dry run unless --yes)")
     pg.add_argument("--out", default="output")
     pg.add_argument("--yes", action="store_true")
@@ -223,6 +224,14 @@ def main(argv=None):
     args = p.parse_args(argv)
     if args.cmd == "doctor":
         return _doctor(args)
+    if args.cmd == "guide":
+        from . import guide  # noqa: PLC0415
+
+        try:
+            return guide.run()
+        except (KeyboardInterrupt, EOFError):
+            print("\nStopped. Nothing further was run.")
+            return 1
     problem = None if args.cmd == "purge" or args.allow_unignored_out else manifest.out_dir_problem(args.out)
     if problem:
         print(f"error: {problem}. Use a different --out, or add it to .gitignore, or pass --allow-unignored-out.", file=sys.stderr)

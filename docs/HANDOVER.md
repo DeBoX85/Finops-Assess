@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-21 15:02 UTC
+Last updated: 2026-10-21 15:11 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-21 15:02
-Base commit: 26c7dcd
+Last checkpoint (UTC): 2026-10-21 15:11
+Base commit: 31ab592
 Gates: pass
-Files changed in this checkpoint: 10
+Files changed in this checkpoint: 7
 narrative_hash: cd45b5348d78
-stale_count: 0
+stale_count: 2
 <!-- auto:end -->
 
 ## State

@@ -30,6 +30,14 @@ MUTATIONS = [
         'cells.append({"state": "ran", "findings": s["_counts"].get(cid, 0)})',
         "not-run shown as zero in the roll-up",
     ),
+    ("src/fcat/guide.py", "if code == 3:", "if False:", "guide hides a failed self-audit"),
+    (
+        "src/fcat/guide.py",
+        'if not _yes(ask, "Check access and run the analysis now?"):',
+        "if False:",
+        "guide runs without final confirmation",
+    ),
+    ("src/fcat/guide.py", "while folder.exists():", "while False:", "guide overwrites an earlier run folder"),
     ("src/fcat/http.py", 'u.scheme != "https"', "False", "plain http allowed"),
     (
         "src/fcat/http.py",

@@ -16,6 +16,7 @@ For whoever runs an assessment, including a junior colleague later. Status: the 
 5. Check access: `fcat doctor --config <your config>`. Read every failure. Do not continue past a failure you do not understand; ask the owner.
 
 ## The run
+- Prefer questions to commands? `fcat guide` asks for the customer name, scope and optional reads, writes the config in `~/fcat-runs/<customer>-<date>/`, checks access and runs the analysis. It never signs in for you (do `az login` first) and asks for a final yes before anything runs. It only reads from Azure.
 - Live: `fcat run --config <config> --out <output folder>`. Add `--previous <older report.json>` for a Changes section, and `--maturity <answers.toml>` for the maturity section (docs/maturity/README.md).
 - Offline re-analysis of an existing snapshot: `fcat analyze --config <config> --out <output folder>`.
 - The output folder must be inside no git repository, or in an ignored folder. The tool refuses otherwise. Do not override that with `--allow-unignored-out` unless the owner says so.
