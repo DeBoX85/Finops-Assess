@@ -1,4 +1,4 @@
-# Interview round: questions for the owner (prepared 2026-10-27)
+# Interview round: questions for the owner (prepared 2026-10-27; ANSWERED the same day, answers recorded in docs/DECISIONS-PENDING.md)
 
 How to use: answer with a letter per question. Option X is always "write your own". "My lean" is my judgement, not a fact; the reason is given so you can overrule it. Sources for each item are in docs/DECISIONS-PENDING.md (DP #), docs/LIVE-TESTING.md section 0 (LT) and the backlog (BL). Suggested order: part A first, because it decides whether the tool ever meets a real tenant. Parts B to E are independent of each other.
 
