@@ -141,3 +141,31 @@ def test_payg_finding_gets_core_licence_detail_only_with_lookup(tmp_path):
         {"rows": [{"subscriptionId": "s1", "location": "westeurope", "size": "S4", "vcpus": 32}], "scopes": [], "truncated": False},
     )
     assert list(fn(s))[0].details["core_licences_needed"] == 32
+
+
+def test_config_validates_the_switch(tmp_path):
+    import pytest
+
+    p = tmp_path / "c.toml"
+    p.write_text("[run]\ncompute_apis = true\n")
+    assert config.load(p).compute_apis is True and config.Config(compute_apis=True).as_dict()["compute_apis"] is True
+    p.write_text('[run]\ncompute_apis = "yes"\n')
+    with pytest.raises(ValueError, match="compute_apis"):
+        config.load(p)
+
+
+def test_collect_calls_vcpudata_only_when_switched_on_and_records_a_crash(tmp_path, monkeypatch):
+    seen = []
+    monkeypatch.setattr(vcpudata, "collect_vm_vcpus", lambda *a, **k: seen.append(1))
+    monkeypatch.setattr(collectors, "COLLECTORS", {})
+    for on in (False, True):
+        collectors.collect(client()[0], Snapshot(tmp_path / f"s{on}"), config.Config(compute_apis=on), [])
+    assert seen == [1]
+
+    def boom(*a, **k):
+        raise RuntimeError("x")
+
+    monkeypatch.setattr(vcpudata, "collect_vm_vcpus", boom)
+    errors = []
+    collectors.collect(client()[0], Snapshot(tmp_path / "crash"), config.Config(compute_apis=True), errors)
+    assert errors[0]["collector"] == "compute_apis" and "RuntimeError" in errors[0]["error"]
