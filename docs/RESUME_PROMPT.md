@@ -6,6 +6,7 @@ Repo: DeBoX85/Finops-Assess (private GitHub). Attach it to the session (the repo
 2. Read CLAUDE.md (standing rules), docs/HANDOVER.md (current state), docs/RESUME_PROMPT.md (this file), docs/CHECKPOINTS.md, docs/MISTAKES.md. Read docs/PLAN.md and docs/BACKLOG.md when you pick work. The owner's latest answers (2026-10-27 interview round) are the last entry in docs/DECISIONS-PENDING.md; the question sheet is docs/INTERVIEW-ROUND.md.
 3. `sh scripts/install_hooks.sh`; `python -m pip install --require-hashes -r requirements/dev.txt` (add `-r requirements/ci.txt` for `--full` gates); `python scripts/gates.py` must be green before you change anything.
 4. Tell me in two sentences what state you found and what you will do.
+5. Then remind me, in at most five short lines, of the handover limits below (section "Handover limits") and ask me whether anything was said in the previous chat that was never written to the repo (decisions, preferences, files I attached). Do not start new work until I answer. This is the first test that the handover worked; if HANDOVER and the repo disagree, say so.
 
 ## The user (owner) and standing preferences
 Grounded, well researched answers; cite sources (URL, date read; prefer Microsoft Learn). Honesty, precision, accuracy and critical thinking above all. NO em dashes. Say "don't know" when you don't; mark speculation. Ask when intent is unclear. Verify, trust nothing. The owner is mostly the sole operator; juniors who are less comfortable with a CLI may come later.
@@ -34,3 +35,14 @@ A recurring scheduled task (trigger id trig_01HmpJ6taRSAWcrkKosaiQcv, every 6 ho
 
 ## First live session (when a tenant exists)
 Follow docs/LIVE-TESTING.md. Settle its section 0 owner decisions first. Never paste raw tenant output into chat; use `--redact`.
+
+## Handover limits (the new chat must remind the owner of these)
+- Only work that was committed and pushed survives. A checkpoint is the save point; anything after the last successful checkpoint, and anything said only in chat, is lost. Check `git log` and docs/DECISIONS-PENDING.md (last entry) against what you remember.
+- Files the owner attached in the old chat and files in the old workspace (outside the repo) are gone unless the owner sends them again. Tenant data is never in the repo.
+- The cloud workspace cannot reach the GitHub API, only `git` over the proxy. Scheduled tasks (the 6-hourly heartbeat) belong to the account, not the chat, and keep firing into whichever session they are bound to.
+- The restart prompt has not been proven in a fresh chat on its own. If the new chat gets something wrong, tell it, and log the miss in docs/MISTAKES.md so the prompt can be fixed.
+- The new chat does not remember reasoning, only what the files say. If something matters and is not in HANDOVER, DECISIONS-PENDING or an ADR, say it again.
+
+## How the owner triggers a handover
+When the context is nearly used up (or any time), tell the current chat: "handover". The chat then: finishes or parks the current unit; updates the narrative parts of docs/HANDOVER.md; runs `python scripts/checkpoint.py`; reports whether the push succeeded and the commit id; lists anything not yet written down. Only a successful push counts as saved. Then paste this file into a new chat.
+

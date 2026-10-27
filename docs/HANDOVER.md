@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 15:56 UTC
+Last updated: 2026-10-27 15:58 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 15:56
-Base commit: 2304816
+Last checkpoint (UTC): 2026-10-27 15:58
+Base commit: 9790560
 Gates: pass
 Files changed in this checkpoint: 2
-narrative_hash: 9d0eb458898a
+narrative_hash: 1bf586ec9fac
 stale_count: 0
 <!-- auto:end -->
 
@@ -45,6 +45,9 @@ When the owner gives a new instruction, it wins over this list.
 
 ## Open questions for the user
 See docs/DECISIONS-PENDING.md. Still open after the 2026-10-27 round: ADR 0007 and ADR 0010 (see Next step 6), maturity questionnaire walk-through, never-show list (tick list to be sent), mock-up screenshots, heartbeat removal.
+
+## Handover limits and trigger
+See the sections "Handover limits" and "How the owner triggers a handover" in docs/RESUME_PROMPT.md. In short: only pushed work survives; chat-only decisions and attached files are lost; the new chat must remind the owner of this and ask what was never written down; "handover" from the owner triggers the checkpoint routine.
 
 ## Blockers
 No test tenant, so every check is unproven against real Azure. Anything that needs the network beyond package registries, Microsoft Learn and github.com git is unavailable in this workspace (GitHub REST API is blocked; `git ls-remote` works).
