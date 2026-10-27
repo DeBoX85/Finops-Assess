@@ -116,6 +116,9 @@
         ]
       }
     },
+    "confidence_policy": {
+      "type": "object"
+    },
     "findings": {
       "type": "array",
       "items": {

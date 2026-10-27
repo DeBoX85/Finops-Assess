@@ -77,6 +77,7 @@ def render(path, doc, opts=None):
 <title>{e(o.title)}</title><style>{CSS}{_accent_css(o)}h1,h2{{border-left:4px solid var(--accent);padding-left:8px}}</style></head><body>
 {logo}<h1>{e(o.title)}</h1>{head_extra}
 <p class="note">Tool {e(m["tool_version"])} (commit {e(m.get("git_commit"))}), schema {e(doc["schema_version"])}. Run {e(m["started"])} to {e(m["ended"])}. Scope: {scope}.</p>
+<p class="note">{e(doc.get("confidence_policy", {}).get("text", ""))}</p>
 <p class="note">Read-only assessment. Checks marked skipped or not assessed were NOT evaluated; their absence from the findings is not a pass.</p>
 {coverage_html}
 {("<h2>Collector errors</h2><ul>" + errs + "</ul>") if errs and "collector_errors" not in o.hide else ""}

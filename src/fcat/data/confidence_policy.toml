@@ -1,0 +1,13 @@
+# When may a check carry the confidence label "high"? (docs/AUDIT.md section 4, backlog 46.)
+# A check's declared confidence in its code is a CEILING chosen by the author. "high" is only shown when the
+# measured precision in precision_records.toml meets all three limits below; otherwise it is shown as "medium".
+# "medium" and "low" are never raised by measurement.
+#
+# Owner: change the numbers here, then set confirmed_by_owner_on to the date you confirmed them.
+# After a change run: python scripts/make_synthetic.py --approve  and re-approve the golden report.
+[policy]
+min_precision = 0.85          # share of audited findings that were correct (true positives)
+min_audited = 20              # at least this many audited findings for the check
+min_environments = 2          # across at least this many separate environments
+proposed_on = "2026-10-27"    # 85 percent on 20 was the owner's request in the interview round; 2 environments carried over from the old rule
+confirmed_by_owner_on = ""    # EMPTY = not yet confirmed by the owner; reports say so

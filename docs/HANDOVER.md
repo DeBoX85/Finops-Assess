@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 15:58 UTC
+Last updated: 2026-10-27 16:20 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 15:58
-Base commit: 9790560
+Last checkpoint (UTC): 2026-10-27 16:20
+Base commit: cbde323
 Gates: pass
-Files changed in this checkpoint: 2
-narrative_hash: 1bf586ec9fac
-stale_count: 0
+Files changed in this checkpoint: 21
+narrative_hash: dd4e22139d56
+stale_count: 1
 <!-- auto:end -->
 
 ## State
@@ -33,7 +33,7 @@ Nothing half-done. All work is committed and pushed (check `git status` and `git
 ## Next step
 The interview round of 2026-10-27 is done; answers are in docs/DECISIONS-PENDING.md (last entry). Owner-agreed work queue, in my order:
 1. Backlog 49: read the Cost Details report REST reference for side effects and show the owner the result (ADR 0006 stage 2 approved in principle after that). No code before the owner has seen it.
-2. Backlog 46: confidence threshold as a data table (85 percent on at least 20 audited findings, at least 2 environments, owner-confirmed date); report shows the sample size next to the label.
+2. Backlog 46 BUILT 2026-10-27: src/fcat/confidence.py, thresholds in src/fcat/data/confidence_policy.toml (85 percent, 20 audited, 2 environments; `confirmed_by_owner_on` EMPTY until the owner confirms, reports say so), measured results in src/fcat/data/precision_records.toml (empty). The 5 checks that declared "high" (ORPH-DISK-01, ORPH-ASP-01, MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01) now show "medium" with a note. Remaining: ask the owner to confirm the thresholds and the 2-environment limit, then set the date.
 3. Backlog 47: manual portal sampling plan and record template (there will be no canaries and Claude never touches the tenant, so G2 shows calls work, not accuracy).
 4. Backlog 48: send the owner the customer never-show tick list and 2 to 3 dashboard mock-up screenshots.
 5. Small safe items: `fcat guide` questions for `storage_apis` and `compute_apis`; SQL and NSG inventory counts.

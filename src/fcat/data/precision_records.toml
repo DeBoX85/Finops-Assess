@@ -1,0 +1,11 @@
+# Measured precision per check, from the owner's portal sampling (docs/AUDIT.md layer C). Aggregate numbers only:
+# never resource names, tenant or subscription ids, or customer names in this file (hard rule 2).
+# One table per check id. Example (delete the leading '#' and fill in after a real audit):
+#
+# ["ORPH-DISK-01"]
+# audited = 25            # findings opened and judged in the portal
+# correct = 22            # judged correct (true positives); "unclear" ones are NOT counted as audited
+# environments = 2        # separate environments the sample came from
+# last_audit = "2026-11-15"
+#
+# Nothing has been audited yet, so no check can show "high".

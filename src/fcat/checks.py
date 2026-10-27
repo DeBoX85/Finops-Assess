@@ -136,5 +136,13 @@ def run_all(config, snapshot, registry=None):
     return findings, status
 
 
-def meta_dict(meta):
-    return asdict(meta)
+def meta_dict(meta, policy=None, records=None):
+    """Catalogue entry. `confidence` is the EFFECTIVE label (see confidence.py); the author's ceiling is kept as `confidence_declared`."""
+    from . import confidence  # noqa: PLC0415
+
+    d = asdict(meta)
+    policy = policy if policy is not None else confidence.load_policy()
+    records = records if records is not None else confidence.load_records()
+    d["confidence_declared"] = meta.confidence
+    d["confidence"], d["confidence_note"] = confidence.effective(meta.id, meta.confidence, policy, records)
+    return d

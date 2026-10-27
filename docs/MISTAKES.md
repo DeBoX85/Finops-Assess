@@ -51,3 +51,6 @@ Prevention: when adding free-text output (errors, reasons, messages) assume it c
 
 ## M-015 (2026-10-21) Wrong claim about what a fix needed
 In KB 17, backlog 44 and my summary I said the per-account read for OPT-STORLC-01 "needs an allowlist ADR". The allowlist already permits any GET on management.azure.com, so it did not. I found this when about to draft the ADR, by reading http.py before writing. Prevention: before saying a change needs a decision record, read the code that enforces the rule.
+
+## M-016 (2026-10-27): `pgrep -f` and `pkill -f` match the caller's own shell
+A monitor loop `while pgrep -f mutation_smoke` reported "running" long after the run ended, because the monitor's command line contains the pattern; three monitors expired for nothing and a commit was delayed. A later `pkill -f` with a similar pattern killed my own shell (exit 144). Match a full script path and exclude the shell (`pgrep -af "scripts/mutation_smoke.py" | grep -v pgrep`), or check the output file for its final line ("0 survived"), or wait for the background task's own completion notice. Never use `pkill -f` with text that appears in the command being run.

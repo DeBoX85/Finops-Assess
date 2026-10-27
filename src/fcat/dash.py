@@ -127,7 +127,9 @@ def view_data(
                 "count": counts.get(cid, 0),
                 "plain": plain_reason(s["status"], s.get("reason", ""), audience),
                 "reason": s.get("reason", "") if op else "",
-                "validationText": VALIDATION.get(c.get("validation", ""), "Validation state unknown."),
+                "validationText": VALIDATION.get(c.get("validation", ""), "Validation state unknown.")
+                + " "
+                + str(c.get("confidence_note", "")),
             }
         )
     findings = []

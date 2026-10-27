@@ -15,6 +15,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
+[tool.setuptools.package-data]
+fcat = ["data/*.toml"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 markers = ["live: needs a real Azure test tenant and az login (read-only); skipped by default"]

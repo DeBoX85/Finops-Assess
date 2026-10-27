@@ -10,6 +10,15 @@ import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MUTATIONS = [
+    (
+        "src/fcat/confidence.py",
+        'and rec["correct"] / rec["audited"] >= policy["min_precision"]',
+        'and rec["correct"] / rec["audited"] > policy["min_precision"]',
+        "precision threshold boundary excluded",
+    ),
+    ("src/fcat/confidence.py", 'rec["audited"] >= policy["min_audited"]', 'rec["audited"] >= 1', "minimum sample size ignored"),
+    ("src/fcat/confidence.py", 'and rec["environments"] >= policy["min_environments"]', "and True", "environment minimum ignored"),
+    ("src/fcat/confidence.py", 'if declared != "high":', "if False:", "lower labels can be raised by measurement"),
     ("src/fcat/checks_builtin.py", "if n < 8:", "if n <= 8:", "8-vCPU Hybrid Benefit boundary off by one"),
     ("src/fcat/checks_builtin.py", "core_licences_needed=max(8, n)", "core_licences_needed=n", "minimum of 8 core licences dropped"),
     (

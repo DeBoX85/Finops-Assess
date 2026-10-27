@@ -57,9 +57,19 @@ def render(path, doc, opts=None):
     _sheet(
         wb,
         "Catalogue",
-        ["ID", "Domain", "Title", "Confidence", "Savings basis", "Run cost", "Framework", "Validation"],
+        ["ID", "Domain", "Title", "Confidence", "Confidence note", "Savings basis", "Run cost", "Framework", "Validation"],
         [
-            (c["id"], c["domain"], c["title"], c["confidence"], c["savings_basis"], c["run_cost"], c["framework"], c["validation"])
+            (
+                c["id"],
+                c["domain"],
+                c["title"],
+                c["confidence"],
+                c.get("confidence_note", ""),
+                c["savings_basis"],
+                c["run_cost"],
+                c["framework"],
+                c["validation"],
+            )
             for c in doc["check_catalogue"]
         ],
     )

@@ -20,6 +20,7 @@ Rule used throughout: every fact carries its source; "OPENED" means the page was
 | notes/17-learn-verification-batch-2026-10-21.md | Learn facts that settle UNVERIFIED items: Activity Log 90 days, instance view time, DevTest schedules in ARG, storage policies probably not in ARG, policy exemption and budget properties |
 | notes/18-learn-verification-batch-2-2026-10-21.md | Batch 2: storage lifecycle absent from ARG (confirmed), powerState code, Advisor, Defender pricings, backup items, Hybrid Benefit field |
 | notes/19-power-bi-reports-comparison-2026-10-27.md | Toolkit Power BI reports (workload optimization, governance, rate optimization) compared with F-CAT: what is covered and what is not |
+| notes/20-cost-details-report-side-effects-2026-10-27.md | Cost Details report API (ADR 0006 stage 2): what Learn says about side effects, scopes, EA/MCA-only, blob download; recommendation to hold |
 | sources/url-register.csv | One row per URL: status, reliability, note |
 | sources/workbook-queries-raw.json | 467 raw workbook query rows |
 | sources/hub-recommendation-queries/ | 23 hub query JSONs (MIT, Microsoft; attribution needed) |

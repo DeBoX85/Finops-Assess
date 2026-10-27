@@ -9,3 +9,4 @@ __pycache__/
 .hypothesis/
 .coverage
 *.egg-info/
+build/
