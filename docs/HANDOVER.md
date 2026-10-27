@@ -1,12 +1,12 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 16:20 UTC
+Last updated: 2026-10-27 16:25 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 16:20
-Base commit: cbde323
+Last checkpoint (UTC): 2026-10-27 16:25
+Base commit: 812101d
 Gates: pass
-Files changed in this checkpoint: 21
-narrative_hash: dd4e22139d56
-stale_count: 1
+Files changed in this checkpoint: 7
+narrative_hash: 2a1f8a6fc117
+stale_count: 0
 <!-- auto:end -->
 
 ## State
@@ -32,10 +32,10 @@ Nothing half-done. All work is committed and pushed (check `git status` and `git
 
 ## Next step
 The interview round of 2026-10-27 is done; answers are in docs/DECISIONS-PENDING.md (last entry). Owner-agreed work queue, in my order:
-1. Backlog 49: read the Cost Details report REST reference for side effects and show the owner the result (ADR 0006 stage 2 approved in principle after that). No code before the owner has seen it.
+1. Backlog 49 DONE: KB 20 (recommendation: hold ADR 0006 stage 2). Waiting for the owner's decision.
 2. Backlog 46 BUILT 2026-10-27: src/fcat/confidence.py, thresholds in src/fcat/data/confidence_policy.toml (85 percent, 20 audited, 2 environments; `confirmed_by_owner_on` EMPTY until the owner confirms, reports say so), measured results in src/fcat/data/precision_records.toml (empty). The 5 checks that declared "high" (ORPH-DISK-01, ORPH-ASP-01, MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01) now show "medium" with a note. Remaining: ask the owner to confirm the thresholds and the 2-environment limit, then set the date.
-3. Backlog 47: manual portal sampling plan and record template (there will be no canaries and Claude never touches the tenant, so G2 shows calls work, not accuracy).
-4. Backlog 48: send the owner the customer never-show tick list and 2 to 3 dashboard mock-up screenshots.
+3. Backlog 47 DONE: docs/SAMPLING-PLAN.md (the owner must do the portal sampling; there are no canaries).
+4. Backlog 48 PREPARED: docs/CUSTOMER-VIEW-TICKLIST.md and dashboard screenshots sent; waiting for the owner's picks. Also done: docs/DEV-ENVIRONMENT.md (recommendation C, owner questions in DECISIONS-PENDING); fixed a search-box width bug found in the screenshots.
 5. Small safe items: `fcat guide` questions for `storage_apis` and `compute_apis`; SQL and NSG inventory counts.
 6. With the owner (next round): walk through the 13 maturity questions (DECISIONS-PENDING #1); decide ADR 0007 (Log Analytics query endpoint) and ADR 0010 (Sentinel, rule scan opt-in): the owner leaned to approve but kept both OPEN, so do not build or change the allowlist.
 Not to be built yet: billing-role module (after first live pass), Copilot module (after G2), export write mode, web UI (decide after first live pass).

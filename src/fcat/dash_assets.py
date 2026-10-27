@@ -41,6 +41,7 @@ label.opt{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer}l
 details.dom{border:1px solid var(--line);border-radius:var(--r);padding:6px 12px;margin-bottom:8px}details.dom>summary{cursor:pointer;font-weight:600}
 .keys{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:6px 0}.keys i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-2px}.keys .a{background:var(--ink)}.keys .b{border:2px dashed var(--acc)}.keys .c{border:2px solid var(--line)}
 textarea{width:100%;min-height:56px;resize:vertical}
+input[type=search]{width:100%;box-sizing:border-box}
 .stat .k{border:0;background:none;text-align:left;padding:6px 10px;margin:-6px -10px;border-radius:var(--r)}.stat .k:hover,.stat .k:focus-visible{background:var(--accbg)}
 .stat .k b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}.stat .k span{font-size:12px;color:var(--muted)}
 .abars{display:grid;gap:2px}.abars .r{display:grid;grid-template-columns:minmax(110px,210px) minmax(0,1fr) 36px;gap:10px;align-items:center;width:100%;border:0;background:none;text-align:left;padding:5px 6px}

@@ -252,3 +252,9 @@ def test_changes_section_survives_reports_without_a_start_time(tmp_path):
         script.write_text(stub + js)
         r = subprocess.run([node, str(script)], capture_output=True, text=True, timeout=30)  # noqa: S603
         assert r.returncode == 0, r.stderr[-400:]
+
+
+def test_search_box_is_sized_to_its_panel(tmp_path):
+    """Found in a screenshot review on 2026-10-27: the search input was wider than its filter panel and was cut off."""
+    for aud in ("operator", "customer"):
+        assert "input[type=search]{width:100%;box-sizing:border-box}" in _page(tmp_path, aud)
