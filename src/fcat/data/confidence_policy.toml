@@ -10,4 +10,4 @@ min_precision = 0.85          # share of audited findings that were correct (tru
 min_audited = 20              # at least this many audited findings for the check
 min_environments = 2          # across at least this many separate environments
 proposed_on = "2026-10-27"    # 85 percent on 20 was the owner's request in the interview round; 2 environments carried over from the old rule
-confirmed_by_owner_on = ""    # EMPTY = not yet confirmed by the owner; reports say so
+confirmed_by_owner_on = "2026-10-27"    # owner confirmed 85 percent, 20 audited findings, 2 environments on this date (empty would mean not confirmed)

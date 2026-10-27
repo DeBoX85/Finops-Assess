@@ -54,3 +54,6 @@ In KB 17, backlog 44 and my summary I said the per-account read for OPT-STORLC-0
 
 ## M-016 (2026-10-27): `pgrep -f` and `pkill -f` match the caller's own shell
 A monitor loop `while pgrep -f mutation_smoke` reported "running" long after the run ended, because the monitor's command line contains the pattern; three monitors expired for nothing and a commit was delayed. A later `pkill -f` with a similar pattern killed my own shell (exit 144). Match a full script path and exclude the shell (`pgrep -af "scripts/mutation_smoke.py" | grep -v pgrep`), or check the output file for its final line ("0 survived"), or wait for the background task's own completion notice. Never use `pkill -f` with text that appears in the command being run.
+
+## M-017 (2026-10-27): said the heartbeat "still runs every 6 hours" without checking
+My earlier update attempt failed with "no environment_id" and I concluded the task was still active. Listing the task on deletion showed it was a one-shot that had fired on 2026-10-21 and ended (run_once_fired, disabled). I had also written that claim into HANDOVER and RESUME_PROMPT. Rule: before describing the state of a scheduled task, list it (`list_triggers`) and read enabled, ended_reason and next_run_at; an error from an update call is not evidence of its state.

@@ -1,17 +1,17 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 16:27 UTC
+Last updated: 2026-10-27 16:52 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 16:27
-Base commit: d5497d1
+Last checkpoint (UTC): 2026-10-27 16:52
+Base commit: 2e32df9
 Gates: pass
-Files changed in this checkpoint: 5
-narrative_hash: f4c47ff65cff
+Files changed in this checkpoint: 12
+narrative_hash: 18d65148a5a6
 stale_count: 0
 <!-- auto:end -->
 
 ## State
 F-CAT is an offline-complete, read-only, agentless Azure FinOps assessment tool (Python, src/fcat, 34 modules). 61 checks, ALL `offline-only`: nothing has ever run against a real tenant (hard rule 8) and no test tenant exists yet. Outputs per run: report.json, report.html, report.xlsx, dashboard-operator.html, dashboard-customer.html. Commands: `run`, `analyze`, `doctor`, `compare`, `maturity`, `rollup`, `import-focus`, `purge`, `guide`. Gates: G0 (ruff, format, mypy, docs check with link errors) and G1 (681 passed and 12 skipped offline tests, 97% coverage, 90% per-module floor) pass on main; `python scripts/gates.py --full` adds pip-audit and axe-core accessibility. G2 (live) and G3 (release) have never run. CI workflow exists (.github/workflows/ci.yml) but has NEVER run on GitHub: UNVERIFIED that it works there.
-Repo: https://github.com/DeBoX85/Finops-Assess (private). Session heartbeat trigger: trig_01HmpJ6taRSAWcrkKosaiQcv (every 6 h, answer per docs/CHECKPOINTS.md).
+Repo: https://github.com/DeBoX85/Finops-Assess (private). No scheduled heartbeat exists any more.
 
 ## Done
 Everything up to 2026-10-21 is described in docs/HANDOVER-ARCHIVE.md (verbatim old narrative), docs/BACKLOG.md (numbered items with status), docs/decisions/ (ADR 0001-0010), docs/KB/ (research notes 01-17) and docs/log/. Highlights of the last session (2026-10-21, owner asked for the eight offline tasks in best order, all done):
@@ -40,11 +40,11 @@ The interview round of 2026-10-27 is done; answers are in docs/DECISIONS-PENDING
 6. With the owner (next round): walk through the 13 maturity questions (DECISIONS-PENDING #1); decide ADR 0007 (Log Analytics query endpoint) and ADR 0010 (Sentinel, rule scan opt-in): the owner leaned to approve but kept both OPEN, so do not build or change the allowlist.
 Not to be built yet: billing-role module (after first live pass), Copilot module (after G2), export write mode, web UI (decide after first live pass).
 The owner runs the first live session on a tenant they control (docs/LIVE-REHEARSAL.md); Claude only sees `--redact` output.
-Heartbeat: the attempt to change it to daily failed (scheduling tool error); it still runs every 6 h. Ask the owner whether to remove it.
+Heartbeat: none (it had ended on 2026-10-21 and was deleted 2026-10-27; see M-017).
 When the owner gives a new instruction, it wins over this list.
 
 ## Open questions for the user
-See docs/DECISIONS-PENDING.md. Still open after the 2026-10-27 round: ADR 0007 and ADR 0010 (see Next step 6), maturity questionnaire walk-through, never-show list (tick list to be sent), mock-up screenshots, heartbeat removal.
+See docs/DECISIONS-PENDING.md. Still open after the 2026-10-27 round: ADR 0007 and ADR 0010 (see Next step 6), maturity questionnaire walk-through, never-show list (tick list to be sent), mock-up screenshots, 
 
 ## Handover limits and trigger
 See the sections "Handover limits" and "How the owner triggers a handover" in docs/RESUME_PROMPT.md. In short: only pushed work survives; chat-only decisions and attached files are lost; the new chat must remind the owner of this and ask what was never written down; "handover" from the owner triggers the checkpoint routine.

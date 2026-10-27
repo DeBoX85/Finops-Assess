@@ -1,4 +1,4 @@
-# Customer view: what may the customer see? (tick list for the owner, backlog 48, prepared 2026-10-27)
+# Customer view: what may the customer see? (tick list for the owner, backlog 48, prepared 2026-10-27; ANSWERED 2026-10-27, answers in docs/DECISIONS-PENDING.md, implementation is backlog 53)
 
 How to use: for each row choose one of **Show / Hide / Ask me per customer**. Today's behaviour is in the middle column (from reading src/fcat/dash.py and tests/test_dash.py on 2026-10-27; "not checked" means I did not confirm it in code). Your answers become the default for `dashboard-customer.html`, and the per-customer override goes in the `[report]` config. Findings and the self-audit result can never be hidden (existing rule, docs/TAILORING.md).
 

@@ -1390,12 +1390,12 @@
   }
  ],
  "confidence_policy": {
-  "confirmed_by_owner_on": "",
+  "confirmed_by_owner_on": "2026-10-27",
   "min_audited": 20,
   "min_environments": 2,
   "min_precision": 0.85,
   "proposed_on": "2026-10-27",
-  "text": "'High' confidence needs 85 percent correct on at least 20 audited findings across at least 2 environments. Thresholds proposed on 2026-10-27, not yet confirmed by the owner."
+  "text": "'High' confidence needs 85 percent correct on at least 20 audited findings across at least 2 environments. Thresholds confirmed by the owner on 2026-10-27."
  },
  "findings": [
   {

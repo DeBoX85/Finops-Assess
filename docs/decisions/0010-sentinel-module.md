@@ -1,5 +1,5 @@
 # 0010 Sentinel FinOps assessment as an opt-in module of F-CAT
-Date 2026-10-21. Status: PROPOSED (owner said "yes" to drafting; approval of the shape is DECISIONS-PENDING #13). No code yet.
+Date 2026-10-21. Status: ACCEPTED 2026-10-27 by the owner (read-only module; tier A plus opt-in rule scan that reads analytic rule query text). Build waits for live testing; tier A may be built offline. No code yet.
 Context: customers want to "cost proof" Sentinel environments; the work is manual today. Owner direction (2026-10-21): usable internally and customer facing; scoped multi-tenant/MSSP runs allowed; cost optimisation without losing monitoring coverage or quality is the focus; SOC effectiveness is nice to have; help customers who lost control see what is stored and watched. Research: KB 12, KB 13.
 Options considered:
 A. Separate tool or separate run. Rejected: duplicates collectors, checks, renderers, redaction and audit; splits the Log Analytics cost story.

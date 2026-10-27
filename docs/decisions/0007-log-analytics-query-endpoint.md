@@ -1,5 +1,5 @@
 # 0007 Allow read-only Log Analytics workspace queries
-Date 2026-10-18. Status: PROPOSED (needs owner OK; parked as DECISIONS-PENDING #10). Nothing in code uses it.
+Date 2026-10-18. Status: ACCEPTED 2026-10-27 by the owner as a READ-ONLY permission (one query path; no write). Build and allowlist change wait for live testing and for the unverified points below. Nothing in code uses it yet.
 Problem: ingestion volume per table and per resource lives in the workspace `Usage` table and per-record `_BilledSize`. Reading it needs a KQL query against the workspace, which is a POST.
 Proposal: allow exactly POST `https://api.loganalytics.azure.com/v1/workspaces/{workspaceId}/query` (host api.loganalytics.azure.com, path pattern `^/v1/workspaces/[0-9a-f-]{36}/query$`). Learn describes it as a query endpoint ("run KQL queries against a Log Analytics workspace", request format page, read 2026-10-18). GET on the same path is also documented; we would use POST only for long queries.
 Still blocked: every other path on that host, all other methods, `api.loganalytics.io` (being replaced by the .azure.com host per Learn), any non-https scheme.

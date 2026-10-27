@@ -35,3 +35,11 @@ Stay on C. Revisit when one of these happens: the first live pass shows parsers 
 1. Which Claude plan is the account on (consumer or commercial terms)? It decides how customer-derived data may be handled in sessions.
 2. A CI workflow exists (.github/workflows/ci.yml). When it fails on GitHub, can you paste the failed run log? (Cloud sessions cannot see it.)
 3. Do you want the optional sandboxed local session later (yes now / yes later / no)?
+
+## Billing: how Claude Code relates to a Pro or Max plan (added 2026-10-27)
+Sources read 2026-10-27: https://code.claude.com/docs/en/authentication and https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan
+- VERIFIED (support article): a Pro or Max plan covers Claude Code; "with one subscription" you get Claude on web, desktop and mobile and Claude Code. Limits are shared: chat and Claude Code draw from the same allowance (five-hour session limit and a weekly limit).
+- VERIFIED (both pages): API billing happens only if you sign in with a Console (API) account, or if an `ANTHROPIC_API_KEY` environment variable is set and you approve its use. Then usage is billed at API rates, not against the plan. To stay on the plan, sign in with the claude.ai account and do not set that variable; `/status` shows which credential is active.
+- VERIFIED (authentication page): cloud sessions always use the subscription credentials; setting an API key in a cloud environment does not override them. Over the limit, you can wait, enable extra usage credits on the plan, or switch to a Console account.
+- The "API" mention you saw is probably the Console login option or the "sign in without an API key" path, which are for pay-as-you-go accounts. They are not needed on Pro or Max.
+- Practical consequence for this project: chat, cloud sessions and local Claude Code all spend from the same plan allowance. Heavy unattended work (long mutation runs, many parallel sessions) eats the weekly limit regardless of surface.

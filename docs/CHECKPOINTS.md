@@ -19,7 +19,7 @@ Work-in-progress is allowed: commit and push half-done work, and say in HANDOVER
 - The workspace is ephemeral; git hooks are not cloned. Run scripts/install_hooks.sh at the start of each session (pre-push docs check).
 
 ## Heartbeat
-A scheduled message is delivered into the session about every 6 hours (owner changed this from 45 minutes on 2026-10-17) (one-shot schedules, each heartbeat schedules the next). Procedure when it arrives:
+NOTE 2026-10-27: there is no heartbeat any more (the task ended 2026-10-21 and was deleted). The text below is kept for history; do not wait for one. A scheduled message is delivered into the session about every 6 hours (owner changed this from 45 minutes on 2026-10-17) (one-shot schedules, each heartbeat schedules the next). Procedure when it arrives:
 1. Read docs/HANDOVER.md. 2. Run `git status`. 3. If anything is uncommitted or the narrative is out of date: update it, run the checkpoint. 4. If nothing changed: reply "no change" in one line. 5. Do NOT start new work from a heartbeat. 6. Schedule the next heartbeat unless the user has said to stop.
 Limits: it only helps while the session can still take turns. It does not help if the context window is full or the chat is gone, which is why triggers 1 and 2 matter more. Stop it by telling me, or by deleting the scheduled task in your list.
 
