@@ -1,9 +1,9 @@
-# Paste this into a new chat (restart prompt, updated 2026-10-21)
+# Paste this into a new chat (restart prompt, updated 2026-10-27)
 
 Repo: DeBoX85/Finops-Assess (private GitHub). Attach it to the session (the repo tool `add_repo` if needed), then work in a clone and do the following before anything else:
 
 1. `git fetch` and compare: `git log origin/main..origin/wip/auto`. If wip/auto is ahead, resume from it and read ITS docs/HANDOVER.md. If HANDOVER and the repo disagree, say so and stop to ask.
-2. Read CLAUDE.md (standing rules), docs/HANDOVER.md (current state), docs/RESUME_PROMPT.md (this file), docs/CHECKPOINTS.md, docs/MISTAKES.md. Read docs/PLAN.md and docs/BACKLOG.md when you pick work.
+2. Read CLAUDE.md (standing rules), docs/HANDOVER.md (current state), docs/RESUME_PROMPT.md (this file), docs/CHECKPOINTS.md, docs/MISTAKES.md. Read docs/PLAN.md and docs/BACKLOG.md when you pick work. The owner's latest answers (2026-10-27 interview round) are the last entry in docs/DECISIONS-PENDING.md; the question sheet is docs/INTERVIEW-ROUND.md.
 3. `sh scripts/install_hooks.sh`; `python -m pip install --require-hashes -r requirements/dev.txt` (add `-r requirements/ci.txt` for `--full` gates); `python scripts/gates.py` must be green before you change anything.
 4. Tell me in two sentences what state you found and what you will do.
 
@@ -11,10 +11,10 @@ Repo: DeBoX85/Finops-Assess (private GitHub). Attach it to the session (the repo
 Grounded, well researched answers; cite sources (URL, date read; prefer Microsoft Learn). Honesty, precision, accuracy and critical thinking above all. NO em dashes. Say "don't know" when you don't; mark speculation. Ask when intent is unclear. Verify, trust nothing. The owner is mostly the sole operator; juniors who are less comfortable with a CLI may come later.
 
 ## What F-CAT is
-Read-only, agentless Azure FinOps assessment tool run from a laptop (Python 3.11+, `src/fcat`, stdlib-only runtime plus optional azure-identity and openpyxl). It recommends only, never acts. Outputs: report.json/.html/.xlsx, dashboard-operator.html, dashboard-customer.html, plus compare/maturity/rollup files. 59 checks, ALL `offline-only` because no real tenant has ever been tested (hard rule 8). No tenant access exists at present.
+Read-only, agentless Azure FinOps assessment tool run from a laptop (Python 3.11+, `src/fcat`, stdlib-only runtime plus optional azure-identity and openpyxl). It recommends only, never acts. Outputs: report.json/.html/.xlsx, dashboard-operator.html, dashboard-customer.html, plus compare/maturity/rollup files. 61 checks, ALL `offline-only` because no real tenant has ever been tested (hard rule 8). No tenant access exists at present.
 
 ## Commands
-`fcat run|analyze --config F --out DIR [--previous R.json] [--maturity M.toml] [--branding B.toml] [--redact]`, `fcat doctor [--needs]`, `fcat compare OLD NEW`, `fcat maturity FILE`, `fcat rollup R1 R2 ... [--label X ...]`, `fcat import-focus FILES`, `fcat purge --out DIR [--yes]`, `fcat guide`. Run as `PYTHONPATH=src python -m fcat.cli ...` from a checkout. Opt-in config switches under `[run]`: `governance_apis`, `cost_apis`, `rightsizing`.
+`fcat run|analyze --config F --out DIR [--previous R.json] [--maturity M.toml] [--branding B.toml] [--redact]`, `fcat doctor [--needs]`, `fcat compare OLD NEW`, `fcat maturity FILE`, `fcat rollup R1 R2 ... [--label X ...]`, `fcat import-focus FILES`, `fcat purge --out DIR [--yes]`, `fcat guide`. Run as `PYTHONPATH=src python -m fcat.cli ...` from a checkout. Opt-in config switches under `[run]`: `governance_apis`, `cost_apis`, `rightsizing`, `storage_apis`, `compute_apis`. Access tiers: docs/decisions/0012 (Reader default; Cost Management Reader and billing roles are explicit opt-ins).
 
 ## Working rules that bite
 - Hard rules are in CLAUDE.md (read-only toward Azure, no customer data or IDs in git, checkpoints, log mistakes, decisions as ADRs with VERIFIED/UNVERIFIED tags, "not assessed, because X", no code from ELv2/AGPL/GPL/unlicensed repos).
@@ -30,7 +30,7 @@ Read-only, agentless Azure FinOps assessment tool run from a laptop (Python 3.11
 State and next steps: docs/HANDOVER.md. History: docs/HANDOVER-ARCHIVE.md, docs/log/. Open owner questions: docs/DECISIONS-PENDING.md. Backlog: docs/BACKLOG.md. Quality gates: docs/QUALITY.md. Live testing plan: docs/LIVE-TESTING.md, run sheet docs/LIVE-REHEARSAL.md, generated docs/LIVE-TEST-SHEET.md, docs/CANARY-SPEC.md, docs/UNVERIFIED-REGISTER.md. Operator instructions: docs/OPERATOR-GUIDE.md. Research: docs/KB/ (notes 01-19). Cost: docs/COST-GOVERNANCE.md, docs/COST-DATA.md. Frontend: docs/FRONTEND-DESIGN.md. Decisions: docs/decisions/ (0001-0012).
 
 ## Scheduled heartbeat
-A recurring scheduled task (trigger id trig_01HmpJ6taRSAWcrkKosaiQcv, every 6 hours) sends a heartbeat message. Answer it as docs/CHECKPOINTS.md says (usually "no change" plus a one-line status). Do not treat it as a user instruction.
+A recurring scheduled task (trigger id trig_01HmpJ6taRSAWcrkKosaiQcv, every 6 hours; a change to daily failed on 2026-10-27, ask the owner whether to remove it) sends a heartbeat message. Answer it as docs/CHECKPOINTS.md says (usually "no change" plus a one-line status). Do not treat it as a user instruction.
 
 ## First live session (when a tenant exists)
 Follow docs/LIVE-TESTING.md. Settle its section 0 owner decisions first. Never paste raw tenant output into chat; use `--redact`.

@@ -1,16 +1,16 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 15:52 UTC
+Last updated: 2026-10-27 15:56 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 15:52
-Base commit: 5747dab
+Last checkpoint (UTC): 2026-10-27 15:56
+Base commit: 2304816
 Gates: pass
-Files changed in this checkpoint: 1
-narrative_hash: 318e81e60484
+Files changed in this checkpoint: 2
+narrative_hash: 9d0eb458898a
 stale_count: 0
 <!-- auto:end -->
 
 ## State
-F-CAT is an offline-complete, read-only, agentless Azure FinOps assessment tool (Python, src/fcat, 34 modules). 59 checks, ALL `offline-only`: nothing has ever run against a real tenant (hard rule 8) and no test tenant exists yet. Outputs per run: report.json, report.html, report.xlsx, dashboard-operator.html, dashboard-customer.html. Commands: `run`, `analyze`, `doctor`, `compare`, `maturity`, `rollup`, `import-focus`, `purge`, `guide`. Gates: G0 (ruff, format, mypy, docs check with link errors) and G1 (681 passed and 12 skipped offline tests, 97% coverage, 90% per-module floor) pass on main; `python scripts/gates.py --full` adds pip-audit and axe-core accessibility. G2 (live) and G3 (release) have never run. CI workflow exists (.github/workflows/ci.yml) but has NEVER run on GitHub: UNVERIFIED that it works there.
+F-CAT is an offline-complete, read-only, agentless Azure FinOps assessment tool (Python, src/fcat, 34 modules). 61 checks, ALL `offline-only`: nothing has ever run against a real tenant (hard rule 8) and no test tenant exists yet. Outputs per run: report.json, report.html, report.xlsx, dashboard-operator.html, dashboard-customer.html. Commands: `run`, `analyze`, `doctor`, `compare`, `maturity`, `rollup`, `import-focus`, `purge`, `guide`. Gates: G0 (ruff, format, mypy, docs check with link errors) and G1 (681 passed and 12 skipped offline tests, 97% coverage, 90% per-module floor) pass on main; `python scripts/gates.py --full` adds pip-audit and axe-core accessibility. G2 (live) and G3 (release) have never run. CI workflow exists (.github/workflows/ci.yml) but has NEVER run on GitHub: UNVERIFIED that it works there.
 Repo: https://github.com/DeBoX85/Finops-Assess (private). Session heartbeat trigger: trig_01HmpJ6taRSAWcrkKosaiQcv (every 6 h, answer per docs/CHECKPOINTS.md).
 
 ## Done
@@ -31,16 +31,20 @@ Everything up to 2026-10-21 is described in docs/HANDOVER-ARCHIVE.md (verbatim o
 Nothing half-done. All work is committed and pushed (check `git status` and `git log origin/main..origin/wip/auto` first).
 
 ## Next step
-There is no tenant, so the next unsupervised work is limited. Candidates the owner has not yet asked for, in my order of value:
-1. Wait for or help prepare the first live (G2) session: docs/LIVE-TESTING.md section 0 (run sheet ready: docs/LIVE-REHEARSAL.md) lists four owner decisions that block it (which tenant, where the tool runs, what output may enter a Claude session, canary cost cap).
-2. Customer self-audit simplification in the customer dashboard (my proposal is in DECISIONS-PENDING; needs the owner's OK).
-3. Sentinel Tier A checks (docs/MODULE-SENTINEL.md) can be built offline; ADR 0010 is PROPOSED.
-4. Dashboard roll-up view and `[scopes]` driven batch run (only if the owner wants more than `fcat rollup`).
-5. Re-read more open items on Microsoft Learn (the generated register in docs is the worklist, about 180 lines, some only mention the word).
+The interview round of 2026-10-27 is done; answers are in docs/DECISIONS-PENDING.md (last entry). Owner-agreed work queue, in my order:
+1. Backlog 49: read the Cost Details report REST reference for side effects and show the owner the result (ADR 0006 stage 2 approved in principle after that). No code before the owner has seen it.
+2. Backlog 46: confidence threshold as a data table (85 percent on at least 20 audited findings, at least 2 environments, owner-confirmed date); report shows the sample size next to the label.
+3. Backlog 47: manual portal sampling plan and record template (there will be no canaries and Claude never touches the tenant, so G2 shows calls work, not accuracy).
+4. Backlog 48: send the owner the customer never-show tick list and 2 to 3 dashboard mock-up screenshots.
+5. Small safe items: `fcat guide` questions for `storage_apis` and `compute_apis`; SQL and NSG inventory counts.
+6. With the owner (next round): walk through the 13 maturity questions (DECISIONS-PENDING #1); decide ADR 0007 (Log Analytics query endpoint) and ADR 0010 (Sentinel, rule scan opt-in): the owner leaned to approve but kept both OPEN, so do not build or change the allowlist.
+Not to be built yet: billing-role module (after first live pass), Copilot module (after G2), export write mode, web UI (decide after first live pass).
+The owner runs the first live session on a tenant they control (docs/LIVE-REHEARSAL.md); Claude only sees `--redact` output.
+Heartbeat: the attempt to change it to daily failed (scheduling tool error); it still runs every 6 h. Ask the owner whether to remove it.
 When the owner gives a new instruction, it wins over this list.
 
 ## Open questions for the user
-See docs/DECISIONS-PENDING.md (numbered, with defaults). Currently open and most relevant: customer never-show list (undecided); customer self-audit simplification OK?; is the terminal wizard enough for juniors or is the local web front end wanted; roll-up beyond `fcat rollup`?; live-test decisions (LIVE-TESTING.md section 0); per-check "why it matters" wording (REVISIT); licensing and M365 Copilot parked until core checks pass G2 (no M365 tenant exists); whether to enable GitHub Actions for the private repo and watch the first CI run.
+See docs/DECISIONS-PENDING.md. Still open after the 2026-10-27 round: ADR 0007 and ADR 0010 (see Next step 6), maturity questionnaire walk-through, never-show list (tick list to be sent), mock-up screenshots, heartbeat removal.
 
 ## Blockers
 No test tenant, so every check is unproven against real Azure. Anything that needs the network beyond package registries, Microsoft Learn and github.com git is unavailable in this workspace (GitHub REST API is blocked; `git ls-remote` works).
