@@ -38,7 +38,7 @@ def go(tmp_path, script, calls, az=True):
     return guide.run(script.ask, script.say, calls, (lambda n: "/usr/bin/az") if az else (lambda n: None), tmp_path, TODAY)
 
 
-HAPPY = ["y", "Acme Ltd", "Contoso Cloud", "", "n", "n", "n", "n", "y"]
+HAPPY = ["y", "Acme Ltd", "Contoso Cloud", "", "n", "n", "n", "n", "n", "n", "y"]
 
 
 def test_happy_path_writes_config_runs_doctor_then_run(tmp_path):
@@ -54,17 +54,18 @@ def test_happy_path_writes_config_runs_doctor_then_run(tmp_path):
 
 def test_options_and_subscriptions_end_up_in_the_config(tmp_path):
     guid = "11111111-2222-3333-4444-555555555555"
-    s = Script("y", "Acme", "Me", "T", "y", "not-an-id", guid, "y", "y", "n", "y")
+    s = Script("y", "Acme", "Me", "T", "y", "not-an-id", guid, "y", "y", "n", "y", "n", "y")
     assert go(tmp_path, s, Calls(0, 0)) == 0
     cfg = config.load(tmp_path / "acme-2026-10-21" / "config.toml")
     assert cfg.subscriptions == [guid] and cfg.governance_apis and cfg.cost_apis and not cfg.rightsizing
+    assert cfg.storage_apis is True and cfg.compute_apis is False
     assert "36 characters" in s.text
 
 
 def test_stops_without_running_anything(tmp_path):
     c = Calls()
     assert go(tmp_path, Script("n"), c) == 1  # not signed in
-    assert go(tmp_path, Script("y", "A", "B", "", "n", "n", "n", "n", "n"), c) == 1  # declines at the summary
+    assert go(tmp_path, Script("y", "A", "B", "", "n", "n", "n", "n", "n", "n", "n"), c) == 1  # declines at the summary
     assert c.calls == [] and not list(tmp_path.iterdir())  # nothing written either
 
 
@@ -98,7 +99,7 @@ def test_second_run_the_same_day_does_not_overwrite(tmp_path):
 
 @pytest.mark.parametrize("name", ['Ac"me\\ Ltd', "Ünï ✓ <b>", "x" * 120])
 def test_awkward_customer_names_survive_the_config_round_trip(tmp_path, name):
-    s = Script("y", name, "Me", "T", "n", "n", "n", "n", "y")
+    s = Script("y", name, "Me", "T", "n", "n", "n", "n", "n", "n", "y")
     assert go(tmp_path, s, Calls(0, 0)) == 0
     cfg = config.load(next(tmp_path.glob("*/config.toml")))
     assert cfg.report.prepared_for == name

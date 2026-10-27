@@ -17,6 +17,11 @@ OPTIONS = (
     ("governance_apis", "Read budgets, anomaly alert rules and cost exports (a few extra read calls per subscription)?"),
     ("cost_apis", "Read last month's cost per resource and compare it with the resource list (needs Cost Management Reader)?"),
     ("rightsizing", "Read Azure Monitor CPU metrics to look for oversized VMs (many read calls, slower)?"),
+    ("storage_apis", "Read the lifecycle policy of each storage account (one read call per account)?"),
+    (
+        "compute_apis",
+        "Read the VM size list to count vCPUs for the Hybrid Benefit checks (one read call per subscription and region with Windows VMs)?",
+    ),
 )
 
 

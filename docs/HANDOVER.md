@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 16:25 UTC
+Last updated: 2026-10-27 16:27 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 16:25
-Base commit: 812101d
+Last checkpoint (UTC): 2026-10-27 16:27
+Base commit: d5497d1
 Gates: pass
-Files changed in this checkpoint: 7
-narrative_hash: 2a1f8a6fc117
+Files changed in this checkpoint: 5
+narrative_hash: f4c47ff65cff
 stale_count: 0
 <!-- auto:end -->
 
@@ -36,7 +36,7 @@ The interview round of 2026-10-27 is done; answers are in docs/DECISIONS-PENDING
 2. Backlog 46 BUILT 2026-10-27: src/fcat/confidence.py, thresholds in src/fcat/data/confidence_policy.toml (85 percent, 20 audited, 2 environments; `confirmed_by_owner_on` EMPTY until the owner confirms, reports say so), measured results in src/fcat/data/precision_records.toml (empty). The 5 checks that declared "high" (ORPH-DISK-01, ORPH-ASP-01, MOD-LBBAS-01, MOD-PIPBAS-01, MOD-AGWV1-01) now show "medium" with a note. Remaining: ask the owner to confirm the thresholds and the 2-environment limit, then set the date.
 3. Backlog 47 DONE: docs/SAMPLING-PLAN.md (the owner must do the portal sampling; there are no canaries).
 4. Backlog 48 PREPARED: docs/CUSTOMER-VIEW-TICKLIST.md and dashboard screenshots sent; waiting for the owner's picks. Also done: docs/DEV-ENVIRONMENT.md (recommendation C, owner questions in DECISIONS-PENDING); fixed a search-box width bug found in the screenshots.
-5. Small safe items: `fcat guide` questions for `storage_apis` and `compute_apis`; SQL and NSG inventory counts.
+5. DONE: `fcat guide` asks about all five switches. SQL and NSG inventories deliberately not built (backlog 50). Backlog 51 (surface vCPU lookup limits) is a small optional follow-up.
 6. With the owner (next round): walk through the 13 maturity questions (DECISIONS-PENDING #1); decide ADR 0007 (Log Analytics query endpoint) and ADR 0010 (Sentinel, rule scan opt-in): the owner leaned to approve but kept both OPEN, so do not build or change the allowlist.
 Not to be built yet: billing-role module (after first live pass), Copilot module (after G2), export write mode, web UI (decide after first live pass).
 The owner runs the first live session on a tenant they control (docs/LIVE-REHEARSAL.md); Claude only sees `--redact` output.
