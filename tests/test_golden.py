@@ -69,9 +69,13 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["MOD-AGWV1-01"] == {"agw-v1"}
     assert by["MOD-VMUNMG-01"] == {"vm-unmanaged"}
     assert by["LIC-AHBWIN-01"] == {"win-payg"}
+    # Hybrid Benefit VMs: 2 vCPUs (< 8) is reported; 16 vCPUs is not; a size missing from the lookup is skipped, never guessed
+    assert by["LIC-AHBVCP-01"] == {"win-ahb"}
     assert by["LIC-AHBSQL-01"] == {"sql-payg"}
     assert by["OPT-AKSSPT-01"] == {"apps"}
-    assert by["ADV-COST-01"] == {"rec-resize"}
+    assert by["ADV-COST-01"] == {"rec-resize"}  # commitment advice is NOT repeated here
+    # open reservation, savings plan and renewal advice; the completed reservation item must NOT appear
+    assert by["RATE-ADVCOM-01"] == {"rec-ri", "rec-sp", "rec-renew"}
     # batch 6, hand-derived: stale backup item; GRS vault only in the Dev/Test subscription; 240 h / 4 h interval = 60 copies; workspace without pools;
     # Premium firewall whose policy has IDPS Off and no TLS (the Alert one must NOT appear)
     assert by["IDLE-BKP-01"] == {"vm-old"}
@@ -94,7 +98,7 @@ def test_golden_is_correct_by_independent_derivation():
     assert by["COST-UNMAP-01"] == {"sub-synth-1"}
     assert (
         golden["audit"]["status"] == "pass"
-        and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1 + 1 + 1
+        and len(golden["findings"]) == 68 + 5 + 3 + 7 + 3 + 7 + 2 + 6 + 5 + 8 + 7 + 1 + 1 + 2 + 2 + 1 + 1 + 1 + 3 + 1
     )
 
 
@@ -133,3 +137,9 @@ def test_budget_anomaly_export_findings_match_hand_derivation():
     assert got["BUD-FCST-01"] == {s + "2"}  # sub 1 has a forecast alert on b-main; sub 3 has no budget so it is not judged here
     assert got["ALR-ANOM-01"] == {s + "2", s + "3"}  # sub 1 enabled; sub 2 none; sub 3 disabled
     assert got["EXP-CFG-01"] == {s + "1/providers/Microsoft.CostManagement/exports/daily-actual"}  # last run Failed
+
+
+def test_scope_line_counts_match_hand_derivation():
+    """From the inventory_counts rows of the synthetic estate: 20+10+40+6+4 = 80 resources, 3 types, 3 regions (northeurope, swedencentral, westeurope)."""
+    scope = json.loads(ms.GOLDEN.read_text())["manifest"]["scope"]
+    assert (scope["resources"], scope["resource_types"], scope["regions"]) == (80, 3, 3)

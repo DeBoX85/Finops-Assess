@@ -9,8 +9,8 @@ Needs: advisor_cost; permissions: Reader; confidence: medium.
 
 Known-bad in the synthetic estate (the tool reports these):
 - `rec-resize`: Advisor: Right-size or shutdown underutilized virtual machines
-Known-good in the synthetic estate (the tool must not report these): `rec-dismissed`
-Fixture cases (tests/fixtures/checks/ADV-COST-01.json): open recommendations reported; closed states not reported
+Known-good in the synthetic estate (the tool must not report these): `rec-dismissed`, `rec-ri`
+Fixture cases (tests/fixtures/checks/ADV-COST-01.json): open recommendations reported; closed states not reported; commitment advice is left to RATE-ADVCOM-01
 
 ## ALR-ANOM-01: Subscriptions with no anomaly alert rule visible
 
@@ -138,13 +138,22 @@ Known-bad in the synthetic estate (the tool reports these):
 Known-good in the synthetic estate (the tool must not report these): `sql-ahub`, `sql-dev`
 Fixture cases (tests/fixtures/checks/LIC-AHBSQL-01.json): payg paid edition reported; ahub, dr, free editions, unknown, devtest not reported
 
+## LIC-AHBVCP-01: Windows VMs using Hybrid Benefit with fewer than 8 vCPUs (unused core licences)
+
+Needs: vm_licensing, vm_vcpus, subscriptions; permissions: Reader; confidence: low.
+
+Known-bad in the synthetic estate (the tool reports these):
+- `win-ahb`: Hybrid Benefit VM has 2 vCPUs but uses at least 8 core licences: check whether the unused licences could cover other workloads
+Known-good in the synthetic estate (the tool must not report these): `win-payg`, `win-ahb-big`
+Fixture cases (tests/fixtures/checks/LIC-AHBVCP-01.json): hybrid benefit vm under 8 vcpus reported; 8 and 16 not; case-insensitive keys; bad vcpu rows ignored; payg, client licence, linux, devtest not reported; no candidate has a known vcpu count: refuses to decide
+
 ## LIC-AHBWIN-01: Windows VMs and scale sets without Azure Hybrid Benefit
 
 Needs: vm_licensing, subscriptions; permissions: Reader; confidence: low.
 
 Known-bad in the synthetic estate (the tool reports these):
 - `win-payg`: Windows workload is not using Azure Hybrid Benefit: review whether eligible licences with Software Assurance exist
-Known-good in the synthetic estate (the tool must not report these): `win-ahb`, `linux-1`
+Known-good in the synthetic estate (the tool must not report these): `win-ahb`, `win-ahb-big`
 Fixture cases (tests/fixtures/checks/LIC-AHBWIN-01.json): windows without ahb reported incl scale set; ahb, client, desktop image, linux, devtest, unknown os not reported
 
 ## MOD-AGWV1-01: Application gateways on the retired v1 SKU
@@ -476,6 +485,17 @@ Known-bad in the synthetic estate (the tool reports these):
 - `policy:tags`: Only deny-type tag policies are enforced; no policy adds or inherits tags on existing resources
 Known-good in the synthetic estate (the tool must not report these): `require-env`, `custom-initiative`
 Fixture cases (tests/fixtures/checks/POL-TAGMOD-01.json): deny only; deny plus inherit; not enforced is out of scope
+
+## RATE-ADVCOM-01: Azure Advisor reservation and savings plan recommendations (pass-through)
+
+Needs: advisor_cost; permissions: Reader; confidence: medium.
+
+Known-bad in the synthetic estate (the tool reports these):
+- `rec-renew`: Advisor (renewal): Configure automatic renewal for the expiring reservations
+- `rec-ri`: Advisor (reservation): Consider virtual machine reserved instance to save over the on-demand costs
+- `rec-sp`: Advisor (savings plan): Consider purchasing a savings plan to unlock lower prices
+Known-good in the synthetic estate (the tool must not report these): `rec-resize`, `rec-dismissed`
+Fixture cases (tests/fixtures/checks/RATE-ADVCOM-01.json): reservation, savings plan and renewal advice are reported; other advice is not; closed states and malformed savings are handled; no commitment advice at all
 
 ## RIGHT-VMCPU-01: Running VMs whose peak CPU fits a half-size VM
 

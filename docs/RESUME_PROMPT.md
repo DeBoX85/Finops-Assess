@@ -27,7 +27,7 @@ Read-only, agentless Azure FinOps assessment tool run from a laptop (Python 3.11
 - GitHub REST API is blocked in the cloud workspace; `git ls-remote` works. Outbound web goes through a proxy.
 
 ## Where things are
-State and next steps: docs/HANDOVER.md. History: docs/HANDOVER-ARCHIVE.md, docs/log/. Open owner questions: docs/DECISIONS-PENDING.md. Backlog: docs/BACKLOG.md. Quality gates: docs/QUALITY.md. Live testing plan: docs/LIVE-TESTING.md, run sheet docs/LIVE-REHEARSAL.md, generated docs/LIVE-TEST-SHEET.md, docs/CANARY-SPEC.md, docs/UNVERIFIED-REGISTER.md. Operator instructions: docs/OPERATOR-GUIDE.md. Research: docs/KB/ (notes 01-18). Cost: docs/COST-GOVERNANCE.md, docs/COST-DATA.md. Frontend: docs/FRONTEND-DESIGN.md. Decisions: docs/decisions/ (0001-0011).
+State and next steps: docs/HANDOVER.md. History: docs/HANDOVER-ARCHIVE.md, docs/log/. Open owner questions: docs/DECISIONS-PENDING.md. Backlog: docs/BACKLOG.md. Quality gates: docs/QUALITY.md. Live testing plan: docs/LIVE-TESTING.md, run sheet docs/LIVE-REHEARSAL.md, generated docs/LIVE-TEST-SHEET.md, docs/CANARY-SPEC.md, docs/UNVERIFIED-REGISTER.md. Operator instructions: docs/OPERATOR-GUIDE.md. Research: docs/KB/ (notes 01-19). Cost: docs/COST-GOVERNANCE.md, docs/COST-DATA.md. Frontend: docs/FRONTEND-DESIGN.md. Decisions: docs/decisions/ (0001-0012).
 
 ## Scheduled heartbeat
 A recurring scheduled task (trigger id trig_01HmpJ6taRSAWcrkKosaiQcv, every 6 hours) sends a heartbeat message. Answer it as docs/CHECKPOINTS.md says (usually "no change" plus a one-line status). Do not treat it as a user instruction.

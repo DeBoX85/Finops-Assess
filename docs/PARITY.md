@@ -30,11 +30,11 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Databases "idle over 30 days" | DIFFERENT | none yet | The workbook query matches names containing old/Dev/test and measures no activity. Not copied. Replacement needs Azure Monitor metrics and peak-aware rules (DEV-PRINCIPLES R10) |
 | Idle SQL pool / unused Synapse workspaces | DIFFERENT | ORPH-SYN-01 | Workspaces only; idle SQL pool needs metrics |
 | Cosmos DB RU reduction, throughput mode, continuous backup | DONE-OFFLINE | ADV-COST-01, OPT-COSBKP-01 | Advisor items via pass-through; backup mode check is ours |
-| Azure Hybrid Benefit (Windows, Linux, SQL, VMSS, Coverage summary) | PLANNED | backlog 7 / hub AHB queries | Needs Microsoft.Compute/skus call for vCPU; savings need list price |
+| Azure Hybrid Benefit (Windows, Linux, SQL, VMSS, Coverage summary) | PARTIAL | backlog 7 / 45c | vCPU lookup built (opt-in `compute_apis`, LIC-AHBVCP-01 and vCPU detail on LIC-AHBWIN-01); no saving figure (needs list price); Linux and coverage summary not built |
 | Azure Firewall Premium unused features | DIFFERENT | OPT-FWPREM-01 | See batch 6 below |
-| Reservation and savings plan recommendations (Advisor route) | PLANNED | backlog 7 | Reader is enough via advisorresources |
 | Commitment discount utilisation, billing-scope recommendations | PLANNED | backlog 26 | Needs billing permissions and Cost endpoints (ADR 0006 pending) |
 | Advisor cost recommendations (compute, monitoring) | DONE-OFFLINE | ADV-COST-01 | Passed through with Advisor's own savings, labelled as such |
+| Reservation and savings plan recommendations (Advisor route) | DONE-OFFLINE | RATE-ADVCOM-01 | Open Advisor items only, single-subscription advice, Advisor's own figures never summed, Learn's order of action attached. Classified by wording (heuristic, UNVERIFIED live). No utilisation or coverage (ADR 0012 tier 2) |
 | Log Analytics ingestion trend (Usage table) | PLANNED | backlog 9 | Needs workspace read; module in monitoring cost assessment |
 | Sustainability (Advisor carbon) | NOT-PLANNED (this round) | | Not a cost check; revisit |
 | Top 10 services, AKS list, resource distribution | DIFFERENT | cost collectors | Cost views come from cost data, not inventory counts |
@@ -67,7 +67,8 @@ Goal from PLAN: at least parity. Status words: DONE-OFFLINE (implemented, fixtur
 | Basic public IPs (retired 2025-09-30, Learn) | DONE-OFFLINE | MOD-PIPBAS-01 | Hub query BasicPublicIPs; other timelines for IPs on App Gateway v1 or Basic VPN gateways are UNVERIFIED (Q&A only) |
 | Application Gateway v1 (retired 2026-04-28, Learn) | DONE-OFFLINE | MOD-AGWV1-01 | Hub query ClassicAppGateways |
 | Unmanaged disks (retired 2026-03-31, Learn) | DONE-OFFLINE | MOD-VMUNMG-01 | Hub query UnmanagedDisks tests for null; ours needs a positive VHD URI (DIFFERENT on purpose) |
-| Windows VMs and VMSS without Hybrid Benefit | DONE-OFFLINE | LIC-AHBWIN-01 | Hub query VMsWithoutAHB; Dev/Test exclusion broader; no vCPU or saving (needs Compute SKUs call and list price) |
+| Windows VMs and VMSS without Hybrid Benefit | DONE-OFFLINE | LIC-AHBWIN-01 | Hub query VMsWithoutAHB; Dev/Test exclusion broader; vCPU and core licences needed added to details only with opt-in `compute_apis`; no saving figure (needs list price) |
+| Hybrid Benefit VMs with fewer than 8 vCPUs (unused core licences) | DONE-OFFLINE | LIC-AHBVCP-01 | Not in the hub; from Learn minimum of 8 core licences per VM (read 2026-10-27); opt-in `compute_apis`; skips sizes not in the lookup |
 | SQL Server VMs without Hybrid Benefit | DONE-OFFLINE | LIC-AHBSQL-01 | Hub query SQLVMsWithoutAHB; DR licence type and unknown values are not reported |
 | AKS autoscaling pools not on Spot | DIFFERENT | OPT-AKSSPT-01 | Hub query NonSpotAKSClusters; ours lists user pools only (Spot cannot be system pools, Learn), info severity, a prompt not a finding |
 | Advisor cost recommendations | DONE-OFFLINE | ADV-COST-01 | Hub query AdvisorCost; pass-through, Advisor's own savings figure labelled and never summed |

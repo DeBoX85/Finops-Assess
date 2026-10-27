@@ -4,6 +4,7 @@
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-payg",
    "licenseType": null,
+   "location": "westeurope",
    "osType": "Windows",
    "publisher": "MicrosoftWindowsServer",
    "resType": "microsoft.compute/virtualmachines",
@@ -13,9 +14,29 @@
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-ahb",
    "licenseType": "Windows_Server",
+   "location": "westeurope",
    "osType": "Windows",
    "publisher": "MicrosoftWindowsServer",
-   "subscriptionId": "sub-synth-1"
+   "subscriptionId": "sub-synth-1",
+   "vmSize": "Standard_D2s_v5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-ahb-big",
+   "licenseType": "Windows_Server",
+   "location": "westeurope",
+   "osType": "Windows",
+   "publisher": "MicrosoftWindowsServer",
+   "subscriptionId": "sub-synth-1",
+   "vmSize": "Standard_D16s_v5"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-ahb-unknown",
+   "licenseType": "Windows_Server",
+   "location": "westeurope",
+   "osType": "Windows",
+   "publisher": "MicrosoftWindowsServer",
+   "subscriptionId": "sub-synth-1",
+   "vmSize": "Standard_Retired_v1"
   },
   {
    "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/linux-1",
@@ -32,6 +53,6 @@
    "subscriptionId": "sub-synth-4"
   }
  ],
- "total_records": 4,
+ "total_records": 6,
  "warnings": []
 }

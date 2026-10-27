@@ -1,11 +1,11 @@
 # HANDOVER (overwrite this file; do not append)
-Last updated: 2026-10-27 15:09 UTC
+Last updated: 2026-10-27 15:33 UTC
 <!-- auto:start -->
-Last checkpoint (UTC): 2026-10-27 15:09
-Base commit: c739a72
-Gates: pass
-Files changed in this checkpoint: 3
-narrative_hash: 66519536f07c
+Last checkpoint (UTC): 2026-10-27 15:33
+Base commit: d11ee79
+Gates: FAIL
+Files changed in this checkpoint: 35
+narrative_hash: 318e81e60484
 stale_count: 0
 <!-- auto:end -->
 
@@ -25,6 +25,7 @@ Everything up to 2026-10-21 is described in docs/HANDOVER-ARCHIVE.md (verbatim o
 8. Housekeeping: this handover rewritten, RESUME_PROMPT rewritten, M-013 logged.
 9. Scheduled batch 2026-10-21 (unit 1 of 3): KB 18 Learn verification done. OPT-STORLC-01 confirmed unworkable via ARG (message and docstring corrected, golden logic_hash updated, still refuses to decide). Unit 2 done: review found and fixed 3 defects (M-014): redaction of free-text errors/reasons, rollup reasons, silent row drop in costdata; regression tests added. Unit 3 done: ci.yml replayed in a clean venv; found and fixed one first-run failure (manifest.py coverage floor), .gitignore gets *.egg-info; see QUALITY.md. All three scheduled units complete.
 10. Follow-up batch (owner away): mutation smoke extended and 0 survive; backlog 44 BUILT: OPT-STORLC-01 now reads policies per account with opt-in `[run] storage_apis` (src/fcat/storagedata.py); no ADR needed, GET already allowed (M-015 corrects my earlier claim). docs/LIVE-REHEARSAL.md written (run sheet for the first live session). Items 1, 3, 4 of the candidate list still wait for owner decisions.
+11. Power BI report comparison (KB 19) and access tiers: ADR 0012 accepted (Tier 0 Reader default; Tier 1 Cost Management Reader via cost_apis/governance_apis; Tier 2 billing roles = future opt-in `billing_apis`, NOT built). Built at Reader level, all offline-only: RATE-ADVCOM-01 (Advisor reservation, savings plan and renewal advice, ordered per Learn; ADV-COST-01 no longer repeats them), last-month cost on ORPH-DISK-01 findings when cost_apis data exists (cost keys excluded from the fingerprint), resource/type/region counts in the scope line (compare ignores them), LIC-AHBVCP-01 plus vCPU and core-licence detail on LIC-AHBWIN-01 via opt-in `[run] compute_apis` (src/fcat/vcpudata.py). Still NOT built: commitment utilisation and coverage (waits for live-test decisions and the billing-role question), SQL and NSG inventories, `fcat guide` questions for storage_apis and compute_apis.
 
 ## In progress
 Nothing half-done. All work is committed and pushed (check `git status` and `git log origin/main..origin/wip/auto` first).

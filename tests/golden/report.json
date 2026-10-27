@@ -80,7 +80,7 @@
    }
   ],
   "limits": "Consistency checks only. They do not show that findings are true; precision needs the human sampling audit (docs/AUDIT.md layer C).",
-  "report_hash": "817a63f7cd4dd0c4",
+  "report_hash": "1b8cd5c6322071f7",
   "status": "pass",
   "version": "0.1"
  },
@@ -648,6 +648,27 @@
     "all"
    ],
    "collectors": [
+    "vm_licensing",
+    "vm_vcpus",
+    "subscriptions"
+   ],
+   "confidence": "low",
+   "domain": "licensing",
+   "framework": "Licensing and SaaS",
+   "id": "LIC-AHBVCP-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "none",
+   "title": "Windows VMs using Hybrid Benefit with fewer than 8 vCPUs (unused core licences)",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
     "sql_vms",
     "subscriptions"
    ],
@@ -699,6 +720,25 @@
    "run_cost": "low",
    "savings_basis": "estimate",
    "title": "Azure Advisor cost recommendations (pass-through)",
+   "validation": "offline-only"
+  },
+  {
+   "billing_types": [
+    "all"
+   ],
+   "collectors": [
+    "advisor_cost"
+   ],
+   "confidence": "medium",
+   "domain": "advisor",
+   "framework": "Rate Optimization",
+   "id": "RATE-ADVCOM-01",
+   "permissions": [
+    "Reader"
+   ],
+   "run_cost": "low",
+   "savings_basis": "estimate",
+   "title": "Azure Advisor reservation and savings plan recommendations (pass-through)",
    "validation": "offline-only"
   },
   {
@@ -1244,9 +1284,9 @@
     "collectors": [
      "advisor_cost"
     ],
-    "logic_hash": "70cc502fd2b8",
+    "logic_hash": "2e86fa0e6b75",
     "snapshot_digests": {
-     "advisor_cost": "67e88bd12902"
+     "advisor_cost": "86db18e1b3ad"
     }
    },
    "fingerprint": "f4b89c1fdd0b922e",
@@ -1610,10 +1650,40 @@
    "severity": "low"
   },
   {
+   "check_id": "LIC-AHBVCP-01",
+   "details": {
+    "core_licences_used_min": 8,
+    "resType": null,
+    "unused_core_licences_min": 6,
+    "vcpus": 2,
+    "vmSize": "Standard_D2s_v5"
+   },
+   "evidence": {
+    "collectors": [
+     "vm_licensing",
+     "vm_vcpus",
+     "subscriptions"
+    ],
+    "logic_hash": "6e3e91c61bbb",
+    "snapshot_digests": {
+     "subscriptions": "e35a342fa493",
+     "vm_licensing": "a93678e4f1a6",
+     "vm_vcpus": "5da16927659e"
+    }
+   },
+   "fingerprint": "e4706aeab73e5bf1",
+   "message": "Hybrid Benefit VM has 2 vCPUs but uses at least 8 core licences: check whether the unused licences could cover other workloads",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-ahb",
+   "severity": "info"
+  },
+  {
    "check_id": "LIC-AHBWIN-01",
    "details": {
+    "core_licences_needed": 8,
+    "licence_rule": "minimum 8 core licences per VM (Learn, read 2026-10-27)",
     "licenseType": null,
     "resType": "microsoft.compute/virtualmachines",
+    "vcpus": 4,
     "vmSize": "Standard_D4s_v5"
    },
    "evidence": {
@@ -1621,13 +1691,13 @@
      "vm_licensing",
      "subscriptions"
     ],
-    "logic_hash": "92599fc610ea",
+    "logic_hash": "1802a1db5eed",
     "snapshot_digests": {
      "subscriptions": "e35a342fa493",
-     "vm_licensing": "d895b50b011a"
+     "vm_licensing": "a93678e4f1a6"
     }
    },
-   "fingerprint": "64d8a7245ae4393e",
+   "fingerprint": "440fda362dbb92a3",
    "message": "Windows workload is not using Azure Hybrid Benefit: review whether eligible licences with Software Assurance exist",
    "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Compute/virtualMachines/win-payg",
    "severity": "low"
@@ -2068,6 +2138,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 128,
@@ -2078,7 +2149,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2091,6 +2162,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 224,
@@ -2101,7 +2173,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2114,6 +2186,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 64,
@@ -2124,7 +2197,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2137,6 +2210,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 160,
@@ -2147,7 +2221,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2160,6 +2234,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 256,
@@ -2170,7 +2245,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2183,6 +2258,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 96,
@@ -2193,7 +2269,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2206,6 +2282,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 192,
@@ -2216,7 +2293,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2229,6 +2306,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 32,
@@ -2239,7 +2317,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2252,6 +2330,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 128,
@@ -2262,7 +2341,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2275,6 +2354,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 224,
@@ -2285,7 +2365,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2298,6 +2378,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 64,
@@ -2308,7 +2389,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2321,6 +2402,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 160,
@@ -2331,7 +2413,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2344,6 +2426,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 256,
@@ -2354,7 +2437,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2367,6 +2450,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 96,
@@ -2377,7 +2461,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2390,6 +2474,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 192,
@@ -2400,7 +2485,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2413,6 +2498,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 32,
@@ -2423,7 +2509,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2436,6 +2522,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 128,
@@ -2446,7 +2533,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2459,6 +2546,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 224,
@@ -2469,7 +2557,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2482,6 +2570,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 64,
@@ -2492,7 +2581,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2505,6 +2594,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": 160,
@@ -2515,7 +2605,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2528,6 +2618,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 32,
@@ -2538,7 +2629,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2551,6 +2642,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "westeurope",
     "sizeGB": null,
@@ -2561,7 +2653,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2574,6 +2666,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 0,
@@ -2584,7 +2677,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2597,6 +2690,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 32767,
@@ -2607,7 +2701,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2620,6 +2714,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": null,
     "sizeGB": 160,
@@ -2630,7 +2725,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2643,6 +2738,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 192,
@@ -2653,7 +2749,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2666,6 +2762,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 64,
@@ -2676,7 +2773,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2689,6 +2786,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 160,
@@ -2699,7 +2797,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2712,6 +2810,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 256,
@@ -2722,7 +2821,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2735,6 +2834,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 96,
@@ -2745,7 +2845,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2758,6 +2858,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 192,
@@ -2768,7 +2869,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2781,6 +2882,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 32,
@@ -2791,7 +2893,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2804,6 +2906,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 128,
@@ -2814,7 +2917,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2827,6 +2930,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 224,
@@ -2837,7 +2941,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2850,6 +2954,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 64,
@@ -2860,7 +2965,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2873,6 +2978,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 160,
@@ -2883,7 +2989,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2896,6 +3002,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 256,
@@ -2906,7 +3013,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2919,6 +3026,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 96,
@@ -2929,7 +3037,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2942,6 +3050,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 192,
@@ -2952,7 +3061,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2965,6 +3074,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 32,
@@ -2975,7 +3085,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -2988,6 +3098,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 128,
@@ -2998,7 +3109,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3011,6 +3122,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 224,
@@ -3021,7 +3133,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3034,6 +3146,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 64,
@@ -3044,7 +3157,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3057,6 +3170,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 160,
@@ -3067,7 +3181,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3080,6 +3194,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 256,
@@ -3090,7 +3205,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3103,6 +3218,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "northeurope",
     "sizeGB": 96,
@@ -3113,7 +3229,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3126,6 +3242,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 96,
@@ -3136,7 +3253,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3149,6 +3266,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 192,
@@ -3159,7 +3277,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3172,6 +3290,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 32,
@@ -3182,7 +3301,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3195,6 +3314,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 128,
@@ -3205,7 +3325,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3218,6 +3338,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 224,
@@ -3228,7 +3349,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3241,6 +3362,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 64,
@@ -3251,7 +3373,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3264,6 +3386,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 160,
@@ -3274,7 +3397,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3287,6 +3410,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 256,
@@ -3297,7 +3421,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3310,6 +3434,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 96,
@@ -3320,7 +3445,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3333,6 +3458,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 192,
@@ -3343,7 +3469,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3356,6 +3482,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 32,
@@ -3366,7 +3493,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3379,6 +3506,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 128,
@@ -3389,7 +3517,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3402,6 +3530,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 224,
@@ -3412,7 +3541,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3425,6 +3554,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 64,
@@ -3435,7 +3565,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3448,6 +3578,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 160,
@@ -3458,7 +3589,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3471,6 +3602,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 256,
@@ -3481,7 +3613,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3494,6 +3626,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 96,
@@ -3504,7 +3637,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3517,6 +3650,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 192,
@@ -3527,7 +3661,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3540,6 +3674,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 32,
@@ -3550,7 +3685,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3563,6 +3698,7 @@
   {
    "check_id": "ORPH-DISK-01",
    "details": {
+    "cost_note": "no cost line for this disk in the cost period (created later, or billed under another id)",
     "diskState": "Unattached",
     "location": "swedencentral",
     "sizeGB": 128,
@@ -3573,7 +3709,7 @@
     "collectors": [
      "unattached_disks"
     ],
-    "logic_hash": "ef69f27df1a6",
+    "logic_hash": "97e41f1f2e26",
     "snapshot_digests": {
      "unattached_disks": "42b58d4a31bd"
     }
@@ -3987,6 +4123,93 @@
    "severity": "info"
   },
   {
+   "check_id": "RATE-ADVCOM-01",
+   "details": {
+    "advisor_reported_savings": null,
+    "advisor_savings_currency": null,
+    "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+    "commitment_kind": "renewal",
+    "lastUpdated": null,
+    "open_other_cost_recommendations_in_subscription": null,
+    "order_of_action": "Learn (Advisor, calculate cost savings, read 2026-10-27): act in this order: rightsizing or shutdown first, then reservations, then the savings plan, because each step changes the usage the next one was based on. Savings from these recommendations come from overlapping data sets and must not be added up.",
+    "scope_note": "Advisor gives single-subscription advice only; utilisation and coverage are not assessed here",
+    "solution": null,
+    "source": "Azure Advisor",
+    "typeId": null
+   },
+   "evidence": {
+    "collectors": [
+     "advisor_cost"
+    ],
+    "logic_hash": "ae399fb49703",
+    "snapshot_digests": {
+     "advisor_cost": "86db18e1b3ad"
+    }
+   },
+   "fingerprint": "0693e23abde777af",
+   "message": "Advisor (renewal): Configure automatic renewal for the expiring reservations",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-renew",
+   "severity": "medium"
+  },
+  {
+   "check_id": "RATE-ADVCOM-01",
+   "details": {
+    "advisor_reported_savings": 400.0,
+    "advisor_savings_currency": "USD",
+    "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+    "commitment_kind": "reservation",
+    "lastUpdated": null,
+    "open_other_cost_recommendations_in_subscription": 1,
+    "order_of_action": "Learn (Advisor, calculate cost savings, read 2026-10-27): act in this order: rightsizing or shutdown first, then reservations, then the savings plan, because each step changes the usage the next one was based on. Savings from these recommendations come from overlapping data sets and must not be added up.",
+    "scope_note": "Advisor gives single-subscription advice only; utilisation and coverage are not assessed here",
+    "solution": null,
+    "source": "Azure Advisor",
+    "typeId": null
+   },
+   "evidence": {
+    "collectors": [
+     "advisor_cost"
+    ],
+    "logic_hash": "ae399fb49703",
+    "snapshot_digests": {
+     "advisor_cost": "86db18e1b3ad"
+    }
+   },
+   "fingerprint": "673cc4c4e0b7fc0a",
+   "message": "Advisor (reservation): Consider virtual machine reserved instance to save over the on-demand costs",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-ri",
+   "severity": "medium"
+  },
+  {
+   "check_id": "RATE-ADVCOM-01",
+   "details": {
+    "advisor_reported_savings": 90.0,
+    "advisor_savings_currency": "USD",
+    "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+    "commitment_kind": "savings_plan",
+    "lastUpdated": null,
+    "open_other_cost_recommendations_in_subscription": 1,
+    "order_of_action": "Learn (Advisor, calculate cost savings, read 2026-10-27): act in this order: rightsizing or shutdown first, then reservations, then the savings plan, because each step changes the usage the next one was based on. Savings from these recommendations come from overlapping data sets and must not be added up.",
+    "scope_note": "Advisor gives single-subscription advice only; utilisation and coverage are not assessed here",
+    "solution": null,
+    "source": "Azure Advisor",
+    "typeId": null
+   },
+   "evidence": {
+    "collectors": [
+     "advisor_cost"
+    ],
+    "logic_hash": "ae399fb49703",
+    "snapshot_digests": {
+     "advisor_cost": "86db18e1b3ad"
+    }
+   },
+   "fingerprint": "19a875505fc38903",
+   "message": "Advisor (savings plan): Consider purchasing a savings plan to unlock lower prices",
+   "resource_id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-sp",
+   "severity": "low"
+  },
+  {
    "check_id": "SEC-DEFDEV-01",
    "details": {
     "plan": "VirtualMachines",
@@ -4366,6 +4589,11 @@
    },
    {
     "findings": 1,
+    "id": "LIC-AHBVCP-01",
+    "status": "ran"
+   },
+   {
+    "findings": 1,
     "id": "LIC-AHBSQL-01",
     "status": "ran"
    },
@@ -4377,6 +4605,11 @@
    {
     "findings": 1,
     "id": "ADV-COST-01",
+    "status": "ran"
+   },
+   {
+    "findings": 3,
+    "id": "RATE-ADVCOM-01",
     "status": "ran"
    },
    {
@@ -4518,6 +4751,7 @@
   "collector_errors": [],
   "config": {
    "checks": {},
+   "compute_apis": false,
    "cost_apis": false,
    "domains": {},
    "governance_apis": false,
@@ -4541,6 +4775,9 @@
   "schema_version": "0.1",
   "scope": {
    "management_groups": 2,
+   "regions": 3,
+   "resource_types": 3,
+   "resources": 80,
    "subscriptions": 5
   }
  },

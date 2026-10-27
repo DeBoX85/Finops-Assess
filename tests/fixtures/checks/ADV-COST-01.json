@@ -65,6 +65,39 @@
     }
    },
    "expect_resource_ids": []
+  },
+  {
+   "name": "commitment advice is left to RATE-ADVCOM-01",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/9",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+       "status": "New"
+      },
+      {
+       "id": "/a/10",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider purchasing a savings plan to unlock lower prices",
+       "status": "New"
+      },
+      {
+       "id": "/a/11",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Right-size or shutdown underutilized virtual machines",
+       "status": "New"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/11"
+   ]
   }
  ]
 }

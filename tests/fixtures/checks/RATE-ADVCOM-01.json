@@ -1,0 +1,103 @@
+{
+ "cases": [
+  {
+   "name": "reservation, savings plan and renewal advice are reported; other advice is not",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/1",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+       "status": "New"
+      },
+      {
+       "id": "/a/2",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider purchasing a savings plan to unlock lower prices",
+       "status": "InProgress"
+      },
+      {
+       "id": "/a/3",
+       "subscriptionId": "s2",
+       "impact": "High",
+       "problem": "Configure automatic renewal for the expiring reservations",
+       "status": "New"
+      },
+      {
+       "id": "/a/4",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Right-size or shutdown underutilized virtual machines",
+       "status": "New"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/1",
+    "/a/2",
+    "/a/3"
+   ]
+  },
+  {
+   "name": "closed states and malformed savings are handled",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/5",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider SQL PaaS DB reserved instance to save over the pay-as-you-go costs",
+       "status": "Completed"
+      },
+      {
+       "id": "/a/6",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider Cosmos DB reserved instance to save over the pay-as-you-go costs",
+       "status": "Dismissed"
+      },
+      {
+       "id": "/a/7",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Consider Cosmos DB reserved instance to save over the pay-as-you-go costs",
+       "status": "New",
+       "savingsAmount": true
+      },
+      {
+       "id": "/a/8",
+       "problem": null,
+       "solution": null,
+       "status": null
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/a/7"
+   ]
+  },
+  {
+   "name": "no commitment advice at all",
+   "snapshot": {
+    "advisor_cost": {
+     "rows": [
+      {
+       "id": "/a/12",
+       "subscriptionId": "s1",
+       "impact": "High",
+       "problem": "Right-size or shutdown underutilized virtual machines",
+       "status": "New"
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

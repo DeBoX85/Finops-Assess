@@ -57,3 +57,14 @@ def test_deallocated_vm_with_unparsable_time_skipped_when_another_is_dated(tmp_p
     s.save("vms", {"rows": rows})
     findings, _ = checks.run_all(config.Config(), s)
     assert {f.resource_id for f in findings if f.check_id == "IDLE-VMDEAL-01"} == {"/s/1/b"}
+
+
+def test_scope_counts_are_not_assessed_without_the_inventory(tmp_path):
+    from fcat import manifest
+    from fcat.snapshot import Snapshot
+
+    sc = manifest.scope_summary(Snapshot(tmp_path / "empty"))
+    assert sc["resources"] is None and sc["resource_types"] is None and sc["regions"] is None
+    s = Snapshot(tmp_path / "cut")
+    s.save("inventory_counts", {"rows": [{"type": "t", "location": "l", "n": 3}], "total_records": 9})
+    assert manifest.scope_summary(s)["resources"] is None  # incomplete list: never a partial total

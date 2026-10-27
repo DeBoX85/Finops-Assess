@@ -92,3 +92,35 @@ def unmapped_cost(snap):
                 "period": cost.get("timeframe"),
             },
         )
+
+
+def cost_lookup(snap):
+    """Last-month cost per lower-cased resource id, for enriching other findings. Returns (costs, covered) where costs maps id -> (amount, currency) and covered is the
+    set of subscription ids whose cost query completed, was not cut off and reported one currency. Empty when the opt-in cost data is absent or unusable; callers
+    must then say nothing about cost (never zero). Same validation rules as COST-UNMAP-01."""
+    if not snap.has("cost_by_resource"):
+        return {}, set()
+    cost = snap.load("cost_by_resource") or {}
+    ok = {
+        s["subscriptionId"]
+        for s in cost.get("scopes") or []
+        if isinstance(s, dict) and s.get("status") == "ok" and not s.get("truncated") and isinstance(s.get("subscriptionId"), str)
+    }
+    rows = [
+        r
+        for r in cost.get("rows") or []
+        if isinstance(r, dict)
+        and r.get("subscriptionId") in ok
+        and isinstance(r.get("resourceId"), str)
+        and isinstance(r.get("cost"), (int, float))
+        and not isinstance(r.get("cost"), bool)
+        and (r.get("currency") is None or isinstance(r.get("currency"), str))
+    ]
+    mixed = {sid for sid in ok if len({r.get("currency") for r in rows if r["subscriptionId"] == sid}) > 1}
+    covered = ok - mixed
+    out: dict = {}
+    for r in rows:
+        if r["subscriptionId"] in covered and r["resourceId"]:
+            amount, cur = out.get(r["resourceId"], (0.0, r.get("currency")))
+            out[r["resourceId"]] = (amount + float(r["cost"]), cur)
+    return out, covered

@@ -112,6 +112,7 @@ class Config:
     governance_apis: bool = False  # opt-in: 3 GET calls per subscription (budgets, anomaly rules, exports); see docs/COST-GOVERNANCE.md
     cost_apis: bool = False  # opt-in: one Cost Management Query per subscription plus a full resource id list; see docs/COST-DATA.md
     storage_apis: bool = False  # opt-in: one GET per eligible storage account (lifecycle policy); see src/fcat/storagedata.py
+    compute_apis: bool = False  # opt-in: one Compute SKU list per subscription and region with Windows VMs (vCPU counts for Hybrid Benefit); see src/fcat/vcpudata.py
 
     def as_dict(self):
         return {
@@ -125,6 +126,7 @@ class Config:
             "governance_apis": self.governance_apis,
             "cost_apis": self.cost_apis,
             "storage_apis": self.storage_apis,
+            "compute_apis": self.compute_apis,
         }
 
     def enabled(self, meta) -> tuple[bool, str]:
@@ -157,6 +159,9 @@ def load(path) -> Config:
     stor = run.get("storage_apis", False)
     if not isinstance(stor, bool):
         raise ValueError("[run] storage_apis must be true or false")
+    comp = run.get("compute_apis", False)
+    if not isinstance(comp, bool):
+        raise ValueError("[run] compute_apis must be true or false")
     return Config(
         prof,
         d.get("domains", {}),
@@ -169,4 +174,5 @@ def load(path) -> Config:
         gov,
         cost,
         stor,
+        comp,
     )

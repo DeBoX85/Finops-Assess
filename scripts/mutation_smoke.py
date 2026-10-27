@@ -10,6 +10,20 @@ import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MUTATIONS = [
+    ("src/fcat/checks_builtin.py", "if n < 8:", "if n <= 8:", "8-vCPU Hybrid Benefit boundary off by one"),
+    ("src/fcat/checks_builtin.py", "core_licences_needed=max(8, n)", "core_licences_needed=n", "minimum of 8 core licences dropped"),
+    (
+        "src/fcat/checks_builtin.py",
+        'and str(r.get("licenseType") or "").lower() == "windows_server"',
+        "and True",
+        "non-Windows_Server licence counted as Hybrid Benefit",
+    ),
+    (
+        "src/fcat/vcpudata.py",
+        'if not any(s["status"] == "ok" for s in scopes):',
+        "if False:",
+        "vCPU lookup saved although every read failed",
+    ),
     ("src/fcat/http.py", "if r.status in (429, 503):", "if r.status in (503,):", "no retry on 429"),
     ("src/fcat/http.py", 'if method == "GET":\n            return', 'if method in ("GET", "PUT"):\n            return', "PUT allowed"),
     (

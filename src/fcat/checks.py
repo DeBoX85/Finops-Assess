@@ -52,9 +52,15 @@ def collected_at(snapshot):
 REGISTRY: list = []
 
 
+# Detail keys that describe money for a period. They change every month (or appear when an opt-in switch is turned on) without the finding itself
+# changing, so they are excluded from the fingerprint; otherwise the comparison of two runs would mark every enriched finding as changed.
+VOLATILE_DETAIL_KEYS = ("cost_in_period", "cost_currency", "cost_period", "cost_note")
+
+
 def fingerprint(f) -> str:
     """Stable identity of a finding. Same inputs give the same value on every run."""
-    raw = json.dumps([f.check_id, f.resource_id, f.details], sort_keys=True, default=str)
+    details = {k: v for k, v in f.details.items() if k not in VOLATILE_DETAIL_KEYS} if isinstance(f.details, dict) else f.details
+    raw = json.dumps([f.check_id, f.resource_id, details], sort_keys=True, default=str)
     return hashlib.sha256(raw.encode()).hexdigest()[:16]
 
 
@@ -88,6 +94,7 @@ OPT_IN_SWITCH = {
     "anomaly_rules": "[run] governance_apis = true",
     "cost_exports": "[run] governance_apis = true",
     "storage_lifecycle": "[run] storage_apis = true",
+    "vm_vcpus": "[run] compute_apis = true",
     "vm_cpu": "[run] rightsizing = true",
 }
 

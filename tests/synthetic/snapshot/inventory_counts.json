@@ -1,0 +1,32 @@
+{
+ "pages": 1,
+ "rows": [
+  {
+   "location": "northeurope",
+   "n": 20,
+   "type": "microsoft.compute/disks"
+  },
+  {
+   "location": "swedencentral",
+   "n": 10,
+   "type": "microsoft.compute/disks"
+  },
+  {
+   "location": "westeurope",
+   "n": 40,
+   "type": "microsoft.compute/disks"
+  },
+  {
+   "location": "westeurope",
+   "n": 6,
+   "type": "microsoft.compute/virtualmachines"
+  },
+  {
+   "location": "westeurope",
+   "n": 4,
+   "type": "microsoft.storage/storageaccounts"
+  }
+ ],
+ "total_records": 5,
+ "warnings": []
+}

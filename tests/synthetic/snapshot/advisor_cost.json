@@ -9,6 +9,7 @@
    "savingsCurrency": "USD",
    "solution": "Resize",
    "status": "New",
+   "subscriptionId": "sub-synth-1",
    "targetResourceId": "/subscriptions/sub-synth-1/resourcegroups/rg-synth/providers/microsoft.compute/virtualmachines/vm-run"
   },
   {
@@ -18,8 +19,40 @@
    "savingsAmount": 50.0,
    "savingsCurrency": "USD",
    "status": "Dismissed"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-ri",
+   "impact": "High",
+   "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+   "savingsAmount": 400.0,
+   "savingsCurrency": "USD",
+   "status": "New",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-sp",
+   "impact": "Medium",
+   "problem": "Consider purchasing a savings plan to unlock lower prices",
+   "savingsAmount": 90.0,
+   "savingsCurrency": "USD",
+   "status": "InProgress",
+   "subscriptionId": "sub-synth-1"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-renew",
+   "impact": "High",
+   "problem": "Configure automatic renewal for the expiring reservations",
+   "status": "New",
+   "subscriptionId": "sub-synth-2"
+  },
+  {
+   "id": "/subscriptions/sub-synth-1/resourceGroups/rg-synth/providers/Microsoft.Advisor/recommendations/rec-ri-done",
+   "impact": "High",
+   "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+   "status": "Completed",
+   "subscriptionId": "sub-synth-1"
   }
  ],
- "total_records": 2,
+ "total_records": 6,
  "warnings": []
 }

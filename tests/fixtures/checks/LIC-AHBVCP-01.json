@@ -1,0 +1,308 @@
+{
+ "cases": [
+  {
+   "name": "hybrid benefit vm under 8 vcpus reported; 8 and 16 not; case-insensitive keys; bad vcpu rows ignored",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/d1",
+       "subscriptionId": "d1",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "vm_licensing": {
+     "rows": [
+      {
+       "id": "/v/small",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D2s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/eight",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D8s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/big",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D16s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/unknown",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_Gone_v1",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/badrow",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_Bad",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      }
+     ]
+    },
+    "vm_vcpus": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "S1",
+       "location": "westeurope",
+       "size": "Standard_D8s_v5",
+       "vcpus": 8
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D16s_v5",
+       "vcpus": 16
+      },
+      {
+       "subscriptionId": "d1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bad",
+       "vcpus": "2"
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bool",
+       "vcpus": true
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": [
+    "/v/small"
+   ]
+  },
+  {
+   "name": "payg, client licence, linux, devtest not reported",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/d1",
+       "subscriptionId": "d1",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "vm_licensing": {
+     "rows": [
+      {
+       "id": "/v/payg",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D2s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": null,
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/client",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D2s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Client",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/lin",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D2s_v5",
+       "osType": "Linux",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/dev",
+       "subscriptionId": "d1",
+       "location": "westeurope",
+       "vmSize": "Standard_D2s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      },
+      {
+       "id": "/v/big",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_D16s_v5",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      }
+     ]
+    },
+    "vm_vcpus": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "S1",
+       "location": "westeurope",
+       "size": "Standard_D8s_v5",
+       "vcpus": 8
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D16s_v5",
+       "vcpus": 16
+      },
+      {
+       "subscriptionId": "d1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bad",
+       "vcpus": "2"
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bool",
+       "vcpus": true
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  },
+  {
+   "name": "no candidate has a known vcpu count: refuses to decide",
+   "snapshot": {
+    "subscriptions": {
+     "rows": [
+      {
+       "id": "/subscriptions/s1",
+       "subscriptionId": "s1",
+       "quotaId": "PayAsYouGo_2014-09-01"
+      },
+      {
+       "id": "/subscriptions/d1",
+       "subscriptionId": "d1",
+       "quotaId": "MSDNDevTest_2014-09-01"
+      }
+     ]
+    },
+    "vm_licensing": {
+     "rows": [
+      {
+       "id": "/v/x",
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "vmSize": "Standard_Gone_v1",
+       "osType": "Windows",
+       "publisher": "MicrosoftWindowsServer",
+       "licenseType": "Windows_Server",
+       "resType": "microsoft.compute/virtualmachines"
+      }
+     ]
+    },
+    "vm_vcpus": {
+     "rows": [
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "S1",
+       "location": "westeurope",
+       "size": "Standard_D8s_v5",
+       "vcpus": 8
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_D16s_v5",
+       "vcpus": 16
+      },
+      {
+       "subscriptionId": "d1",
+       "location": "westeurope",
+       "size": "Standard_D2s_v5",
+       "vcpus": 2
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bad",
+       "vcpus": "2"
+      },
+      {
+       "subscriptionId": "s1",
+       "location": "westeurope",
+       "size": "Standard_Bool",
+       "vcpus": true
+      }
+     ]
+    }
+   },
+   "expect_resource_ids": []
+  }
+ ]
+}

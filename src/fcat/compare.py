@@ -64,7 +64,12 @@ def compare(old: dict, new: dict) -> dict:
     for label, d in (("older", old), ("newer", new)):
         if (d.get("audit") or {}).get("status") != "pass":
             warnings.append(f"the {label} report did not pass its self-audit; treat the comparison with caution")
-    if old["manifest"].get("scope") != new["manifest"].get("scope"):
+
+    def _scope_core(d):
+        sc = d["manifest"].get("scope") or {}
+        return {k: sc.get(k) for k in ("subscriptions", "management_groups")}
+
+    if _scope_core(old) != _scope_core(new):  # resource counts change with the estate and are not a scope change
         warnings.append(
             "the two runs saw a different number of subscriptions or management groups, so changes may come from scope, not from the estate"
         )

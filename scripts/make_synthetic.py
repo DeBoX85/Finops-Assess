@@ -282,11 +282,32 @@ def estate():
                 "publisher": "MicrosoftWindowsServer",
                 "licenseType": None,
                 "resType": "microsoft.compute/virtualmachines",
+                "location": "westeurope",
                 "vmSize": "Standard_D4s_v5",
             },
             {
                 "id": base + "Compute/virtualMachines/win-ahb",
                 "subscriptionId": "sub-synth-1",
+                "location": "westeurope",
+                "vmSize": "Standard_D2s_v5",
+                "osType": "Windows",
+                "publisher": "MicrosoftWindowsServer",
+                "licenseType": "Windows_Server",
+            },
+            {
+                "id": base + "Compute/virtualMachines/win-ahb-big",
+                "subscriptionId": "sub-synth-1",
+                "location": "westeurope",
+                "vmSize": "Standard_D16s_v5",
+                "osType": "Windows",
+                "publisher": "MicrosoftWindowsServer",
+                "licenseType": "Windows_Server",
+            },
+            {
+                "id": base + "Compute/virtualMachines/win-ahb-unknown",
+                "subscriptionId": "sub-synth-1",
+                "location": "westeurope",
+                "vmSize": "Standard_Retired_v1",
                 "osType": "Windows",
                 "publisher": "MicrosoftWindowsServer",
                 "licenseType": "Windows_Server",
@@ -350,6 +371,7 @@ def estate():
         "advisor_cost": [
             {
                 "id": base + "Advisor/recommendations/rec-resize",
+                "subscriptionId": "sub-synth-1",
                 "impact": "High",
                 "problem": "Right-size or shutdown underutilized virtual machines",
                 "solution": "Resize",
@@ -365,6 +387,38 @@ def estate():
                 "status": "Dismissed",
                 "savingsAmount": 50.0,
                 "savingsCurrency": "USD",
+            },
+            {
+                "id": base + "Advisor/recommendations/rec-ri",
+                "subscriptionId": "sub-synth-1",
+                "impact": "High",
+                "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+                "status": "New",
+                "savingsAmount": 400.0,
+                "savingsCurrency": "USD",
+            },
+            {
+                "id": base + "Advisor/recommendations/rec-sp",
+                "subscriptionId": "sub-synth-1",
+                "impact": "Medium",
+                "problem": "Consider purchasing a savings plan to unlock lower prices",
+                "status": "InProgress",
+                "savingsAmount": 90.0,
+                "savingsCurrency": "USD",
+            },
+            {
+                "id": base + "Advisor/recommendations/rec-renew",
+                "subscriptionId": "sub-synth-2",
+                "impact": "High",
+                "problem": "Configure automatic renewal for the expiring reservations",
+                "status": "New",
+            },
+            {
+                "id": base + "Advisor/recommendations/rec-ri-done",
+                "subscriptionId": "sub-synth-1",
+                "impact": "High",
+                "problem": "Consider virtual machine reserved instance to save over the on-demand costs",
+                "status": "Completed",
             },
         ],
     }
@@ -550,6 +604,11 @@ def estate():
                 "targetResourceId": (sub4 + "Compute/virtualMachines/vm-dev-ok").lower(),
             }
         ],
+        "vm_vcpus": [
+            {"subscriptionId": "sub-synth-1", "location": "westeurope", "size": "Standard_D2s_v5", "vcpus": 2},
+            {"subscriptionId": "sub-synth-1", "location": "westeurope", "size": "Standard_D4s_v5", "vcpus": 4},
+            {"subscriptionId": "sub-synth-1", "location": "westeurope", "size": "Standard_D16s_v5", "vcpus": 16},
+        ],
         "storage_lifecycle": [
             {"id": (base + "Storage/storageAccounts/stv2").lower(), "status": "present", "ruleCount": 2, "enabledRuleCount": 2},
             {"id": (base + "Storage/storageAccounts/stv2nolc").lower(), "status": "none", "ruleCount": None, "enabledRuleCount": None},
@@ -631,6 +690,13 @@ def estate():
                 "currency": "USD",
             },
         ],
+        "inventory_counts": [
+            {"type": "microsoft.compute/disks", "location": "northeurope", "n": 20},
+            {"type": "microsoft.compute/disks", "location": "swedencentral", "n": 10},
+            {"type": "microsoft.compute/disks", "location": "westeurope", "n": 40},
+            {"type": "microsoft.compute/virtualmachines", "location": "westeurope", "n": 6},
+            {"type": "microsoft.storage/storageaccounts", "location": "westeurope", "n": 4},
+        ],
         "subscriptions": subs,
         "management_groups": mgs,
         "unattached_disks": disks,
@@ -657,6 +723,12 @@ def write_snapshot():
             body["api_version"] = "2026-06-01"
             if name == "cost_by_resource":
                 body["timeframe"] = "TheLastMonth"
+        if name == "vm_vcpus":
+            body.update(
+                scopes=[{"subscriptionId": "sub-synth-1", "location": "westeurope", "status": "ok"}],
+                truncated=False,
+                api_version="2021-07-01",
+            )
         if name == "storage_lifecycle":
             body.update(eligible=len(rows), queried=len(rows), truncated=False, api_version="2026-09-01")
         (SNAP / f"{name}.json").write_text(json.dumps(body, indent=1, sort_keys=True))

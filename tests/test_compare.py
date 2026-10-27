@@ -127,3 +127,12 @@ def test_cli_compare_refuses_redacted(tmp_path, capsys):
     a.write_text(json.dumps(_doc([], checks={"A-B-01": "ran"}, redacted=True)))
     assert cli.main(["compare", str(a), str(a), "--out", str(tmp_path / "o"), "--allow-unignored-out"]) == 2
     assert "redacted" in capsys.readouterr().err
+
+
+def test_resource_count_changes_are_not_a_scope_change():
+    a = {"subscriptions": 2, "management_groups": 1, "resources": 10, "resource_types": 3, "regions": 2}
+    b = {**a, "resources": 15}
+    older, newer = _doc([], scope=a), _doc([], scope=b)
+    assert not any("different number of subscriptions" in w for w in compare.compare(older, newer)["warnings"])
+    newer2 = _doc([], scope={**a, "subscriptions": 3})
+    assert any("different number of subscriptions" in w for w in compare.compare(older, newer2)["warnings"])

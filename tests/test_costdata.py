@@ -254,3 +254,66 @@ def test_resource_id_collector_saves_rows_and_records_failures(monkeypatch, tmp_
     errs = []
     collectors.collect(None, Snapshot(tmp_path / "bad2"), Cfg(), errs)
     assert any(e["collector"] == "cost_apis" for e in errs)
+
+
+def _disk_snap(tmp_path, scopes, rows):
+    from fcat.snapshot import Snapshot as S
+
+    s = S(tmp_path / "s")
+    s.save(
+        "unattached_disks",
+        {
+            "rows": [
+                {"id": "/Subscriptions/S1/resourceGroups/rg/providers/Microsoft.Compute/disks/d1", "subscriptionId": "S1", "sizeGB": 32},
+                {"id": "/Subscriptions/S1/resourceGroups/rg/providers/Microsoft.Compute/disks/d2", "subscriptionId": "S1", "sizeGB": 32},
+                {"id": "/Subscriptions/S2/resourceGroups/rg/providers/Microsoft.Compute/disks/d3", "subscriptionId": "S2", "sizeGB": 32},
+            ]
+        },
+    )
+    s.save("cost_by_resource", {"rows": rows, "scopes": scopes, "timeframe": "TheLastMonth"})
+    return s
+
+
+def _run_disk(s):
+    fn = next(f for m, f in checks.REGISTRY if m.id == "ORPH-DISK-01")
+    return {f.resource_id.rsplit("/", 1)[-1]: f.details for f in fn(s)}
+
+
+def test_disk_findings_carry_last_month_cost_only_where_cost_data_is_sound(tmp_path):
+    rid = "/subscriptions/s1/resourcegroups/rg/providers/microsoft.compute/disks/d1"
+    s = _disk_snap(
+        tmp_path,
+        [{"subscriptionId": "S1", "status": "ok", "truncated": False}, {"subscriptionId": "S2", "status": "HTTP 403", "truncated": False}],
+        [{"subscriptionId": "S1", "resourceId": rid, "cost": 12.345, "currency": "EUR"}],
+    )
+    got = _run_disk(s)
+    assert got["d1"]["cost_in_period"] == 12.35 and got["d1"]["cost_currency"] == "EUR" and got["d1"]["cost_period"] == "TheLastMonth"
+    assert "cost_in_period" not in got["d2"] and "cost_note" in got["d2"]  # covered subscription, no cost line: a note, never zero
+    assert not any(k.startswith("cost") for k in got["d3"])  # subscription whose cost query failed: nothing said about cost
+
+
+def test_disk_cost_is_left_out_for_truncated_mixed_currency_and_absent_data(tmp_path):
+    rid = "/subscriptions/s1/resourcegroups/rg/providers/microsoft.compute/disks/d1"
+    row = {"subscriptionId": "S1", "resourceId": rid, "cost": 5.0, "currency": "USD"}
+    for scopes, rows in (
+        ([{"subscriptionId": "S1", "status": "ok", "truncated": True}], [row]),
+        ([{"subscriptionId": "S1", "status": "ok", "truncated": False}], [row, {**row, "resourceId": "/x", "currency": "EUR"}]),
+    ):
+        got = _run_disk(_disk_snap(tmp_path / str(len(rows)), scopes, rows))
+        assert not any(k.startswith("cost") for d in got.values() for k in d)
+    from fcat.snapshot import Snapshot as S
+
+    plain = S(tmp_path / "plain")
+    plain.save("unattached_disks", {"rows": [{"id": "/x/d9", "subscriptionId": "S1"}]})
+    assert not any(k.startswith("cost") for k in _run_disk(plain)["d9"])
+
+
+def test_cost_details_do_not_change_the_fingerprint_but_other_details_do():
+    base = checks.Finding("ORPH-DISK-01", "/d", "medium", "m", {"sizeGB": 32})
+    with_cost = checks.Finding(
+        "ORPH-DISK-01", "/d", "medium", "m", {"sizeGB": 32, "cost_in_period": 9.5, "cost_currency": "USD", "cost_period": "TheLastMonth"}
+    )
+    noted = checks.Finding("ORPH-DISK-01", "/d", "medium", "m", {"sizeGB": 32, "cost_note": "x"})
+    other = checks.Finding("ORPH-DISK-01", "/d", "medium", "m", {"sizeGB": 64})
+    assert checks.fingerprint(base) == checks.fingerprint(with_cost) == checks.fingerprint(noted)
+    assert checks.fingerprint(base) != checks.fingerprint(other)

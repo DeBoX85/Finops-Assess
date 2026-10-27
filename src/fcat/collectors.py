@@ -222,6 +222,8 @@ KQL_CONTAINER_TAGS = (
     "resourcecontainers | where type in~ ('microsoft.resources/subscriptions/resourcegroups', 'microsoft.resources/subscriptions') "
     "| project id, type, subscriptionId, name, tags | order by id asc"
 )
+# Counts by type and location only (server-side summarize, no names or ids) for the scope line of the report.
+KQL_INVENTORY_COUNTS = "resources | summarize n=count() by type=tolower(type), location | order by type asc, location asc"
 KQL_POLICY_ASSIGNMENTS = (
     "policyresources | where type =~ 'microsoft.authorization/policyassignments' "
     "| project id, name, scope=tostring(properties.scope), definitionId=tostring(properties.policyDefinitionId), "
@@ -235,6 +237,7 @@ KQL_POLICY_STATES = (
 COLLECTOR_OPTIONS: dict[str, dict[str, Any]] = {"policy_assignments": {"authorization_scope_filter": "AtScopeAboveAndBelow"}}
 
 COLLECTORS = {
+    "inventory_counts": KQL_INVENTORY_COUNTS,
     "tag_inventory": KQL_TAG_INVENTORY,
     "container_tags": KQL_CONTAINER_TAGS,
     "policy_assignments": KQL_POLICY_ASSIGNMENTS,
@@ -281,7 +284,16 @@ COLLECTORS = {
 
 
 # Collectors that are not ARG queries. They run only when the owner opts in and are never in COLLECTORS (which the KQL tests iterate).
-REST_COLLECTORS = ("vm_cpu", "budgets", "anomaly_rules", "cost_exports", "cost_by_resource", "resource_ids", "storage_lifecycle")
+REST_COLLECTORS = (
+    "vm_cpu",
+    "budgets",
+    "anomaly_rules",
+    "cost_exports",
+    "cost_by_resource",
+    "resource_ids",
+    "storage_lifecycle",
+    "vm_vcpus",
+)
 
 # ARG collectors that run only with [run] cost_apis = true (a full id list is large on big estates). Kept out of COLLECTORS for the same reason as above.
 KQL_RESOURCE_IDS = "resources | project id=tolower(id), type=tolower(type), subscriptionId | order by id asc"
@@ -320,6 +332,13 @@ def collect(client, snapshot, config, errors: list):
             storagedata.collect_storage_lifecycle(client, snapshot, config, errors)
         except Exception as e:  # noqa: BLE001
             errors.append({"collector": "storage_apis", "error": f"{type(e).__name__}: {e}"})
+    if getattr(config, "compute_apis", False):
+        from . import vcpudata  # noqa: PLC0415
+
+        try:
+            vcpudata.collect_vm_vcpus(client, snapshot, config, errors)
+        except Exception as e:  # noqa: BLE001
+            errors.append({"collector": "compute_apis", "error": f"{type(e).__name__}: {e}"})
     if getattr(config, "governance_apis", False):
         from . import govcost  # noqa: PLC0415
 

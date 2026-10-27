@@ -35,15 +35,26 @@ def _excluded(d) -> str | None:
 )
 def unattached_disks(snap):
     # Phase 1: no savings figure yet. Savings need cost data (actual) and list price; added in Phase 3.
+    from .checks_cost import cost_lookup  # noqa: PLC0415  optional enrichment from the opt-in cost data (cost_apis)
+
+    costs, covered = cost_lookup(snap)
+    period = (snap.load("cost_by_resource") or {}).get("timeframe") if covered else None
     for d in snap.load("unattached_disks")["rows"]:
         if _excluded(d):
             continue
+        details = {k: d.get(k) for k in ("location", "skuName", "sizeGB", "timeCreated", "diskState")}
+        if str(d.get("subscriptionId") or "") in covered:
+            hit = costs.get(str(d.get("id") or "").lower())
+            if hit:
+                details.update(cost_in_period=round(hit[0], 2), cost_currency=hit[1], cost_period=period)
+            else:
+                details["cost_note"] = "no cost line for this disk in the cost period (created later, or billed under another id)"
         yield Finding(
             "ORPH-DISK-01",
             d["id"],
             "medium",
             f"Unattached disk ({d.get('sizeGB')} GB, {d.get('skuName')}) incurs storage cost",
-            {k: d.get(k) for k in ("location", "skuName", "sizeGB", "timeCreated", "diskState")},
+            details,
         )
 
 
@@ -571,6 +582,27 @@ def vms_with_unmanaged_disks(snap):
             )  # fmt: skip
 
 
+def vcpu_key(r):
+    return (str(r.get("subscriptionId") or "").lower(), str(r.get("location") or "").lower(), str(r.get("vmSize") or ""))
+
+
+def vcpu_table(snap):
+    """{(subscription, location, size): vCPUs} from the opt-in compute_apis snapshot; empty when it is absent. Invalid rows are ignored."""
+    if not snap.has("vm_vcpus"):
+        return {}
+    return {
+        (str(r["subscriptionId"]).lower(), str(r["location"]).lower(), r["size"]): r["vcpus"]
+        for r in (snap.load("vm_vcpus") or {}).get("rows", [])
+        if isinstance(r, dict)
+        and isinstance(r.get("subscriptionId"), str)
+        and isinstance(r.get("location"), str)
+        and isinstance(r.get("size"), str)
+        and isinstance(r.get("vcpus"), int)
+        and not isinstance(r.get("vcpus"), bool)
+        and r["vcpus"] > 0
+    }
+
+
 @check(
     _cm(
         "LIC-AHBWIN-01",
@@ -588,6 +620,7 @@ def windows_without_ahb(snap):
     broader than the hub query, which excludes only MSDNDevTest, to avoid false positives). Whether the customer holds eligible licences with Software Assurance
     cannot be read from Azure, so confidence is low and the wording is 'review'. No cost figure: Learn says at least 8 core licences per VM apply; vCPU needs another call."""
     dev = _devtest_subs(snap)
+    vcpus = vcpu_table(snap)
     for r in _rows(snap, "vm_licensing"):
         if str(r.get("osType") or "").lower() != "windows" or str(r.get("subscriptionId") or "").lower() in dev:
             continue
@@ -595,10 +628,54 @@ def windows_without_ahb(snap):
             continue
         if str(r.get("licenseType") or "").lower().startswith("windows"):
             continue
+        details = {"resType": r.get("resType"), "vmSize": r.get("vmSize"), "licenseType": r.get("licenseType")}
+        n = vcpus.get(vcpu_key(r))
+        if n is not None:  # only with the opt-in compute_apis data; otherwise nothing is said about core licences
+            details.update(vcpus=n, core_licences_needed=max(8, n), licence_rule="minimum 8 core licences per VM (Learn, read 2026-10-27)")
         yield Finding(
             "LIC-AHBWIN-01", r["id"], "low", "Windows workload is not using Azure Hybrid Benefit: review whether eligible licences with Software Assurance exist",
-            {"resType": r.get("resType"), "vmSize": r.get("vmSize"), "licenseType": r.get("licenseType")},
+            details,
         )  # fmt: skip
+
+
+@check(
+    _cm(
+        "LIC-AHBVCP-01",
+        "licensing",
+        "Licensing and SaaS",
+        "Windows VMs using Hybrid Benefit with fewer than 8 vCPUs (unused core licences)",
+        "vm_licensing",
+        "vm_vcpus",
+        "subscriptions",
+        conf="low",
+    )
+)
+def ahb_below_minimum_cores(snap):
+    """Learn (Azure Hybrid Benefit for Windows VMs, read 2026-10-27): at least 8 core licences are needed per VM, so a Windows VM with Azure Hybrid Benefit and fewer than
+    8 vCPUs consumes 8 core licences for fewer cores. That is a licence-efficiency question for the owner of the licences, not a saving the tool can price: the licences may
+    be spare anyway. Needs the opt-in `[run] compute_apis` vCPU lookup. A VM whose size is not in the lookup is skipped (never guessed); if none can be decided the check refuses
+    to decide. Only licenseType Windows_Server counts (Windows_Client is multi-tenant hosting). Dev/Test subscriptions are skipped like the other licensing checks."""
+    dev = _devtest_subs(snap)
+    table = vcpu_table(snap)
+    cand = [
+        r
+        for r in _rows(snap, "vm_licensing")
+        if str(r.get("osType") or "").lower() == "windows"
+        and str(r.get("licenseType") or "").lower() == "windows_server"
+        and str(r.get("subscriptionId") or "").lower() not in dev
+    ]
+    known = [(r, table[vcpu_key(r)]) for r in cand if vcpu_key(r) in table]
+    if cand and not known:
+        raise NotAssessed(
+            "no vCPU count could be found for any Windows VM that uses Hybrid Benefit (size not listed, or the SKU list failed)"
+        )
+    for r, n in known:
+        if n < 8:
+            yield Finding(
+                "LIC-AHBVCP-01", r["id"], "info",
+                f"Hybrid Benefit VM has {n} vCPUs but uses at least 8 core licences: check whether the unused licences could cover other workloads",
+                {"resType": r.get("resType"), "vmSize": r.get("vmSize"), "vcpus": n, "core_licences_used_min": 8, "unused_core_licences_min": 8 - n},
+            )  # fmt: skip
 
 
 @check(
@@ -645,6 +722,21 @@ def aks_pools_not_spot(snap):
             )  # fmt: skip
 
 
+def commitment_kind(r):
+    """Classifies an Advisor cost recommendation as commitment advice by its text: 'renewal' (expiring reservations), 'savings_plan' or 'reservation',
+    else None. Learn (Advisor cost recommendations, read 2026-10-27) words them as 'Consider purchasing a savings plan ...', 'Consider ... reserved instance
+    ...', 'Configure automatic renewal for the expiring reservations'. A text match is a heuristic (UNVERIFIED live: wording and language in Resource Graph);
+    a miss only leaves the item in ADV-COST-01, where it is still shown."""
+    text = f"{_text(r.get('problem'))} {_text(r.get('solution'))}".lower()
+    if "savings plan" in text:
+        return "savings_plan"
+    if "reservation" in text and ("renew" in text or "expir" in text):
+        return "renewal"
+    if "reserved instance" in text or "reservation" in text:
+        return "reservation"
+    return None
+
+
 ADVISOR_SEVERITY = {"high": "medium", "medium": "low", "low": "info"}
 ADVISOR_OPEN_STATES = ("", "new", "inprogress")
 
@@ -667,6 +759,8 @@ def advisor_cost(snap):
     for r in _rows(snap, "advisor_cost"):
         if str(r.get("status") or "").lower() not in ADVISOR_OPEN_STATES:
             continue
+        if commitment_kind(r):  # reservation and savings plan advice is reported by RATE-ADVCOM-01, never twice
+            continue
         sav = r.get("savingsAmount")
         yield Finding(
             "ADV-COST-01", r["id"], ADVISOR_SEVERITY.get(str(r.get("impact") or "").lower(), "info"),
@@ -679,6 +773,58 @@ def advisor_cost(snap):
                 "advisor_reported_savings": sav if isinstance(sav, (int, float)) and not isinstance(sav, bool) else None,
                 "advisor_savings_currency": r.get("savingsCurrency"),
                 "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+                "lastUpdated": r.get("lastUpdated"),
+            },
+        )  # fmt: skip
+
+
+COMMITMENT_ORDER_NOTE = (
+    "Learn (Advisor, calculate cost savings, read 2026-10-27): act in this order: rightsizing or shutdown first, then reservations, then the savings plan, "
+    "because each step changes the usage the next one was based on. Savings from these recommendations come from overlapping data sets and must not be added up."
+)
+
+
+@check(
+    _cm(
+        "RATE-ADVCOM-01",
+        "advisor",
+        "Rate Optimization",
+        "Azure Advisor reservation and savings plan recommendations (pass-through)",
+        "advisor_cost",
+        conf="medium",
+        basis="estimate",
+    )
+)
+def advisor_commitments(snap):
+    """Open Advisor recommendations to buy or renew commitments, passed through with Advisor's own figures. Advisor reservation advice is per single subscription
+    and uses the 3-year price where one exists (Learn, reservation purchase recommendations, read 2026-10-27), so it is NOT the shared-scope view and cannot show
+    utilisation or coverage; that needs cost data (ADR 0012 tier 2). The count of open non-commitment recommendations in the same subscription is attached so the reader
+    can follow Learn's order of action. Same status and severity rules as ADV-COST-01."""
+    rows = [r for r in _rows(snap, "advisor_cost") if str(r.get("status") or "").lower() in ADVISOR_OPEN_STATES]
+    other: dict = {}
+    for r in rows:
+        if not commitment_kind(r):
+            sid = str(r.get("subscriptionId") or "").lower()
+            other[sid] = other.get(sid, 0) + 1
+    for r in rows:
+        kind = commitment_kind(r)
+        if not kind:
+            continue
+        sav = r.get("savingsAmount")
+        yield Finding(
+            "RATE-ADVCOM-01", r["id"], ADVISOR_SEVERITY.get(str(r.get("impact") or "").lower(), "info"),
+            f"Advisor ({kind.replace('_', ' ')}): {_text(r.get('problem')) or 'commitment recommendation'}",
+            {
+                "source": "Azure Advisor",
+                "commitment_kind": kind,
+                "solution": r.get("solution"),
+                "typeId": r.get("typeId"),
+                "advisor_reported_savings": sav if isinstance(sav, (int, float)) and not isinstance(sav, bool) else None,
+                "advisor_savings_currency": r.get("savingsCurrency"),
+                "advisor_savings_period": "not stated by Advisor docs (UNVERIFIED)",
+                "scope_note": "Advisor gives single-subscription advice only; utilisation and coverage are not assessed here",
+                "open_other_cost_recommendations_in_subscription": other.get(str(r.get("subscriptionId") or "").lower()),
+                "order_of_action": COMMITMENT_ORDER_NOTE,
                 "lastUpdated": r.get("lastUpdated"),
             },
         )  # fmt: skip

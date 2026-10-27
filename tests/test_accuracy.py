@@ -192,6 +192,7 @@ def test_every_column_a_check_reads_exists_in_its_kql():
         "targetSize",
         "targetVcpus",
         "vcpus",
+        "size",
     }  # keys of the REST-collected vm_cpu snapshot, not ARG columns  # not row columns: result key and nested ARM keys read inside dynamic columns
     read = set(re.findall(r'\b(?:r|d|s|n|v|p|c)\.get\("(\w+)"', src)) | set(re.findall(r'\b(?:r|d|s|n|v)\["(\w+)"\]', src))
     assert read, "parser found nothing; test is broken"

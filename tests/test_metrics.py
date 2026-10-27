@@ -194,6 +194,7 @@ def test_config_flag_defaults_off_and_validates(tmp_path):
         "cost_by_resource",
         "resource_ids",
         "storage_lifecycle",
+        "vm_vcpus",
     )
     p = tmp_path / "c.toml"
     p.write_text("[run]\nrightsizing = true\nrightsizing_max_vms = 10\n")

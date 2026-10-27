@@ -42,6 +42,14 @@ def scope_summary(snapshot):
     for k in ("subscriptions", "management_groups"):
         d = snapshot.load(k)
         out[k] = len(d["rows"]) if d else None  # None = not collected / not assessed
+    inv = snapshot.load("inventory_counts")
+    rows = [
+        r for r in (inv or {}).get("rows", []) if isinstance(r, dict) and isinstance(r.get("n"), int) and not isinstance(r.get("n"), bool)
+    ]
+    ok = inv is not None and not (isinstance(inv.get("total_records"), int) and inv["total_records"] > len(inv.get("rows") or []))
+    out["resources"] = sum(r["n"] for r in rows) if ok else None
+    out["resource_types"] = len({r.get("type") for r in rows if r.get("type")}) if ok else None
+    out["regions"] = len({r.get("location") for r in rows if r.get("location")}) if ok else None
     return out
 
 
